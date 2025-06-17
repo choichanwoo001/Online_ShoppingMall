@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/data/jpa https://www.springframework.org/schema/data/jpa/spring-jpa.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- JPA 관련 설정 추가 -->
+
+    <!-- DataSource 설정 (HikariCP) -->
+    <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/example111111?useUnicode=true&amp;characterEncoding=utf8&amp;serverTimezone=Asia/Seoul"/>
+        <property name="username" value="root"/>
+        <property name="password" value="Choi3495!_!"/>
+        <property name="maximumPoolSize" value="10"/>
+        <property name="minimumIdle" value="5"/>
+    </bean>
+
+    <!-- JPA EntityManagerFactory -->
+    <bean id="entityManagerFactory"
+          class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="packagesToScan" value="com.fastcampus.mall.entity"/>
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+                <property name="showSql" value="true"/>
+                <property name="generateDdl" value="true"/>
+                <property name="databasePlatform" value="org.hibernate.dialect.MySQL8Dialect"/>
+            </bean>
+        </property>
+    </bean>
+
+    <!-- JPA Transaction Manager -->
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>
+
+    <!-- Transaction 어노테이션 활성화 -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <!-- JPA Repository 스캔 -->
+    <jpa:repositories base-package="com.fastcampus.mall.repository"
+                      entity-manager-factory-ref="entityManagerFactory"
+                      transaction-manager-ref="transactionManager"/>
+
+    <!-- Component 스캔에 새 패키지 추가 -->
+    <context:component-scan base-package="com.fastcampus.mall"/>
+
+</beans>
