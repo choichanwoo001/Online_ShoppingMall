@@ -11,7 +11,7 @@ import org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "com.example")
+@ComponentScan(basePackages = "com.fast_campus_12.not_found.shop")
 public class WebConfig {
 
     @Bean
