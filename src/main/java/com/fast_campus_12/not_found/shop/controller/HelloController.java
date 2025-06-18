@@ -1,4 +1,4 @@
-package com.example.controller;
+package com.fast_campus_12.not_found.shop.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

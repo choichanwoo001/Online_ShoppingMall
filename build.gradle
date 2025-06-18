@@ -3,7 +3,7 @@ plugins {
     id 'war'
 }
 
-group = 'com.example'
+group = 'com.fast-campus_12.not_found'
 version = '1.0.0'
 
 java {

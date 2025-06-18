@@ -1,4 +1,4 @@
-package com.example.config;
+package com.fast_campus_12.not_found.shop.config;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
