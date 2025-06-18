@@ -18,43 +18,35 @@ Thumbs.db
 .factorypath
 .sts4-cache/
 
-# NetBeans
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-
 # VS Code
 .vscode/
 
 ### Build output ###
-target/
 build/
 *.war
 *.ear
 *.jar
 
 # 예외 처리 - 실제 소스 트리에 있는 target/build 폴더는 포함
-!**/src/main/**/target/
-!**/src/test/**/target/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-### Maven Wrapper ###
-.mvn/
-!/.mvn/wrapper/maven-wrapper.jar
-mvnw
-mvnw.cmd
+### Gradle ###
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+gradlew
+gradlew.bat
 
 ### Logs ###
 *.log
 logs/
 *.out
-
-### Others ###
-# 환경파일 (선택)
+out/
+### 환경 설정 파일 (옵션) ###
 .env
 application.properties
 application.yml
+
+### Swap / 임시파일 ###
 *.swp
