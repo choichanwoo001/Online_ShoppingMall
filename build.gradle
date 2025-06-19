@@ -15,6 +15,13 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    all {
+        // logback 제거 (log4j2로 대체)
+        exclude group: 'ch.qos.logback', module: 'logback-classic'
+    }
+}
+
 test {
     useJUnitPlatform()
 }
@@ -27,15 +34,23 @@ dependencies {
     implementation 'org.springframework:spring-jdbc:6.1.6'
     implementation 'org.springframework:spring-tx:6.1.6'
 
-    // Thymeleaf Spring6 + Jakarta 대응
+    // Thymeleaf (Spring 6 대응)
     implementation 'org.thymeleaf:thymeleaf:3.1.2.RELEASE'
     implementation 'org.thymeleaf:thymeleaf-spring6:3.1.2.RELEASE'
 
     // Jakarta Servlet API
     compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.0'
 
-    // (Optional) Logging
-    implementation 'ch.qos.logback:logback-classic:1.5.13'
+    // Log4j2 core + API
+    implementation 'org.apache.logging.log4j:log4j-slf4j2-impl:2.20.0'
+
+    // Lombok
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+    // Lombok for test
+    testCompileOnly 'org.projectlombok:lombok:1.18.30'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
 
     // MyBatis core
     implementation 'org.mybatis:mybatis:3.5.13'
