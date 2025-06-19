@@ -1,0 +1,141 @@
+* {
+	margin:0;
+	padding:0;
+	box-sizing:border-box;
+}
+.flex_wrapper,.d-flex {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: justify;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+}
+.align-center {
+	align-items:center;
+}
+
+.wrap_1280 {
+	max-width:1280px;
+	width:100%;
+	margin:0 auto;
+}
+.wrap_1024 {
+	max-width:1024px;
+	width:100%;
+	margin:0 auto;
+}
+
+.mb_10 { margin-bottom:0.5rem;}
+.mb_15 { margin-bottom:0.75rem;}
+.mb_20 { margin-bottom:1rem;}
+.mb_30 { margin-bottom:1.5rem;}
+.mb_40 { margin-bottom:2rem;}
+.mb_45 { margin-bottom:2.25rem;}
+.mb_50 { margin-bottom:2.5rem;}
+.mb_55 { margin-bottom:2.75rem;}
+.mb_60 { margin-bottom:3rem;}
+.mb_70 { margin-bottom:3.5rem;}
+.mb_80 { margin-bottom:4rem;}
+.mb_85 { margin-bottom:4.25rem;}
+.mb_120 { margin-bottom:6rem;}
+
+
+
+
+/* ---------------아래 커스텀 추가 상단 변경 x-------------------- */
+/* --------- header ------------ */
+.main-header {
+	border-bottom: 1px solid #eee;
+}
+
+.top-bar {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 24px 40px;
+}
+
+.logo {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.logo img {
+	height: 50px;
+}
+
+.brand-name {
+	font-size: 18px;
+	font-weight: 700;
+	color: #000;
+}
+
+.search-box {
+	display: flex;
+	align-items: center;
+	border: 1px solid #ddd;
+	border-radius: 24px;
+	padding: 6px 12px;
+	width: 250px;
+}
+
+.search-box input {
+	border: none;
+	outline: none;
+	flex: 1;
+}
+
+.search-btn {
+	background: none;
+	border: none;
+	font-size: 16px;
+	cursor: pointer;
+}
+
+.icon-group a {
+	margin-left: 16px;
+	color:#000;
+	font-weight:bold;
+}
+
+.icon-group img {
+	width: 24px;
+	height: 24px;
+}
+
+.category-nav {
+	display: flex;
+	justify-content: space-between;
+	padding: 12px 40px;
+	background-color: #fff;
+}
+
+.main-menu, .sub-menu {
+	display: flex;
+	gap: 20px;
+	list-style: none;
+}
+
+.main-menu li a,
+.sub-menu li a {
+	text-decoration: none;
+	font-size: 14px;
+	font-weight: 500;
+	color: #111;
+}
+
+.main-menu li a:hover,
+.sub-menu li a:hover {
+	color: #007aff;
+}
+
+/* --------- footer ------------ */
+footer {
+	background:#eee;
+	padding:2rem 0;
+	text-align:center;
+}
+
+

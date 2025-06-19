@@ -1,0 +1,67 @@
+@font-face {
+    font-family: 'Noto Sans Korean';
+    font-style: normal;
+    font-weight: 100;
+    src: url(../fonts/notokr-thin.eot);
+    src: url(../fonts/notokr-thin.eot?#iefix) format('embedded-opentype'),
+    url(../fonts/notokr-thin.woff) format('woff'),
+    url(../fonts/notokr-thin.otf) format('opentype');
+}
+
+@font-face {
+    font-family: 'Noto Sans Korean';
+    font-style: normal;
+    font-weight: 200;
+    src: url(../fonts/notokr-light.eot);
+    src: url(../fonts/notokr-light.eot?#iefix) format('embedded-opentype'),
+    url(../fonts/notokr-light.woff) format('woff'),
+    url(../fonts/notokr-light.otf) format('opentype');
+}
+
+@font-face {
+    font-family: 'Noto Sans Korean';
+    font-style: normal;
+    font-weight: 300;
+    src: url(../fonts/notokr-demilight.eot);
+    src: url(../fonts/notokr-demilight.eot?#iefix) format('embedded-opentype'),
+    url(../fonts/notokr-demilight.woff) format('woff');
+}
+
+@font-face {
+    font-family: 'Noto Sans Korean';
+    font-style: normal;
+    font-weight: 400;
+    src: url(../fonts/notokr-regular.eot);
+    src: url(../fonts/notokr-regular.eot?#iefix) format('embedded-opentype'),
+    url(../fonts/notokr-regular.woff) format('woff');
+}
+
+@font-face {
+    font-family: 'Noto Sans Korean';
+    font-style: normal;
+    font-weight: 500;
+    src: url(../fonts/notokr-medium.eot);
+    src: url(../fonts/notokr-medium.eot?#iefix) format('embedded-opentype'),
+    url(../fonts/notokr-medium.woff) format('woff'),
+    url(../fonts/notokr-medium.otf) format('opentype');
+}
+
+@font-face {
+    font-family: 'Noto Sans Korean';
+    font-style: normal;
+    font-weight: 700;
+    src: url(../fonts/notokr-bold.eot);
+    src: url(../fonts/notokr-bold.eot?#iefix) format('embedded-opentype'),
+    url(../fonts/notokr-bold.woff) format('woff'),
+    url(../fonts/notokr-bold.otf) format('opentype');
+}
+
+@font-face {
+    font-family: 'Noto Sans Korean';
+    font-style: normal;
+    font-weight: 900;
+    src: url(../fonts/notokr-black.eot);
+    src: url(../fonts/notokr-black.eot?#iefix) format('embedded-opentype'),
+    url(../fonts/notokr-black.woff) format('woff'),
+    url(../fonts/notokr-black.otf) format('opentype');
+}
