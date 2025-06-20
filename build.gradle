@@ -66,8 +66,8 @@ dependencies {
     // JavaMail
     implementation 'com.sun.mail:javax.mail:1.6.2'
 
-    // Security (Password Encoder)
-    implementation 'org.springframework.security:spring-security-crypto:4.2.20.RELEASE'
+    // jBCrypt 라이브러리(passwordEncoder)
+    implementation 'org.mindrot:jbcrypt:0.4'
 }
 
     

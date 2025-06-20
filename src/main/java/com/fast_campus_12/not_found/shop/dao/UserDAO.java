@@ -43,4 +43,5 @@ public class UserDAO {
     public int updateUserStatus(Long id, Boolean isActive) {
         return userMapper.updateUserStatus(id, isActive);
     }
+
 }

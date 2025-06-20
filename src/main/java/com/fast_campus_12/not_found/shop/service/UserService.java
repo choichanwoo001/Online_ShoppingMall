@@ -4,9 +4,9 @@ import com.fast_campus_12.not_found.shop.dto.SignupRequest;
 import com.fast_campus_12.not_found.shop.entity.User;
 import com.fast_campus_12.not_found.shop.dao.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -20,8 +20,7 @@ public class UserService {
     @Autowired
     private UserDAO userDAO;
 
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    private static final int BCRYPT_ROUNDS = 12;
 
     // 정규식 패턴
     private static final Pattern USER_ID_PATTERN = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*])[a-zA-Z\\d!@#$%^&*]{4,16}$");
@@ -86,7 +85,9 @@ public class UserService {
     public Long createUser(SignupRequest request) {
         User user = new User();
         user.setUserId(request.getUserId());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        String hashedPassword = hashPassword(request.getPassword());
+        user.setPassword(hashedPassword);
+
         user.setUserName(request.getUserName());
         user.setEmail(request.getEmail());
         user.setAddress(request.getAddress());
@@ -100,4 +101,80 @@ public class UserService {
 
         return userDAO.insertUser(user);
     }
+
+    // ============================================================================
+    // 🔐 jBCrypt 관련 메서드들 (추가)
+    // ============================================================================
+
+    /**
+     * 🔐 비밀번호 해시화
+     */
+    private String hashPassword(String plainPassword) {
+        if (plainPassword == null || plainPassword.trim().isEmpty()) {
+            throw new IllegalArgumentException("비밀번호는 필수입니다.");
+        }
+
+        String salt = BCrypt.gensalt(BCRYPT_ROUNDS);
+        return BCrypt.hashpw(plainPassword, salt);
+    }
+
+    /**
+     * 🔐 비밀번호 검증
+     */
+//    public boolean verifyPassword(String plainPassword, String hashedPassword) {
+//        if (plainPassword == null || hashedPassword == null) {
+//            return false;
+//        }
+//
+//        try {
+//            return BCrypt.checkpw(plainPassword, hashedPassword);
+//        } catch (Exception e) {
+//            return false;
+//        }
+//    }
+
+    /**
+     * 🔐 로그인 인증
+     */
+//    public boolean authenticateUser(String userId, String plainPassword) {
+//        try {
+//            User user = userDAO.findByUserId(userId);
+//
+//            if (user == null || !user.getIsActive() || user.getIsDeleted()) {
+//                return false;
+//            }
+//
+//            return verifyPassword(plainPassword, user.getPassword());
+//
+//        } catch (Exception e) {
+//            throw new RuntimeException("로그인 처리 중 오류 발생", e);
+//        }
+//    }
+
+    /**
+     * 🔐 비밀번호 변경
+     */
+//    public boolean changePassword(String userId, String currentPassword, String newPassword) {
+//        try {
+//            // 현재 비밀번호 확인
+//            if (!authenticateUser(userId, currentPassword)) {
+//                return false;
+//            }
+//
+//            // 새 비밀번호 유효성 검사
+//            if (!PASSWORD_PATTERN.matcher(newPassword).matches()) {
+//                throw new IllegalArgumentException("새 비밀번호 형식이 올바르지 않습니다.");
+//            }
+//
+//            // 새 비밀번호 암호화
+//            String hashedNewPassword = hashPassword(newPassword);
+//
+//            // DB 업데이트
+//            int result = userDAO.updatePassword(userId, hashedNewPassword);
+//            return result > 0;
+//
+//        } catch (Exception e) {
+//            throw new RuntimeException("비밀번호 변경 중 오류 발생", e);
+//        }
+//    }
 }
