@@ -1,0 +1,178 @@
+/* 전체 컨테이너 스타일 (div 내에 클래스 없으니 그냥 div 전체 스타일링) */
+/*div {*/
+/*    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;*/
+/*    background-color: #fafafa;*/
+/*    padding: 20px;*/
+/*    max-width: 600px;*/
+/*    margin: 0 auto;*/
+/*    border-radius: 8px;*/
+/*}*/
+
+/* 상단 제목 h2 스타일 */
+/*h2 {*/
+/*    background: linear-gradient(90deg, #f0f0f0 0%, #d9d9d9 50%, #f9f9f9 100%);*/
+/*    color: #555;*/
+/*    padding: 12px 16px;*/
+/*    border-radius: 6px;*/
+/*    box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.6);*/
+/*    font-weight: 700;*/
+/*    margin-bottom: 24px;*/
+/*    text-align: center;*/
+/*}*/
+
+/* 각 section 스타일 */
+section {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.03);
+}
+
+/* section 내부 h3 스타일 */
+section h3 {
+    background-color: #ececec;
+    color: #444;
+    padding: 8px 12px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    font-weight: 600;
+}
+
+/* form-group 스타일 */
+.form-group {
+    margin-bottom: 14px;
+}
+
+/* 레이블 스타일 */
+label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #333;
+}
+
+/* input, select 스타일 */
+input[type="text"],
+input[type="number"],
+select {
+    /*width: 100%;*/
+    padding: 8px 10px;
+    border: 1px solid #bbb;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus {
+    outline: none;
+    border-color: #5a9bd5;
+    box-shadow: 0 0 5px #5a9bd5aa;
+}
+
+/* inline-group (이메일, 전화번호 등 가로배치) */
+.inline-group {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+/* inline-group 내 input과 select 크기 조절 */
+.inline-group select {
+    width: 80px;
+}
+
+.inline-group input[type="text"] {
+    width: 100px;
+}
+
+/* 버튼 스타일 (테두리로 구분) */
+button {
+    background-color: #fff;
+    border: 1.5px solid #5a9bd5;
+    border-radius: 5px;
+    padding: 6px 14px;
+    cursor: pointer;
+    font-weight: 600;
+    color: #5a9bd5;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+button:hover {
+    background-color: #5a9bd5;
+    color: #fff;
+}
+
+/* 체크박스 inline 맞춤 */
+label input[type="checkbox"] {
+    vertical-align: middle;
+    margin-right: 6px;
+}
+
+/* 결제수단 라디오 옵션 */
+.payment-options label {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 18px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.payment-options input[type="radio"] {
+    margin-right: 6px;
+}
+
+/* 주문상품 정보 */
+.product-info p {
+    margin: 4px 0;
+}
+
+/* 할인/쿠폰/적립금 - 적립금 사용 input과 버튼 inline 정렬 */
+.mileage-use {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.mileage-use input[type="number"] {
+    width: 100px;
+}
+
+/* 적립금 보유 표시 */
+.mileage-info {
+    font-size: 13px;
+    color: #666;
+}
+
+/* 배송비 텍스트 */
+.discount-info .form-group span {
+    font-weight: 700;
+    color: #222;
+}
+
+/* 주소 검색 버튼 */
+.search-btn {
+    background-color: #5a9bd5;
+    color: white;
+    border: none;
+    padding: 7px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+.search-btn:hover {
+    background-color: #3b72b9;
+}
+
+/* 주소 입력창 readonly 스타일 */
+input[readonly] {
+    background-color: #f5f5f5;
+    border-color: #ccc;
+    cursor: not-allowed;
+}

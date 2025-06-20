@@ -1,0 +1,187 @@
+<div th:fragment="content">
+<meta charset="UTF-8"/>
+<h1 class="category_tit">주문/결제</h1>
+
+
+<section>
+    <!-- 주문자 -->
+    <div class="form-group">
+        <label>주문자 *</label>
+        <input type="text" name="name" placeholder="이름 입력">
+    </div>
+
+    <!-- 이메일 -->
+    <div class="form-group">
+        <label>이메일 *</label>
+        <div class="inline-group">
+            <!-- 이메일 아이디 -->
+            <input type="text" name="emailId" id="emailId" placeholder="아이디">
+            <span style="align-self: center;">@</span>
+
+            <!-- 도메인 입력 (하나의 input + datalist) -->
+            <label for="emailDomain"></label><input type="text" list="emailDomainOptions" name="emailDomain"
+                                                    id="emailDomain" placeholder="도메인 선택 또는 직접입력">
+            <datalist id="emailDomainOptions">
+                <option value="naver.com">
+                <option value="gmail.com">
+                <option value="hanmail.net">
+                <option value="daum.net">
+                <option value="hotmail.com">
+                <option value="korea.com">
+            </datalist>
+        </div>
+    </div>
+
+
+    <!-- 일반전화 -->
+    <div class="form-group">
+        <label>일반전화</label>
+        <div class="inline-group">
+            <select>
+                <option>02</option>
+                <option>031</option>
+                <option>032</option>
+            </select>
+            <input type="text" name="중간번호" placeholder="0000">
+            <input type="text" name="마지막 번호" placeholder="0000">
+        </div>
+    </div>
+
+    <!-- 휴대전화 -->
+    <div class="form-group">
+        <label>휴대전화</label>
+        <div class="inline-group">
+            <select>
+                <option>010</option>
+                <option>011</option>
+                <option>017</option>
+            </select>
+            <input type="text" placeholder="0000">
+            <input type="text" placeholder="0000">
+        </div>
+    </div>
+
+    <!-- 주소 -->
+    <div class="form-group">
+        <label>주소</label>
+        <div class="address-search">
+            <input type="text" id="zipcode" name="zipcode" placeholder="우편번호" readonly>
+            <button type="button" class="search-btn" onclick="execDaumPostcode()">주소검색</button>
+        </div>
+        <input type="text" id="address1" name="address1" placeholder="기본주소" readonly>
+        <input type="text" id="address2" name="address2" placeholder="나머지 주소">
+    </div>
+
+    <!-- 다음 주소 API 스크립트 추가 -->
+    <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script>
+        function execDaumPostcode() {
+            new daum.Postcode({
+                oncomplete: function (data) {
+                    // 도로명 주소와 지번 주소 구분
+                    var fullAddr = data.address;
+                    var extraAddr = '';
+
+                    // (선택사항) 건물명, 공동주택일 경우 추가
+                    if (data.addressType === 'R') {
+                        if (data.bname !== '') extraAddr += data.bname;
+                        if (data.buildingName !== '') {
+                            extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                        }
+                        if (extraAddr !== '') {
+                            fullAddr += ' (' + extraAddr + ')';
+                        }
+                    }
+
+                    // 우편번호와 주소 입력창에 넣기
+                    document.getElementById('zipcode').value = data.zonecode;
+                    document.getElementById('address1').value = fullAddr;
+
+                    // 나머지 주소 입력창으로 포커스 이동
+                    document.getElementById('address2').focus();
+                }
+            }).open();
+        }
+    </script>
+    <label>
+        <input type="checkbox" name="defaultAddress" value="true">
+        기본 배송지로 저장
+    </label>
+</section>
+
+
+
+
+<section class="order-item">
+    <h3>주문상품</h3>
+    <div class="product-info">
+        <p class="product-name"><strong>HOLIDAY (Color)</strong></p>
+        <p class="product-option">옵션: 그레이 / FREE</p>
+        <p class="product-qty">수량: 1개</p>
+    </div>
+</section>
+
+<section class="discount-info">
+    <h3>할인/쿠폰/적립금</h3>
+
+    <!-- 배송비 단 -->
+    <div class="form-group">
+        <label>배송비</label>
+        <span th:text="${shippingFee} + '원'">2,500원</span>
+    </div>
+</section>
+
+    <!-- 적립금 단 -->
+    <div class="form-group mileage-box">
+        <label>적립금 사용</label>
+        <div class="mileage-use">
+            <input type="number" name="useMileage" id="useMileage" min="0" step="100">
+            <button type="button" onclick="applyMileage()">사용</button>
+            <p class="mileage-info">
+                보유 적립금: <span th:text="${availableMileage}">1,000</span>원
+            </p>
+        </div>
+    </div>
+
+
+    <section>
+        <div class="form-group">
+            <label><strong>결제수단 선택</strong></label>
+            <div class="payment-options">
+                <label>
+                    <input type="radio" name="paymentMethod" value="CARD" checked>
+                    카드결제
+                </label>
+                <label>
+                    <input type="radio" name="paymentMethod" value="PHONE">
+                    휴대폰결제
+                </label>
+                <label>
+                    <input type="radio" name="paymentMethod" value="TRANSFER">
+                    계좌이체
+                </label>
+                <label>
+                    <input type="radio" name="paymentMethod" value="BANK">
+                    무통장입금
+                </label>
+                <label>
+                    <input type="radio" name="paymentMethod" value="EASY_PAY">
+                    간편결제
+                </label>
+            </div>
+        </div>
+    </section>
+
+    <section class="confirm-section">
+        <div class="terms-agree">
+            <label>
+                <input type="checkbox" name="agreeAll" id="agreeAll">
+                모든 약관에 동의합니다.
+            </label>
+        </div>
+
+        <div class="submit-box">
+            <button type="button" class="submit-order">결제하기</button>
+        </div>
+    </section>
+</div>
