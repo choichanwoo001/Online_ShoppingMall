@@ -75,7 +75,7 @@ function setupValidation() {
             element.addEventListener('input', function() {
                 validateField(field);
 
-                // 🔥 이메일이 변경되면 인증 상태 초기화
+                // 이메일이 변경되면 인증 상태 초기화
                 if (field === 'email') {
                     isEmailVerified = false;
 
@@ -114,20 +114,37 @@ function validateField(fieldName) {
 
     showMessage(fieldName + 'Message', result.message, result.type || (result.valid ? 'success' : 'error'));
 
+    // userId 처리 (중복 제거 및 논리 수정)
     if (fieldName === 'userId' && result.valid) {
-        isUserIdChecked = false;
-        showMessage('userIdMessage', '중복확인이 필요합니다.', 'error');
+        // 형식은 유효하지만 중복확인이 완료되지 않은 경우에만 메시지 표시
+        if (!isUserIdChecked) {
+            isUserIdChecked = false; // 중복확인 초기화
+            showMessage('userIdMessage', '중복확인이 필요합니다_____1.', 'warning');
+        }
+        // isUserIdChecked가 true면 기존 메시지 유지 (중복확인 완료 상태)
     }
 
-    if (fieldName === 'email' && result.valid) {
-        isEmailVerified = true;
-        document.getElementById('emailVerificationDiv').style.display = 'none';
+    // userId 형식이 틀린 경우
+    if (fieldName === 'userId' && !result.valid) {
+        isUserIdChecked = false;
+    }
+
+    // email 처리 (논리 수정)
+    if (fieldName === 'email') {
+        if (result.valid) {
+            // 이메일 형식은 유효하지만 인증은 아직 필요
+            isEmailVerified = false;
+            document.getElementById('emailVerificationDiv').style.display = 'none';
+        } else {
+            // 형식이 틀리면 인증도 false
+            isEmailVerified = false;
+            document.getElementById('emailVerificationDiv').style.display = 'none';
+        }
     }
 
     return result.valid;
 }
 
-// 중복 아이디 확인
 function setupDuplicateCheck() {
     const checkBtn = document.getElementById('checkDuplicateBtn');
     if (checkBtn) {
@@ -153,23 +170,37 @@ function setupDuplicateCheck() {
                 const data = await response.json();
 
                 if (response.ok && data.success) {
-                    if (data.data.available) {
+                    console.log('=== 서버 응답 상세 ===');
+                    console.log('전체 응답:', data);
+                    console.log('data.data:', data.data);
+                    console.log('available 값:', data.data ? data.data.available : '없음');
+                    console.log('available 타입:', typeof (data.data ? data.data.available : '없음'));
+
+                    if (data.data && data.data.available) {
+                        console.log('✅ 사용 가능한 아이디 처리');
                         isUserIdChecked = true;
                         showMessage('userIdMessage', '사용 가능한 아이디입니다.', 'success');
                     } else {
+                        console.log('❌ 사용 불가능한 아이디 처리');
+                        console.log('data.data 존재?', !!data.data);
+                        console.log('available 값 상세:', data.data ? data.data.available : 'data.data 없음');
                         isUserIdChecked = false;
                         showMessage('userIdMessage', '이미 사용중인 아이디입니다.', 'error');
                     }
                 } else {
+                    // 서버 오류시에도 isUserIdChecked 설정
+                    isUserIdChecked = false;
                     throw new Error(data.message || '중복확인 중 오류가 발생했습니다.');
                 }
             } catch (error) {
                 console.error('중복확인 오류:', error);
+                // catch 블록에서도 isUserIdChecked 설정
+                isUserIdChecked = false;
                 showMessage('userIdMessage', error.message, 'error');
             } finally {
                 this.disabled = false;
                 this.textContent = '중복확인';
-                checkFormValid();
+                // checkFormValid();
             }
         });
     }
@@ -447,6 +478,44 @@ function setupFormSubmit() {
     }
 }
 
+const currentYear = new Date().getFullYear();
+const yearSelect = document.getElementById('birthYear');
+for (let y = currentYear; y >= currentYear - 100; y--) {
+    const option = document.createElement('option');
+    option.value = y;
+    option.textContent = y + '년';
+    yearSelect.appendChild(option);
+}
+
+// 월 생성 (1~12)
+const monthSelect = document.getElementById('birthMonth');
+for (let m = 1; m <= 12; m++) {
+    const option = document.createElement('option');
+    option.value = m;
+    option.textContent = m + '월';
+    monthSelect.appendChild(option);
+}
+
+// 일 생성 (1~31, 선택된 연/월 기준으로 유동적으로 바뀜)
+const daySelect = document.getElementById('birthDay');
+function updateDays() {
+    const year = parseInt(yearSelect.value);
+    const month = parseInt(monthSelect.value);
+    daySelect.innerHTML = '<option value="">일</option>';
+
+    if (!year || !month) return;
+
+    const lastDay = new Date(year, month, 0).getDate();
+    for (let d = 1; d <= lastDay; d++) {
+        const option = document.createElement('option');
+        option.value = d;
+        option.textContent = d + '일';
+        daySelect.appendChild(option);
+    }
+}
+
+yearSelect.addEventListener('change', updateDays);
+monthSelect.addEventListener('change', updateDays);
 // 페이지 로드시 초기화
 document.addEventListener('DOMContentLoaded', function() {
     setupValidation();

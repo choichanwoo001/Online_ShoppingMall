@@ -1,5 +1,6 @@
 package com.fast_campus_12.not_found.shop.controller;
 
+import com.fast_campus_12.not_found.shop.dao.UserDAO;
 import com.fast_campus_12.not_found.shop.dto.SignupRequest;
 import com.fast_campus_12.not_found.shop.dto.ApiResponse;
 import com.fast_campus_12.not_found.shop.service.UserService;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -25,13 +27,17 @@ public class SignupController {
     private EmailService emailService;
 
     private static final Logger logger = LoggerFactory.getLogger(SignupController.class);
+    @Autowired
+    private UserDAO userDAO;
 
     /**
      * 회원가입 페이지 표시
      */
-    @RequestMapping(value = "/signup", method = RequestMethod.GET)
-    public String signupPage() {
-        return "layout/signup";  // signup.html 반환
+    @GetMapping("/signup/{pageName}")
+    public String renderPage(@PathVariable("pageName") String pageName, Model model) {
+        model.addAttribute("title", "회원가입");
+        model.addAttribute("contentPath", "signup/" + pageName); // signup/basic 등
+        return "layout/base";
     }
 
     /**
@@ -43,6 +49,7 @@ public class SignupController {
 
         try {
             String userId = request.get("userId");
+
 
             // 입력값 디버깅
             logger.debug("=== 중복확인 디버깅 시작 ===");
