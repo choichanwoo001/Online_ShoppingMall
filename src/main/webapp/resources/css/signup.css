@@ -1,0 +1,308 @@
+/* signup.css */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Malgun Gothic', '맑은 고딕', Arial, sans-serif;
+    background-color: #fff;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.title {
+    text-align: center;
+    margin-bottom: 50px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 30px 0 15px 0;
+    position: relative;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #333;
+}
+
+.required-info {
+    color: #007bff;
+    float: right;
+    font-size: 12px;
+    font-weight: normal;
+}
+
+.form-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.form-table.main {
+    border-top: 2px solid #333;
+}
+
+.form-table tr {
+    border-bottom: 1px solid #ddd;
+}
+
+.form-table td.label {
+    background-color: #f8f9fa;
+    padding: 15px;
+    width: 150px;
+    border-right: 1px solid #ddd;
+    font-weight: 500;
+    vertical-align: middle;
+}
+
+.form-table td.input {
+    padding: 15px;
+    vertical-align: middle;
+}
+
+.required {
+    color: #007bff;
+    margin-left: 2px;
+}
+
+.form-input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.form-input.small {
+    width: 200px;
+}
+
+.form-input.medium {
+    width: 300px;
+}
+
+.form-input.large {
+    width: 400px;
+}
+
+.form-input.phone-input {
+    width: 80px;
+}
+
+.form-input.error {
+    border-color: #dc3545;
+    background-color: #fff5f5;
+}
+
+.form-input.success {
+    border-color: #28a745;
+    background-color: #f0fff4;
+}
+
+.helper-text {
+    color: #666;
+    margin-left: 10px;
+    font-size: 12px;
+}
+
+.error-message {
+    color: #dc3545;
+    font-size: 12px;
+    margin-top: 5px;
+    display: block;
+}
+
+.success-message {
+    color: #28a745;
+    font-size: 12px;
+    margin-top: 5px;
+    display: block;
+}
+
+.btn {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    background-color: #f8f9fa;
+    color: #333;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    margin-right: 10px;
+}
+
+.btn:hover {
+    background-color: #e9ecef;
+    border-color: #adb5bd;
+}
+
+.btn:disabled {
+    background-color: #6c757d;
+    color: white;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.btn:disabled:hover {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.address-section {
+    margin-bottom: 10px;
+}
+
+.phone-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.phone-select {
+    width: 80px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.timer {
+    color: #dc3545;
+    font-weight: bold;
+    margin-left: 10px;
+    font-size: 14px;
+}
+
+.submit-section {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 1px solid #eee;
+}
+
+.submit-btn {
+    padding: 15px 60px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover:not(:disabled) {
+    background-color: #0056b3;
+}
+
+.submit-btn:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    .form-table td.label {
+        width: 120px;
+        padding: 10px;
+    }
+
+    .form-table td.input {
+        padding: 10px;
+    }
+
+    .form-input.large {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .form-input.medium {
+        width: 100%;
+        max-width: 250px;
+    }
+
+    .form-input.small {
+        width: 100%;
+        max-width: 150px;
+    }
+
+    .input-group {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+
+    .phone-group {
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+
+    .submit-btn {
+        padding: 12px 40px;
+        width: 100%;
+        max-width: 200px;
+    }
+}
+
+/* 애니메이션 효과 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.error-message,
+.success-message {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* 포커스 스타일 개선 */
+.form-input:focus,
+.phone-select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+/* 버튼 활성화 효과 */
+.btn:active {
+    transform: translateY(1px);
+}
+
+.submit-btn:active:not(:disabled) {
+    transform: translateY(1px);
+}
