@@ -11,6 +11,53 @@ html {
 	border:3px dashed darkblue;
 	padding:2rem 0;
 }
+.category_tit {
+	text-align:center;
+	font-size:1.5rem;
+}
+.subCategory {
+	margin:1rem 0 3rem;
+}
+.subCategory ul{
+	display:flex;
+	display:-webkit-flex;
+	justify-content: center;
+}
+.subCategory ul li {
+	border-right:1px solid #ccc;
+	padding:0 1rem;
+	font-size:0.7rem;
+	line-height:1;
+}
+.subCategory ul li:last-child {
+	border-right:none;
+}
+
+
+/* ------- product_list ----------*/
+.product_list {
+	display:flex;
+	display:-webkit-flex;
+	justify-content: space-between;
+	gap:1.5rem 0;
+	flex-wrap:wrap;
+}
+.product_list li {
+	width:calc((100% - 3rem) / 3);
+	border:1px solid black;
+}
+.product_list li p {
+	font-size:0.8rem;
+}
+.product_list li p.p_review {
+	font-size:0.7rem;
+}
+
+
+
+
+/* ---------- 미디어쿼리 --------- */
+
 @media screen and (max-width: 1280px){
 	.wrap_1280 {
 		width:90%;
