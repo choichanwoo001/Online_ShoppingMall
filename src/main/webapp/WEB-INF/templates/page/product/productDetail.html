@@ -1,0 +1,43 @@
+<th:block th:fragment="content">
+    <div class="product-detail-wrapper">
+        <!-- 상품 이미지 -->
+        <div class="product-image">
+            <img th:src="@{/resources/images/sample/sample.jpg}" alt="상품 이미지" />
+        </div>
+
+        <!-- 상품 정보 -->
+        <div class="product-info">
+            <h2 class="product-title" th:text="${product.name}">상품명</h2>
+
+            <div class="product-description" th:text="${product.description}">
+                상품 설명
+            </div>
+
+            <div class="product-model">
+                <strong>MODEL</strong><br/>
+                <p th:text="${product.modelInfo}">모델 정보</p>
+            </div>
+
+            <div class="product-price">
+                <strong>PRICE</strong><br/>
+                <span th:text="${product.price}">0원</span>
+            </div>
+
+            <!-- 선택 옵션 -->
+            <div class="product-options">
+                <label>옵션</label>
+                <select>
+                    <option selected disabled>옵션을 선택하세요</option>
+                    <!-- 추후 th:each로 동적 출력 -->
+                </select>
+            </div>
+
+            <!-- 상담 버튼 -->
+            <div class="talk-button">
+                <a href="#">
+                    <img src="/resources/images/common/kakao-talk-button.png" alt="상담하기">
+                </a>
+            </div>
+        </div>
+    </div>
+</th:block>

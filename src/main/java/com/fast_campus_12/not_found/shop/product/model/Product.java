@@ -1,6 +1,6 @@
-package com.fast_campus_12.not_found.shop.product.categgory;
+package com.fast_campus_12.not_found.shop.product.model;
 
-import com.fast_campus_12.not_found.shop.product.model.Category;
+import com.fast_campus_12.not_found.shop.product.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,6 +32,4 @@ public class Product {
     private Date updatedAt;
     private Date deletedAt;
     private boolean isDeleted;
-
-    private Category category;
 }
