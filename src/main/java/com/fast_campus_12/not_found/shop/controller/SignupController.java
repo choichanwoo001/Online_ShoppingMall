@@ -1,0 +1,195 @@
+package com.fast_campus_12.not_found.shop.controller;
+
+import com.fast_campus_12.not_found.shop.dto.SignupRequest;
+import com.fast_campus_12.not_found.shop.dto.ApiResponse;
+import com.fast_campus_12.not_found.shop.service.UserService;
+import com.fast_campus_12.not_found.shop.service.EmailService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@Controller
+public class SignupController {
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private EmailService emailService;
+
+    private static final Logger logger = LoggerFactory.getLogger(SignupController.class);
+
+    /**
+     * 회원가입 페이지 표시
+     */
+    @RequestMapping(value = "/signup", method = RequestMethod.GET)
+    public String signupPage() {
+        return "layout/signup";  // signup.html 반환
+    }
+
+    /**
+     * 중복 아이디 확인 API
+     */
+    @RequestMapping(value = "/api/check-duplicate-id", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ApiResponse> checkDuplicateId(@RequestBody Map<String, String> request) {
+
+        try {
+            String userId = request.get("userId");
+
+            // 입력값 디버깅
+            logger.debug("=== 중복확인 디버깅 시작 ===");
+            logger.debug("받은 userId: [{}]", userId);
+            logger.debug("userId 길이: {}", userId != null ? userId.length() : "null");
+
+            // 유효성 검사
+            if (userId == null || userId.trim().isEmpty()) {
+                logger.debug("❌ userId가 비어있음");
+                return new ResponseEntity<ApiResponse>(
+                        new ApiResponse(false, "아이디를 입력해주세요.", null),
+                        HttpStatus.BAD_REQUEST);
+            }
+
+            if (!userId.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{4,16}$")) {
+                return new ResponseEntity<ApiResponse>(
+                        new ApiResponse(false, "영문+숫자 혼용 4~16자로 입력해주세요.", null),
+                        HttpStatus.BAD_REQUEST);
+            }
+            logger.debug("✅ 유효성 검사 통과");
+
+            boolean isAvailable = userService.isUserIdAvailable(userId);
+            logger.debug("DB 조회 결과 - 사용가능: {}", isAvailable);
+
+            Map<String, Object> data = new HashMap<String, Object>();
+            data.put("available", isAvailable);
+
+            logger.debug("=== 중복확인 성공 ===");
+            return new ResponseEntity<ApiResponse>(
+                    new ApiResponse(true, "조회 완료", data),
+                    HttpStatus.OK);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("❌ 중복확인 중 예외 발생", e);
+            logger.error("예외 타입: {}", e.getClass().getSimpleName());
+            logger.error("예외 메시지: {}", e.getMessage());
+            return new ResponseEntity<ApiResponse>(
+                    new ApiResponse(false, "서버 오류가 발생했습니다.", null),
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * 이메일 인증코드 발송 API
+     */
+    @RequestMapping(value = "/api/send-email-verification", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ApiResponse> sendEmailVerification(@RequestBody Map<String, String> request) {
+        try {
+            String email = request.get("email");
+
+            // 이메일 유효성 검사
+            if (email == null || email.trim().isEmpty()) {
+                return new ResponseEntity<ApiResponse>(
+                        new ApiResponse(false, "이메일을 입력해주세요.", null),
+                        HttpStatus.BAD_REQUEST);
+            }
+
+            if (!email.matches("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")) {
+                return new ResponseEntity<ApiResponse>(
+                        new ApiResponse(false, "올바른 이메일 형식이 아닙니다.", null),
+                        HttpStatus.BAD_REQUEST);
+            }
+
+            String verificationCode = emailService.sendVerificationEmail(email);
+
+            if (verificationCode != null) {
+                return new ResponseEntity<ApiResponse>(
+                        new ApiResponse(true, "인증메일이 발송되었습니다.", null),
+                        HttpStatus.OK);
+            } else {
+                return new ResponseEntity<ApiResponse>(
+                        new ApiResponse(false, "이메일 발송에 실패했습니다.", null),
+                        HttpStatus.BAD_REQUEST);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<ApiResponse>(
+                    new ApiResponse(false, "이메일 발송 중 오류가 발생했습니다.", null),
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * 이메일 인증코드 확인 API
+     */
+    @RequestMapping(value = "/api/verify-email", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ApiResponse> verifyEmail(@RequestBody Map<String, String> request) {
+        String email = request.get("email");
+        String code = request.get("code");
+
+        logger.debug("=== 이메일 인증 확인 ===");
+        logger.debug("email: {}, code: {}", email, code);
+
+        try {
+
+            boolean isVerified = emailService.verifyEmailCode(email, code);
+            logger.debug("인증 결과: {}", isVerified);
+
+            Map<String, Object> data = new HashMap<String, Object>();
+            data.put("verified", isVerified);
+
+            return new ResponseEntity<ApiResponse>(
+                    new ApiResponse(true, "인증 처리 완료", data),
+                    HttpStatus.OK);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<ApiResponse>(
+                    new ApiResponse(false, "인증 처리 중 오류가 발생했습니다.", null),
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * 회원가입 처리 API
+     */
+    @RequestMapping(value = "/api/signup", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<ApiResponse> signup(@RequestBody SignupRequest request) {
+        try {
+            // 서버 측 유효성 검사
+            Map<String, String> validationErrors = userService.validateSignupRequest(request);
+            if (!validationErrors.isEmpty()) {
+                return new ResponseEntity<ApiResponse>(
+                        new ApiResponse(false, "입력 정보를 확인해주세요.", validationErrors),
+                        HttpStatus.BAD_REQUEST);
+            }
+
+            // 회원가입 처리
+            Long userId = userService.createUser(request);
+
+            Map<String, Object> data = new HashMap<String, Object>();
+            data.put("userId", userId);
+
+            return new ResponseEntity<ApiResponse>(
+                    new ApiResponse(true, "회원가입이 완료되었습니다.", data),
+                    HttpStatus.OK);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<ApiResponse>(
+                    new ApiResponse(false, "회원가입 중 오류가 발생했습니다.", null),
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+}
