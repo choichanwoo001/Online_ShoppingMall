@@ -55,6 +55,19 @@ dependencies {
     // thymeleaf
     implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.1.0'
 
+    // Jackson for JSON
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.15.2'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.15.2'
+
+    // Spring Context Support (JavaMail 지원)
+    implementation 'org.springframework:spring-context-support:4.3.30.RELEASE'
+
+    // JavaMail
+    implementation 'com.sun.mail:javax.mail:1.6.2'
+
+    // Security (Password Encoder)
+    implementation 'org.springframework.security:spring-security-crypto:4.2.20.RELEASE'
 }
 
     
