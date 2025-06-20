@@ -12,23 +12,6 @@ html {
 	padding:2rem 0;
 }
 
-.text-red {
-	color: red;
-}
-.footer-btn {
-	display: inline-block;
-	padding: 0.5rem 1rem;
-	background-color: #333;
-	color: #fff;
-	text-decoration: none;
-	border-radius: 0.2rem;
-	font-size: 0.9rem;
-	transition: background-color 0.2s ease;
-}
-.btn:hover {
-	background-color: #555;
-}
-
 .category_tit {
 	text-align:center;
 	font-size:1.5rem;

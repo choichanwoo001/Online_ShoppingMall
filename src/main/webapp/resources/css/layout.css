@@ -203,3 +203,22 @@ footer .copyright {
 	font-size: 0.6rem;;
 	color: #888;
 }
+
+.footer-container .text-red {
+	color: red;
+}
+
+.footer-btn {
+	display: inline-block;
+	padding: 0.5rem 1rem;
+	background-color: #333;
+	color: #fff;
+	text-decoration: none;
+	border-radius: 0.2rem;
+	font-size: 0.9rem;
+	transition: background-color 0.2s ease;
+}
+
+.footer-btn:hover {
+	background-color: #555;
+}
