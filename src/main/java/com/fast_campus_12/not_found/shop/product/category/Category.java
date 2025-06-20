@@ -1,4 +1,4 @@
-package com.fast_campus_12.not_found.shop.product.categgory;
+package com.fast_campus_12.not_found.shop.product.category;
 
 import java.util.List;
 
