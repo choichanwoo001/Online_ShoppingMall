@@ -46,6 +46,9 @@ html {
 	width:calc((100% - 3rem) / 3);
 	border:1px solid black;
 }
+.product_list li img {
+	max-width: 100%;
+}
 .product_list li p {
 	font-size:0.8rem;
 }
