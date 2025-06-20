@@ -11,7 +11,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import javax.sql.DataSource;
 
 @Configuration
-@MapperScan("com.fast_campus_12.not_found.shop")  // Mapper 인터페이스 패키지
+@MapperScan("com.fast_campus_12.not_found.shop.mapper")  // Mapper 인터페이스 패키지
 public class MyBatisConfig {
 
     @Bean
