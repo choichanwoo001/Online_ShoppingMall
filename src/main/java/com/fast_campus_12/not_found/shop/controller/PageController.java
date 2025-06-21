@@ -8,11 +8,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Controller
 public class PageController {
     @GetMapping("/")
-    public String renderPage( Model model) {
-        model.addAttribute("contentPath", "index :: content");
+    public String renderIndex(Model model) {
+        model.addAttribute("contentPath", "home");
         return "layout/base";
     }
-
 
     /**
      * 지정한 HTML 페이지를 base 레이아웃의 content 영역에 렌더링합니다.
@@ -40,5 +39,4 @@ public class PageController {
         model.addAttribute("contentPath", "product/productList");
         return "layout/base";
     }
-
 }
