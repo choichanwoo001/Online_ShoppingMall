@@ -1,12 +1,15 @@
 package com.fast_campus_12.not_found.shop.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
+@Slf4j
 public class WebInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
     public WebInitializer() {
-        System.out.println(">>> WebInitializer 생성됨!");
+        log.debug("Working dir: {}", System.getProperty("user.dir"));
     }
+
     @Override
     protected Class<?>[] getRootConfigClasses() {
         return null;

@@ -1,15 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN">
+    <Properties>
+        <Property name="LOG_PATTERN">[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%highlight{%-5level}] [%t] %c{1.} - %msg%n</Property>
+        <Property name="LOG_DIR">logs</Property>
+    </Properties>
+
     <Appenders>
+        <!-- 콘솔 로그 -->
         <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout
-                    pattern="%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n" />
+            <PatternLayout pattern="${LOG_PATTERN}" />
         </Console>
+
+        <!-- 파일 로그 (회전형) -->
+        <RollingFile name="DevFile"
+                     fileName="${LOG_DIR}/dev.log"
+                     filePattern="${LOG_DIR}/dev-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="${LOG_PATTERN}" />
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10MB" />
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
     </Appenders>
 
     <Loggers>
-        <Root level="info">
+        <!-- 루트 로거 -->
+        <Root level="INFO">
             <AppenderRef ref="Console" />
+            <AppenderRef ref="DevFile" />
         </Root>
+
+        <Logger name="org.springframework" level="DEBUG" />
+
+        <Logger name="com.fast_campus_12.not_found.shop" level="DEBUG" additivity="false">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="DevFile" />
+        </Logger>
+
+
     </Loggers>
 </Configuration>

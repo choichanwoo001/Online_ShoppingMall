@@ -1,0 +1,33 @@
+<div th:fragment="content">
+    <h1 class="category_tit" th:text="${subCategory}">KNIT</h1>
+    <div class="subCategory">
+        <ul>
+            <li><a href="#">All</a></li>
+            <li><a href="coat">코트</a></li>
+            <li><a href="coat">자켓</a></li>
+            <li><a href="coat">수트</a></li>
+            <li><a href="coat">패딩</a></li>
+            <li><a href="coat">가죽</a></li>
+            <li><a href="coat">바람막이</a></li>
+            <li><a href="coat">야상</a></li>
+            <li><a href="coat">데님</a></li>
+        </ul>
+    </div>
+    <div class="product_list_area">
+        <ul class="product_list">
+            <li th:each="product : ${productList}">
+                <a th:href="@{'/product/' + ${product.id}}">
+                    <img th:src="${product.thumbnail}" alt="" />
+                    <h5 th:text="${product.title}">이미지 title</h5>
+                    <p>
+                        <span th:text="${product.price}">상품 가격</span>원
+                    </p>
+                    <p class="p_comment" th:text="${product.comment}">상품 코멘트 들어감</p>
+                    <p class="p_review">
+                        REVIEW : <span th:text="${product.reviewCount}">리뷰 개수</span>
+                    </p>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
