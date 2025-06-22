@@ -14,13 +14,25 @@ public class UserDAO {
     @Autowired
     private UserMapper userMapper;
 
-    public int countByUserId(String userId) {
-        log.debug("userId 중복 확인 요청됨: {}", userMapper.countByUserId(userId)); // 로그 레벨 설정 가능
-        return userMapper.countByUserId(userId);
+//    public int countByUserId(String userId) {
+//        log.debug("userId 중복 확인 요청됨: {}", userMapper.countByUserId(userId));
+//        return userMapper.countByUserId(userId);
+//    }
+
+//    public int countByEmail(String email) {
+//        return userMapper.countByEmail(email);
+//    }
+
+    public boolean existsByUserId(String userId) {
+        boolean exists = userMapper.existsByUserId(userId);
+        log.debug("userId 중복 확인 - userId: {}, exists: {}", userId, exists);
+        return exists;
     }
 
-    public int countByEmail(String email) {
-        return userMapper.countByEmail(email);
+    public boolean existsByEmail(String email) {
+        boolean exists = userMapper.existsByEmail(email);
+        log.debug("email 중복 확인 - email: {}, exists: {}", email, exists);
+        return exists;
     }
 
     public Long insertUser(User user) {

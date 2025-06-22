@@ -7,11 +7,18 @@ import org.apache.ibatis.annotations.*;
 @Mapper
 public interface UserMapper {
 
-    @Select("SELECT COUNT(*) FROM USERS WHERE user_id = #{userId}")
-    int countByUserId(@Param("userId") String userId);
+//    @Select("SELECT COUNT(*) FROM USERS WHERE user_id = #{userId}")
+//    int countByUserId(@Param("userId") String userId);
+//
+//    @Select("SELECT COUNT(*) FROM USERS WHERE email = #{email}")
+//    int countByEmail(@Param("email") String email);
 
-    @Select("SELECT COUNT(*) FROM USERS WHERE email = #{email}")
-    int countByEmail(@Param("email") String email);
+    // EXISTS 쿼리 사용 (더 효율적)
+    @Select("SELECT EXISTS(SELECT 1 FROM USERS WHERE user_id = #{userId})")
+    boolean existsByUserId(@Param("userId") String userId);
+
+    @Select("SELECT EXISTS(SELECT 1 FROM USERS WHERE email = #{email})")
+    boolean existsByEmail(@Param("email") String email);
 
     @Insert("INSERT INTO USERS (user_id, password, name, email, phone_number, " +
             "is_activate, created_at, updated_at, role, is_deleted) " +

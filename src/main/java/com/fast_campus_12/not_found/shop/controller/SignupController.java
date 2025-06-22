@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.fast_campus_12.not_found.shop.service.UserService.USER_ID_PATTERN;
-
 @Slf4j
 @Controller
 public class SignupController {

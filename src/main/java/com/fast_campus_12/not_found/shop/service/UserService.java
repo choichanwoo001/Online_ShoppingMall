@@ -16,7 +16,6 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 @Service
-@Transactional
 public class UserService {
 
     @Autowired
@@ -40,7 +39,7 @@ public class UserService {
             return false;
         }
 
-        return userDAO.countByUserId(userId) == 0;
+        return userDAO.existsByUserId(userId);
     }
 
     /**
@@ -54,7 +53,7 @@ public class UserService {
             errors.put("userId", "아이디를 입력해주세요.");
         } else if (!USER_ID_PATTERN.matcher(request.getUserId()).matches()) {
             errors.put("userId", "영문+숫자 혼용 4~16자로 입력해주세요.");
-        } else if (userDAO.countByUserId(request.getUserId()) > 0) {
+        } else if (userDAO.existsByUserId(request.getUserId())) {
             errors.put("userId", "이미 사용중인 아이디입니다.");
         }
 
@@ -77,7 +76,7 @@ public class UserService {
             errors.put("email", "이메일을 입력해주세요.");
         } else if (!EMAIL_PATTERN.matcher(request.getEmail()).matches()) {
             errors.put("email", "올바른 이메일 형식이 아닙니다.");
-        } else if (userDAO.countByEmail(request.getEmail()) > 0) {
+        } else if (userDAO.existsByEmail(request.getEmail())) {
             errors.put("email", "이미 사용중인 이메일입니다.");
         }
 
@@ -87,6 +86,7 @@ public class UserService {
     /**
      * 사용자 생성
      */
+    @Transactional
     public Long createUser(SignupRequest request) {
         User user = new User();
         user.setUserId(request.getUserId());
@@ -159,6 +159,7 @@ public class UserService {
     /**
      * 🔐 비밀번호 변경
      */
+//    @Transactional
 //    public boolean changePassword(String userId, String currentPassword, String newPassword) {
 //        try {
 //            // 현재 비밀번호 확인

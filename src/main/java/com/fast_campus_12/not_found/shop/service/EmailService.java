@@ -10,6 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.Objects;
 
 @Service
 public class EmailService {
@@ -68,7 +69,7 @@ public class EmailService {
         try {
             String savedCode = verificationCodes.get(email);
 
-            if (savedCode != null && savedCode.equals(code)) {
+            if (Objects.equals(savedCode, code)) {
                 // 인증 성공 시 코드 삭제
                 verificationCodes.remove(email);
                 return true;
