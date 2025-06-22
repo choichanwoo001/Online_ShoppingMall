@@ -6,7 +6,7 @@
 <mapper namespace="com.fast_campus_12.not_found.shop.mapper.ProductDynamicQueryMapper">
 
     <resultMap id="Product" type="com.fast_campus_12.not_found.shop.product.model.Product">
-        <result property="productId" column="id"/>
+        <result property="id" column="product_id"/>
         <result property="title" column="title"/>
         <result property="price" column="price"/>
         <result property="thumbnail" column="thumbnail"/>
