@@ -1,6 +1,5 @@
 package com.fast_campus_12.not_found.shop.product.model;
 
-import com.fast_campus_12.not_found.shop.product.category.Category;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
