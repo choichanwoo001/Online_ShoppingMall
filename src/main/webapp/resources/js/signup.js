@@ -382,7 +382,7 @@ function searchPostcode() {
                 if(extraAddr !== ''){
                     extraAddr = ' (' + extraAddr + ')';
                 }
-                addr += extraAddr;
+                addr += extraAddr; // 최종: "경기 안산시 상록구 양지편로 10 (이동)"
             }
 
             document.getElementById('address').value = addr;

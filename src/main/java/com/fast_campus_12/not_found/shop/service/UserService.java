@@ -53,7 +53,7 @@ public class UserService {
             errors.put("userId", "아이디를 입력해주세요.");
         } else if (!USER_ID_PATTERN.matcher(request.getUserId()).matches()) {
             errors.put("userId", "영문+숫자 혼용 4~16자로 입력해주세요.");
-        } else if (userDAO.existsByUserId(request.getUserId())) {
+        } else if (!userDAO.existsByUserId(request.getUserId())) {
             errors.put("userId", "이미 사용중인 아이디입니다.");
         }
 

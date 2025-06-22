@@ -37,7 +37,7 @@ public class UserDAO {
 
     public Long insertUser(User user) {
         userMapper.insertUser(user);
-        return user.getId();
+        return Long.valueOf(user.getUserId());
     }
 
     public User selectByUserId(String userId) {
