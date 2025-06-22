@@ -1,5 +1,7 @@
 package com.fast_campus_12.not_found.shop.config;
 
+import com.fast_campus_12.not_found.shop.product.service.ProductService;
+import com.fast_campus_12.not_found.shop.product.service.ProductServiceImpl;
 import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -48,5 +50,11 @@ public class WebConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/**")
                 .addResourceLocations("/resources/");
+    }
+
+    // 빈등록 없어서 임시 추가
+    @Bean
+    public ProductService productService() {
+        return new ProductServiceImpl();
     }
 }
