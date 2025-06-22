@@ -5,6 +5,7 @@ import com.fast_campus_12.not_found.shop.dto.SignupRequest;
 import com.fast_campus_12.not_found.shop.dto.ApiResponse;
 import com.fast_campus_12.not_found.shop.service.UserService;
 import com.fast_campus_12.not_found.shop.service.EmailService;
+import groovy.util.logging.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,19 +18,23 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.fast_campus_12.not_found.shop.service.UserService.USER_ID_PATTERN;
+
+@Slf4j
 @Controller
 public class SignupController {
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private EmailService emailService;
-
     private static final Logger logger = LoggerFactory.getLogger(SignupController.class);
-    @Autowired
-    private UserDAO userDAO;
 
+    private final UserService userService;
+    private final EmailService emailService;
+    private final UserDAO userDAO;
+
+    @Autowired
+    public SignupController(UserService userService, EmailService emailService, UserDAO userDAO) {
+        this.userService = userService;
+        this.emailService = emailService;
+        this.userDAO = userDAO;
+    }
     /**
      * 회원가입 페이지 표시
      */
@@ -64,7 +69,7 @@ public class SignupController {
                         HttpStatus.BAD_REQUEST);
             }
 
-            if (!userId.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{4,16}$")) {
+            if (!UserService.USER_ID_PATTERN.matcher(userId).matches()) {
                 return new ResponseEntity<ApiResponse>(
                         new ApiResponse(false, "영문+숫자 혼용 4~16자로 입력해주세요.", null),
                         HttpStatus.BAD_REQUEST);
@@ -109,7 +114,7 @@ public class SignupController {
                         HttpStatus.BAD_REQUEST);
             }
 
-            if (!email.matches("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")) {
+            if (!UserService.EMAIL_PATTERN.matcher(email).matches()) {
                 return new ResponseEntity<ApiResponse>(
                         new ApiResponse(false, "올바른 이메일 형식이 아닙니다.", null),
                         HttpStatus.BAD_REQUEST);
