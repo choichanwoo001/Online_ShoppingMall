@@ -41,6 +41,8 @@ dependencies {
     // Jakarta Servlet API
     compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.0'
 
+    implementation 'jakarta.annotation:jakarta.annotation-api:2.1.1'
+
     // Log4j2 core + API
     implementation 'org.apache.logging.log4j:log4j-slf4j2-impl:2.20.0'
 

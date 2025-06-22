@@ -18,9 +18,25 @@ public class ProductViewController {
 
     private final ProductService productService;
 
-    // 카테고리 목록 (ex: /product/category/knit)
+    // 카테고리 목록 (ex: /product/category/top)
     @GetMapping("/category/{category}")
     public String productByCategory(@PathVariable("category") String category, Model model) {
+        List<ProductSummaryDto> productList = productService.getSummaryByCategory(category);
+
+        model.addAttribute("title", category.toUpperCase());
+        model.addAttribute("productList", productList);
+        model.addAttribute("category", category);
+        model.addAttribute("productCount", productList.size());
+        model.addAttribute("contentPath", "product/productList");
+
+        return "layout/base";
+    }
+
+    // 카테고리 목록 (ex: /product/category/top/knit)
+    @GetMapping("/category/{category}/{subCategory}")
+    public String productBySubCategory(@PathVariable("category") String category,
+                                       @PathVariable("subCategory") String subCategory,
+                                       Model model) {
         List<ProductSummaryDto> productList = productService.getSummaryByCategory(category);
 
         model.addAttribute("title", category.toUpperCase());
