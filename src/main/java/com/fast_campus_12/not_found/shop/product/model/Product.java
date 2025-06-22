@@ -33,3 +33,4 @@ public class Product {
     private Date deletedAt;
     private boolean isDeleted;
 }
+
