@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fast_campus_12.not_found.shop.mapper.ProductDynamicQueryMapper">
+
+    <resultMap id="Product" type="com.fast_campus_12.not_found.shop.product.model.Product">
+        <result property="productId" column="id"/>
+        <result property="title" column="title"/>
+        <result property="price" column="price"/>
+        <result property="thumbnail" column="thumbnail"/>
+        <result property="comment" column="comment"/>
+        <result property="lv3Category.lv3Id" column="lv3_id"/>
+        <result property="lv3Category.name" column="lv3_name"/>
+        <result property="lv3Category.lv2Id" column="lv2_id"/>
+        <!-- 추가적으로 lv3Category 내부 필드 매핑 -->
+    </resultMap>
+
+    <select id="findProductListByCategory" resultMap="Product">
+        SELECT
+        p.product_id,
+        p.title,
+        p.price,
+        p.thumbnail,
+        p.description AS comment,
+        lv3.lv3_id,
+        lv3.name AS lv3_name,
+        lv2.lv2_id,
+        lv2.name AS lv2_name
+        FROM product p
+        JOIN lv3 ON p.lv3_id = lv3.lv3_id
+        JOIN lv2 ON lv3.lv2_id = lv2.lv2_id
+        WHERE p.enabled = 1
+        <if test="lv2Name != null and lv2Name != ''">
+            AND lv2.name = #{lv2Name}
+        </if>
+        <if test="lv3Name != null and lv3Name != ''">
+            AND lv3.name = #{lv3Name}
+        </if>
+        ORDER BY p.created_at DESC
+        LIMIT 10
+    </select>
+</mapper>

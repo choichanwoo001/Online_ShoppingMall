@@ -1,5 +1,6 @@
 package com.fast_campus_12.not_found.shop.product.service;
 
+import com.fast_campus_12.not_found.shop.mapper.ProductDynamicQueryMapper;
 import com.fast_campus_12.not_found.shop.mapper.ProductMapper;
 import com.fast_campus_12.not_found.shop.product.dto.ProductSummaryDto;
 import com.fast_campus_12.not_found.shop.product.model.Product;
@@ -20,13 +21,15 @@ import java.util.stream.Collectors;
 public class DevProductServiceImpl implements ProductService {
 
     private final ProductMapper productMapper;
+    private final ProductDynamicQueryMapper productDynamicQueryMapper;
 
     @Override
-    public List<ProductSummaryDto> getSummaryByCategory(String categoryName) {
-        List<Product> productList = productMapper.findProductSummaryList();
+    public List<ProductSummaryDto> getSummaryByCategory(String lv2CategoryName) {
+
+        List<Product> productList = productDynamicQueryMapper.findProductListByCategory(lv2CategoryName, null);
         log.error("{}", productList);
-        //return getDummySummaryByCategory(categoryName);
         return toSummaryDtoList(productList);
+
     }
 
 
