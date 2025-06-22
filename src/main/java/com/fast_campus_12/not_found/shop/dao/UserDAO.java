@@ -2,16 +2,20 @@ package com.fast_campus_12.not_found.shop.dao;
 
 import com.fast_campus_12.not_found.shop.entity.User;
 import com.fast_campus_12.not_found.shop.mapper.UserMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class UserDAO {
+    private static final Logger log = LoggerFactory.getLogger(UserDAO.class);
 
     @Autowired
     private UserMapper userMapper;
 
     public int countByUserId(String userId) {
+        log.debug("userId 중복 확인 요청됨: {}", userMapper.countByUserId(userId)); // 로그 레벨 설정 가능
         return userMapper.countByUserId(userId);
     }
 

@@ -3,6 +3,8 @@ package com.fast_campus_12.not_found.shop.service;
 import com.fast_campus_12.not_found.shop.dto.SignupRequest;
 import com.fast_campus_12.not_found.shop.entity.User;
 import com.fast_campus_12.not_found.shop.dao.UserDAO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,11 +21,12 @@ public class UserService {
 
     @Autowired
     private UserDAO userDAO;
+    private static final Logger log = LoggerFactory.getLogger(UserDAO.class);
 
     private static final int BCRYPT_ROUNDS = 12;
 
     // 정규식 패턴
-    private static final Pattern USER_ID_PATTERN = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*])[a-zA-Z\\d!@#$%^&*]{4,16}$");
+    private static final Pattern USER_ID_PATTERN = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{4,16}$");
     private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[a-zA-Z])(?=.*\\d)[a-zA-Z\\d]{4,16}$");
     private static final Pattern USER_NAME_PATTERN = Pattern.compile("^[가-힣a-zA-Z]{2,20}$");
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$");
@@ -33,8 +36,10 @@ public class UserService {
      */
     public boolean isUserIdAvailable(String userId) {
         if (!USER_ID_PATTERN.matcher(userId).matches()) {
+            log.debug("1");
             return false;
         }
+
         return userDAO.countByUserId(userId) == 0;
     }
 
