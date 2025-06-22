@@ -1,7 +1,6 @@
 package com.fast_campus_12.not_found.shop.product.service;
 
 import com.fast_campus_12.not_found.shop.mapper.ProductDynamicQueryMapper;
-import com.fast_campus_12.not_found.shop.mapper.ProductMapper;
 import com.fast_campus_12.not_found.shop.product.dto.ProductSummaryDto;
 import com.fast_campus_12.not_found.shop.product.model.Product;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +19,6 @@ import java.util.stream.Collectors;
 @Slf4j
 public class DevProductServiceImpl implements ProductService {
 
-    private final ProductMapper productMapper;
     private final ProductDynamicQueryMapper productDynamicQueryMapper;
 
     @Override
