@@ -20,7 +20,7 @@
                             <button type="button" id="checkDuplicateBtn" class="btn">중복확인</button>
                         </div>
                         <span class="helper-text">(영문+숫자혼용, 4~16자)</span>
-                        <span id="userIdMessage" class="error-message" style="display: none;"></span>
+                        <span id="userIdMessage" class="error-message"></span>
                     </td>
                 </tr>
 
@@ -31,7 +31,7 @@
                     <td class="input">
                         <input type="password" id="password" name="password" class="form-input small" maxlength="16">
                         <span class="helper-text">(영문 대소문자/숫자 4자~16자)</span>
-                        <span id="passwordMessage" class="error-message" style="display: none;"></span>
+                        <span id="passwordMessage" class="error-message"></span>
                     </td>
                 </tr>
 
@@ -41,7 +41,7 @@
                     </td>
                     <td class="input">
                         <input type="password" id="passwordConfirm" name="passwordConfirm" class="form-input small" maxlength="16">
-                        <span id="passwordConfirmMessage" class="error-message" style="display: none;"></span>
+                        <span id="passwordConfirmMessage" class="error-message"></span>
                     </td>
                 </tr>
 
@@ -51,7 +51,7 @@
                     </td>
                     <td class="input">
                         <input type="text" id="userName" name="userName" class="form-input small" maxlength="20">
-                        <span id="userNameMessage" class="error-message" style="display: none;"></span>
+                        <span id="userNameMessage" class="error-message"></span>
                     </td>
                 </tr>
 
@@ -105,20 +105,20 @@
                             <input type="email" id="email" name="email" class="form-input medium" maxlength="100">
                             <button type="button" id="sendEmailBtn" class="btn">인증메일발송</button>
                         </div>
-                        <div id="emailVerificationDiv" style="display: none; margin-top: 0.5rem;">
+                        <div id="emailVerificationDiv" class="email-verification-div">
                             <div class="input-group">
                                 <input type="text" id="emailVerificationCode" name="emailVerificationCode" class="form-input small" placeholder="인증코드 입력" maxlength="6">
                                 <button type="button" id="verifyEmailBtn" class="btn">인증확인</button>
                                 <span id="emailTimer" class="timer">05:00</span>
                             </div>
                         </div>
-                        <div id="emailMessage" class="message" style="display: none;"></div>
+                        <div id="emailMessage" class="message"></div>
                     </td>
                 </tr>
             </table>
 
             <!-- 추가정보 -->
-            <div class="section-title" style="margin-top: 2rem;">
+            <div class="section-title additional-info">
                 추가정보
             </div>
 

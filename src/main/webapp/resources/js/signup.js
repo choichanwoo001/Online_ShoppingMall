@@ -65,7 +65,6 @@ function showMessage(elementId, message, type = 'error') {
 }
 
 // 실시간 유효성 검사
-// setupValidation 함수에서 이메일 필드에 리스너 추가
 function setupValidation() {
     const fields = ['userId', 'password', 'passwordConfirm', 'userName', 'email'];
 
@@ -73,27 +72,25 @@ function setupValidation() {
         const element = document.getElementById(field);
         if (element) {
             element.addEventListener('input', function() {
-                validateField(field);
-
-                // 이메일이 변경되면 인증 상태 초기화
-                if (field === 'email') {
+                // 이메일 변경 시 인증 상태 초기화
+                if (field === 'email' && isEmailVerified) {
                     isEmailVerified = false;
-
-                    // 인증 관련 UI 초기화
                     document.getElementById('emailVerificationDiv').style.display = 'none';
                     clearInterval(emailTimer);
 
-                    // 인증확인 버튼 초기화 (만약 있다면)
                     const verifyBtn = document.getElementById('verifyEmailBtn');
                     if (verifyBtn) {
                         verifyBtn.disabled = false;
                         verifyBtn.textContent = '인증확인';
-                        verifyBtn.style.backgroundColor = ''; // 원래 색상으로
                     }
-
-                    console.log('이메일 변경 - 인증 상태 초기화');
                 }
 
+                // 아이디 변경 시 중복확인 상태 초기화
+                if (field === 'userId' && isUserIdChecked) {
+                    isUserIdChecked = false;
+                }
+
+                validateField(field);
                 checkFormValid();
             });
         }
@@ -112,46 +109,51 @@ function validateField(fieldName) {
         result = validators[fieldName](value);
     }
 
-    showMessage(fieldName + 'Message', result.message, result.type || (result.valid ? 'success' : 'error'));
-
-    // userId 처리 (중복 제거 및 논리 수정)
-    if (fieldName === 'userId' && result.valid) {
-        // 형식은 유효하지만 중복확인이 완료되지 않은 경우에만 메시지 표시
-        if (!isUserIdChecked) {
-            isUserIdChecked = false; // 중복확인 초기화
-            showMessage('userIdMessage', '중복확인이 필요합니다_____1.', 'warning');
-        }
-        // isUserIdChecked가 true면 기존 메시지 유지 (중복확인 완료 상태)
-    }
-
-    // userId 형식이 틀린 경우
-    if (fieldName === 'userId' && !result.valid) {
-        isUserIdChecked = false;
-    }
-
-    // email 처리 (논리 수정)
-    if (fieldName === 'email') {
+    // 특별 처리가 필요한 필드들
+    if (fieldName === 'userId') {
         if (result.valid) {
-            // 이메일 형식은 유효하지만 인증은 아직 필요
-            isEmailVerified = false;
-            document.getElementById('emailVerificationDiv').style.display = 'none';
+            if (!isUserIdChecked) {
+                showMessage('userIdMessage', '중복확인이 필요합니다.', 'error');
+                return false; // 중복확인 안됨
+            } else {
+                showMessage('userIdMessage', '사용 가능한 아이디입니다.', 'success');
+                return true; // 중복확인 완료
+            }
         } else {
-            // 형식이 틀리면 인증도 false
-            isEmailVerified = false;
-            document.getElementById('emailVerificationDiv').style.display = 'none';
+            showMessage(fieldName + 'Message', result.message, 'error');
+            return false;
         }
+    } else if (fieldName === 'email') {
+        if (result.valid) {
+            if (!isEmailVerified) {
+                showMessage('emailMessage', '이메일 인증이 필요합니다.', 'error');
+                return false; // 인증 안됨
+            } else {
+                showMessage('emailMessage', '이메일 인증이 완료되었습니다.', 'success');
+                return true; // 인증 완료
+            }
+        } else {
+            showMessage(fieldName + 'Message', result.message, 'error');
+            return false;
+        }
+    } else {
+        // 일반 필드
+        showMessage(fieldName + 'Message', result.message, result.type || (result.valid ? 'success' : 'error'));
+        return result.valid;
     }
-
-    return result.valid;
 }
 
+// 아이디 중복확인
 function setupDuplicateCheck() {
     const checkBtn = document.getElementById('checkDuplicateBtn');
     if (checkBtn) {
         checkBtn.addEventListener('click', async function() {
             const userId = document.getElementById('userId').value.trim();
 
-            if (!validateField('userId')) {
+            // 형식 검사
+            const validationResult = validators.userId(userId);
+            if (!validationResult.valid) {
+                showMessage('userIdMessage', validationResult.message, 'error');
                 return;
             }
 
@@ -170,37 +172,25 @@ function setupDuplicateCheck() {
                 const data = await response.json();
 
                 if (response.ok && data.success) {
-                    console.log('=== 서버 응답 상세 ===');
-                    console.log('전체 응답:', data);
-                    console.log('data.data:', data.data);
-                    console.log('available 값:', data.data ? data.data.available : '없음');
-                    console.log('available 타입:', typeof (data.data ? data.data.available : '없음'));
-
                     if (data.data && data.data.available) {
-                        console.log('✅ 사용 가능한 아이디 처리');
                         isUserIdChecked = true;
                         showMessage('userIdMessage', '사용 가능한 아이디입니다.', 'success');
                     } else {
-                        console.log('❌ 사용 불가능한 아이디 처리');
-                        console.log('data.data 존재?', !!data.data);
-                        console.log('available 값 상세:', data.data ? data.data.available : 'data.data 없음');
                         isUserIdChecked = false;
                         showMessage('userIdMessage', '이미 사용중인 아이디입니다.', 'error');
                     }
                 } else {
-                    // 서버 오류시에도 isUserIdChecked 설정
                     isUserIdChecked = false;
                     throw new Error(data.message || '중복확인 중 오류가 발생했습니다.');
                 }
             } catch (error) {
                 console.error('중복확인 오류:', error);
-                // catch 블록에서도 isUserIdChecked 설정
                 isUserIdChecked = false;
                 showMessage('userIdMessage', error.message, 'error');
             } finally {
                 this.disabled = false;
                 this.textContent = '중복확인';
-                // checkFormValid();
+                checkFormValid();
             }
         });
     }
@@ -213,7 +203,10 @@ function setupEmailVerification() {
         sendBtn.addEventListener('click', async function() {
             const email = document.getElementById('email').value.trim();
 
-            if (!validateField('email')) {
+            // 형식 검사
+            const validationResult = validators.email(email);
+            if (!validationResult.valid) {
+                showMessage('emailMessage', validationResult.message, 'error');
                 return;
             }
 
@@ -249,6 +242,7 @@ function setupEmailVerification() {
     }
 }
 
+// 이메일 인증 확인
 function setupEmailVerificationCheck() {
     const verifyBtn = document.getElementById('verifyEmailBtn');
     if (verifyBtn) {
@@ -277,32 +271,23 @@ function setupEmailVerificationCheck() {
 
                 if (response.ok && data.success) {
                     if (data.data && data.data.verified) {
-                        console.log('✅ 인증 성공 - UI 업데이트');
                         isEmailVerified = true;
-
-                        // 🎯 이메일 입력란 아래에 성공 메시지 표시
                         showMessage('emailMessage', '이메일 인증이 완료되었습니다.', 'success');
-
-                        // 🎯 인증코드 입력창 숨기기 (이제 실행됨)
                         document.getElementById('emailVerificationDiv').style.display = 'none';
                         clearInterval(emailTimer);
-
-                        // 버튼 상태 변경
                         this.textContent = '인증완료';
                         this.disabled = true;
-                        // 🚨 return 제거! - finally 블록이 실행되도록
                     } else {
-                        console.log('❌ 인증 실패 - verified 값:', data.data ? data.data.verified : 'data.data가 없음');
                         showMessage('emailMessage', '인증코드가 일치하지 않습니다.', 'error');
+                        this.disabled = false;
+                        this.textContent = '인증확인';
                     }
                 } else {
-                    console.log('❌ 응답 실패');
                     throw new Error(data.message || '이메일 인증 중 오류가 발생했습니다.');
                 }
             } catch (error) {
                 console.error('이메일 인증 오류:', error);
                 showMessage('emailMessage', error.message, 'error');
-
                 this.disabled = false;
                 this.textContent = '인증확인';
             } finally {
@@ -328,6 +313,7 @@ function startEmailTimer() {
             clearInterval(emailTimer);
             document.getElementById('emailVerificationDiv').style.display = 'none';
             showMessage('emailMessage', '인증시간이 만료되었습니다. 다시 발송해주세요.', 'error');
+            isEmailVerified = false;
         }
         timerSeconds--;
     }, 1000);
@@ -338,69 +324,69 @@ function checkFormValid() {
     const requiredFields = ['userId', 'password', 'passwordConfirm', 'userName', 'email'];
     let allValid = true;
 
-    // 필수 필드 검사
     requiredFields.forEach(field => {
-        if (!validateField(field)) {
-            allValid = false;
+        const element = document.getElementById(field);
+        const value = element.value.trim();
+
+        // 기본 형식 검사
+        let basicValid = false;
+        if (field === 'passwordConfirm') {
+            const password = document.getElementById('password').value;
+            basicValid = validators[field](value, password).valid;
+        } else {
+            basicValid = validators[field](value).valid;
+        }
+
+        // 추가 검사 (중복확인, 인증)
+        if (field === 'userId') {
+            allValid = allValid && basicValid && isUserIdChecked;
+        } else if (field === 'email') {
+            allValid = allValid && basicValid && isEmailVerified;
+        } else {
+            allValid = allValid && basicValid;
         }
     });
-
-    // 중복확인 및 이메일 인증 확인
-    if (!isUserIdChecked || !isEmailVerified) {
-        allValid = false;
-    }
 
     const submitBtn = document.getElementById('submitBtn');
     if (submitBtn) {
         submitBtn.disabled = !allValid;
     }
+
+    return allValid;
 }
 
 // 우편번호 검색 함수
 function searchPostcode() {
     new daum.Postcode({
         oncomplete: function(data) {
-            // 🔍 디버깅
             console.log('주소 검색 결과:', data);
 
-            // 우편번호와 주소 정보를 해당 필드에 넣는다
             document.getElementById('postcode').value = data.zonecode;
 
-            // 기본 주소 처리
             let addr = '';
             let extraAddr = '';
 
-            // 사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다
-            if (data.userSelectedType === 'R') { // 도로명 주소
+            if (data.userSelectedType === 'R') {
                 addr = data.roadAddress;
-            } else { // 지번 주소
+            } else {
                 addr = data.jibunAddress;
             }
 
-            // 도로명 주소인 경우 참고항목 조합
             if(data.userSelectedType === 'R'){
-                // 법정동명이 있을 경우 추가
                 if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
                     extraAddr += data.bname;
                 }
-                // 건물명이 있고, 공동주택일 경우 추가
                 if(data.buildingName !== '' && data.apartment === 'Y'){
                     extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
                 }
-                // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열
                 if(extraAddr !== ''){
                     extraAddr = ' (' + extraAddr + ')';
                 }
                 addr += extraAddr;
             }
 
-            // 주소 정보를 필드에 입력
             document.getElementById('address').value = addr;
-
-            // 상세주소 필드로 포커스 이동
             document.getElementById('detailAddress').focus();
-
-            // 주소가 입력되면 폼 유효성 재검사
             checkFormValid();
         },
         width: '100%',
@@ -425,7 +411,6 @@ function setupFormSubmit() {
             submitBtn.disabled = true;
             submitBtn.textContent = '가입중...';
 
-            // 폼 데이터 수집
             const formData = {
                 userId: document.getElementById('userId').value.trim(),
                 password: document.getElementById('password').value,
@@ -437,7 +422,7 @@ function setupFormSubmit() {
                     document.getElementById('mobilePhone1').value,
                     document.getElementById('mobilePhone2').value,
                     document.getElementById('mobilePhone3').value
-                ].filter(part => part).join('-') // 빈 값 제거하고 조합
+                ].filter(part => part).join('-')
             };
 
             try {
@@ -455,9 +440,7 @@ function setupFormSubmit() {
                     alert('회원가입이 완료되었습니다!');
                     window.location.href = '/login';
                 } else {
-                    // 서버 유효성 검사 실패
                     if (data.data && typeof data.data === 'object') {
-                        // 각 필드별 오류 메시지 표시
                         Object.keys(data.data).forEach(field => {
                             const messageId = field + 'Message';
                             showMessage(messageId, data.data[field], 'error');
@@ -478,6 +461,7 @@ function setupFormSubmit() {
     }
 }
 
+// 생년월일 선택 옵션 생성
 const currentYear = new Date().getFullYear();
 const yearSelect = document.getElementById('birthYear');
 for (let y = currentYear; y >= currentYear - 100; y--) {
@@ -487,7 +471,6 @@ for (let y = currentYear; y >= currentYear - 100; y--) {
     yearSelect.appendChild(option);
 }
 
-// 월 생성 (1~12)
 const monthSelect = document.getElementById('birthMonth');
 for (let m = 1; m <= 12; m++) {
     const option = document.createElement('option');
@@ -496,7 +479,6 @@ for (let m = 1; m <= 12; m++) {
     monthSelect.appendChild(option);
 }
 
-// 일 생성 (1~31, 선택된 연/월 기준으로 유동적으로 바뀜)
 const daySelect = document.getElementById('birthDay');
 function updateDays() {
     const year = parseInt(yearSelect.value);
@@ -516,6 +498,7 @@ function updateDays() {
 
 yearSelect.addEventListener('change', updateDays);
 monthSelect.addEventListener('change', updateDays);
+
 // 페이지 로드시 초기화
 document.addEventListener('DOMContentLoaded', function() {
     setupValidation();

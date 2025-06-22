@@ -35,6 +35,10 @@ body {
     position: relative;
 }
 
+.section-title.additional-info {
+    margin-top: 2rem;
+}
+
 .required-info {
     color: #007bff;
     float: right;
@@ -135,7 +139,7 @@ body {
 .message {
     font-size: 0.6rem;
     margin-top: 0.25rem;
-    display: block;
+    display: none;
 }
 
 .btn {
@@ -274,6 +278,12 @@ body {
 .submit-btn:disabled {
     background-color: #6c757d;
     cursor: not-allowed;
+}
+
+/* 이메일 인증 영역 */
+.email-verification-div {
+    display: none;
+    margin-top: 0.5rem;
 }
 
 /* 반응형 */
