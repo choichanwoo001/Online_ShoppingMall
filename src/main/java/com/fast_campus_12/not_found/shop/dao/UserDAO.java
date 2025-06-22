@@ -2,15 +2,13 @@ package com.fast_campus_12.not_found.shop.dao;
 
 import com.fast_campus_12.not_found.shop.entity.User;
 import com.fast_campus_12.not_found.shop.mapper.UserMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+@Slf4j
 @Repository
 public class UserDAO {
-    private static final Logger log = LoggerFactory.getLogger(UserDAO.class);
-
     @Autowired
     private UserMapper userMapper;
 
@@ -24,7 +22,7 @@ public class UserDAO {
 //    }
 
     public boolean existsByUserId(String userId) {
-        boolean exists = userMapper.existsByUserId(userId);
+        boolean exists = userMapper.existsByUserId(userId); // 있으면 true -> 중복 아이디 있는거임
         log.debug("userId 중복 확인 - userId: {}, exists: {}", userId, exists);
         return exists;
     }
@@ -35,9 +33,9 @@ public class UserDAO {
         return exists;
     }
 
-    public Long insertUser(User user) {
+    public String insertUser(User user) {
         userMapper.insertUser(user);
-        return Long.valueOf(user.getUserId());
+        return user.getUserId();
     }
 
     public User selectByUserId(String userId) {

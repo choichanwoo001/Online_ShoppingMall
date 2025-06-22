@@ -58,21 +58,30 @@
                 <tr>
                     <td class="label">주소</td>
                     <td class="input">
+                        <!-- 주소 입력 폼 (ERD 구조에 맞춘 필드들) -->
                         <div class="address-section">
-                            <label for="postcode">우편번호 *</label>
-                            <div class="postcode-group">
-                                <input type="text" id="postcode" name="postcode" class="form-input small" readonly>
-                                <button type="button" id="postcodeBtn" class="btn" onclick="searchPostcode()">우편번호 검색</button>
+                            <label>우편번호 *</label>
+                            <div>
+                                <input type="text" id="postcode" name="postcode" placeholder="우편번호" readonly>
+                                <button type="button" onclick="searchPostcode()">우편번호 검색</button>
                             </div>
-                        </div>
 
-                        <div class="address-section">
-                            <label for="address">주소 *</label>
-                            <input type="text" id="address" name="address" class="form-input large" readonly>
-                        </div>
+                            <!-- 주소 + 상세주소 묶음 -->
+                            <div class="address-row">
+                                <label>주소 *</label>
+                                <input type="text" id="address" name="address" placeholder="주소" readonly>
 
-                        <div class="address-section">
-                            <input type="text" id="detailAddress" name="detailAddress" placeholder="나머지 주소(선택 입력 가능)" class="form-input large">
+                                <label>상세 주소</label>
+                                <input type="text" id="detailAddress" name="detailAddress" placeholder="상세 주소를 입력하세요">
+                            </div>
+
+                            <!-- ERD에 맞춘 숨김 필드들 (실제 DB 저장용) -->
+                            <input type="hidden" id="roadAddress1" name="roadAddress1">
+                            <input type="hidden" id="roadAddress2" name="roadAddress2">
+                            <input type="hidden" id="jibunAddress" name="jibunAddress">
+                            <input type="hidden" id="englishAddress" name="englishAddress">
+                            <input type="hidden" id="zipCode" name="zipCode">
+                            <input type="hidden" id="addressName" name="addressName">
                         </div>
                     </td>
                 </tr>

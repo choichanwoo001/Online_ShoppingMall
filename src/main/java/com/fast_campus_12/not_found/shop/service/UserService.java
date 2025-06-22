@@ -3,24 +3,31 @@ package com.fast_campus_12.not_found.shop.service;
 import com.fast_campus_12.not_found.shop.dto.SignupRequest;
 import com.fast_campus_12.not_found.shop.entity.User;
 import com.fast_campus_12.not_found.shop.dao.UserDAO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.fast_campus_12.not_found.shop.entity.UserAddress;
+import com.fast_campus_12.not_found.shop.entity.UserDetail;
+import com.fast_campus_12.not_found.shop.mapper.UserAddressMapper;
+import com.fast_campus_12.not_found.shop.mapper.UserDetailMapper;
+import com.fast_campus_12.not_found.shop.mapper.UserMapper;
+import lombok.extern.slf4j.Slf4j; // 올바른 import
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+@Slf4j
 @Service
 public class UserService {
+    private final UserMapper userMapper;
+    private final UserDetailMapper userDetailMapper;
+    private final UserAddressMapper userAddressMapper;
 
     @Autowired
     private UserDAO userDAO;
-    private static final Logger log = LoggerFactory.getLogger(UserDAO.class);
 
     private static final int BCRYPT_ROUNDS = 12;
 
@@ -30,22 +37,30 @@ public class UserService {
     public static final Pattern USER_NAME_PATTERN = Pattern.compile("^[가-힣a-zA-Z]{2,20}$");
     public static final Pattern EMAIL_PATTERN = Pattern.compile("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$");
 
+    public UserService(UserMapper userMapper, UserDetailMapper userDetailMapper, UserAddressMapper userAddressMapper) {
+        this.userMapper = userMapper;
+        this.userDetailMapper = userDetailMapper;
+        this.userAddressMapper = userAddressMapper;
+    }
+
     /**
      * 아이디 중복 확인
      */
     public boolean isUserIdAvailable(String userId) {
         if (!USER_ID_PATTERN.matcher(userId).matches()) {
-            log.debug("1");
+            log.debug("아이디 형식이 올바르지 않습니다: {}", userId);
             return false;
         }
-
-        return userDAO.existsByUserId(userId);
+        boolean exists = userDAO.existsByUserId(userId);
+        log.debug("아이디 중복 확인: {} -> 사용가능: {}", userId, !exists);
+        return !exists; // 존재하지 않으면 사용 가능
     }
 
     /**
      * 회원가입 요청 유효성 검사
      */
     public Map<String, String> validateSignupRequest(SignupRequest request) {
+        log.debug("회원가입 요청 유효성 검사 시작: {}", request.getUserId());
         Map<String, String> errors = new HashMap<String, String>();
 
         // 아이디 검증
@@ -53,7 +68,7 @@ public class UserService {
             errors.put("userId", "아이디를 입력해주세요.");
         } else if (!USER_ID_PATTERN.matcher(request.getUserId()).matches()) {
             errors.put("userId", "영문+숫자 혼용 4~16자로 입력해주세요.");
-        } else if (!userDAO.existsByUserId(request.getUserId())) {
+        } else if (userDAO.existsByUserId(request.getUserId())) {
             errors.put("userId", "이미 사용중인 아이디입니다.");
         }
 
@@ -76,10 +91,11 @@ public class UserService {
             errors.put("email", "이메일을 입력해주세요.");
         } else if (!EMAIL_PATTERN.matcher(request.getEmail()).matches()) {
             errors.put("email", "올바른 이메일 형식이 아닙니다.");
-        } else if (userDAO.existsByEmail(request.getEmail())) {
+        } else if (userDetailMapper.existsByEmail(request.getEmail())) {
             errors.put("email", "이미 사용중인 이메일입니다.");
         }
 
+        log.debug("유효성 검사 완료. 오류 개수: {}", errors.size());
         return errors;
     }
 
@@ -87,24 +103,53 @@ public class UserService {
      * 사용자 생성
      */
     @Transactional
-    public Long createUser(SignupRequest request) {
-        User user = new User();
-        user.setUserId(request.getUserId());
-        String hashedPassword = hashPassword(request.getPassword());
-        user.setPassword(hashedPassword);
+    public String signup(SignupRequest request) {
+        try {
+            // 1. USERS 테이블 저장
+            User user = User.builder()
+                    .userId(request.getUserId())
+                    .password(hashPassword(request.getPassword()))
+                    .isActivate(true)
+                    .isDeleted(false)
+                    .role("USER")
+                    .build();
 
-        user.setUserName(request.getUserName());
-        user.setEmail(request.getEmail());
-        user.setAddress(request.getAddress());
-        user.setDetailAddress(request.getDetailAddress());
-        user.setMobilePhone(request.getMobilePhone());
-        user.setIsActive(true);
-        user.setIsDeleted(false);
-        user.setRole("USER");
-        user.setCreatedAt(new Date());
-        user.setUpdatedAt(new Date());
+            userMapper.insertUser(user);
+            String userId = user.getUserId();
+            log.info("USERS 테이블 저장 완료. 사용자ID: {}", userId);
 
-        return userDAO.insertUser(user);
+            // 2. USER_DETAIL 테이블 저장
+            UserDetail userDetail = new UserDetail();
+            userDetail.setUserId(userId);
+            userDetail.setEmail(request.getEmail());
+            userDetail.setName(request.getUserName());
+            userDetail.setPhoneNumber(request.getMobilePhone());
+
+            userDetailMapper.insertUserDetail(userDetail);
+            log.info("USER_DETAIL 테이블 저장 완료");
+
+            // 3. default_user_address 테이블 저장 (ERD에 맞춘 모든 필드)
+            UserAddress userAddress = UserAddress.builder()
+                    .userId(userId)
+                    .roadAddress1(request.getRoadAddress1() != null ? request.getRoadAddress1() : request.getAddress()) // 하위 호환성
+                    .roadAddress2(request.getRoadAddress2())
+                    .jibunAddress(request.getJibunAddress())
+                    .detailAddress(request.getDetailAddress())
+                    .englishAddress(request.getEnglishAddress())
+                    .zipCode(request.getZipCode())
+                    .addressName(request.getAddressName())
+                    .build();
+
+            userAddressMapper.insertUserAddress(userAddress);
+            log.info("default_user_address 테이블 저장 완료");
+
+            log.info("회원가입 완료: 사용자ID={}", userId);
+            return userId;
+
+        } catch (Exception e) {
+            log.error("회원가입 실패: 사용자ID={}, 에러={}", request.getUserId(), e.getMessage(), e);
+            throw new RuntimeException("회원가입 처리 중 오류가 발생했습니다.", e);
+        }
     }
 
     // ============================================================================
@@ -115,12 +160,17 @@ public class UserService {
      * 🔐 비밀번호 해시화
      */
     private String hashPassword(String plainPassword) {
+        log.debug("비밀번호 해시화 시작");
+
         if (plainPassword == null || plainPassword.trim().isEmpty()) {
             throw new IllegalArgumentException("비밀번호는 필수입니다.");
         }
 
         String salt = BCrypt.gensalt(BCRYPT_ROUNDS);
-        return BCrypt.hashpw(plainPassword, salt);
+        String hashedPassword = BCrypt.hashpw(plainPassword, salt);
+
+        log.debug("비밀번호 해시화 완료");
+        return hashedPassword;
     }
 
     /**

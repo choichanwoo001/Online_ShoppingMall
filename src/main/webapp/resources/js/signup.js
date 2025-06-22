@@ -355,23 +355,36 @@ function checkFormValid() {
     return allValid;
 }
 
-// 우편번호 검색 함수
+// 우편번호 검색 함수 (ERD 구조에 맞춰 개별 필드 저장)
 function searchPostcode() {
     new daum.Postcode({
         oncomplete: function(data) {
             console.log('주소 검색 결과:', data);
 
-            document.getElementById('postcode').value = data.zonecode;
+            // ====== 화면 표시용 필드 ======
+            document.getElementById('postcode').value = data.zonecode;           // → postcode
 
-            let addr = '';
+            // ====== DB 저장용 필드들 (ERD 매핑) ======
+            document.getElementById('zipCode').value = parseInt(data.zonecode);  // → zipCode
+            document.getElementById('roadAddress1').value = data.roadAddress;    // → roadAddress1
+            document.getElementById('jibunAddress').value = data.jibunAddress;   // → jibunAddress
+
+            // 영문 주소 (있는 경우만)
+            if (data.roadAddressEnglish) {
+                document.getElementById('englishAddress').value = data.roadAddressEnglish; // → englishAddress
+            }
+
+            // 사용자가 선택한 주소를 기본 주소로 표시 (화면용)
+            let displayAddr = '';
             let extraAddr = '';
 
             if (data.userSelectedType === 'R') {
-                addr = data.roadAddress;
+                displayAddr = data.roadAddress;
             } else {
-                addr = data.jibunAddress;
+                displayAddr = data.jibunAddress;
             }
 
+            // 도로명주소인 경우 추가 정보 처리
             if(data.userSelectedType === 'R'){
                 if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
                     extraAddr += data.bname;
@@ -382,10 +395,23 @@ function searchPostcode() {
                 if(extraAddr !== ''){
                     extraAddr = ' (' + extraAddr + ')';
                 }
-                addr += extraAddr; // 최종: "경기 안산시 상록구 양지편로 10 (이동)"
+                displayAddr += extraAddr;
+
+                // 도로명 주소 2에 추가 정보 저장
+                document.getElementById('roadAddress2').value = extraAddr;       // → roadAddress2
             }
 
-            document.getElementById('address').value = addr;
+            // 화면에 표시할 주소 (사용자가 보는 용도)
+            document.getElementById('address').value = displayAddr;              // → address
+
+            // 주소명 설정 (시/구 정보)
+            let addressName = '';
+            if (data.sido && data.sigungu) {
+                addressName = data.sido + ' ' + data.sigungu;
+                document.getElementById('addressName').value = addressName;      // → addressName
+            }
+
+            // 상세주소 입력 포커스 (사용자가 직접 입력 → detailAddress)
             document.getElementById('detailAddress').focus();
             checkFormValid();
         },

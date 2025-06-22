@@ -186,7 +186,7 @@ public class SignupController {
             }
 
             // 회원가입 처리
-            Long userId = userService.createUser(request);
+            String userId = userService.signup(request);
 
             Map<String, Object> data = new HashMap<String, Object>();
             data.put("userId", userId);
