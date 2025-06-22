@@ -34,7 +34,7 @@ public interface ProductMapper {
             @Result(property = "price", column = "price"),
             @Result(property = "thumbnail", column = "thumbnail"),
             @Result(property = "comment", column = "comment"),
-            @Result(property = "reviewCount", column = "reviewCount")
+//            @Result(property = "reviewCount", column = "reviewCount")
     })
     List<Product> findProductSummaryList();
 }
