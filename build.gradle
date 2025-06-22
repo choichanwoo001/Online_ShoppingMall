@@ -34,6 +34,11 @@ dependencies {
     implementation 'org.springframework:spring-jdbc:6.1.6'
     implementation 'org.springframework:spring-tx:6.1.6'
 
+    // AOP
+    implementation 'org.springframework:spring-aop:6.1.6'
+    implementation 'org.springframework:spring-aspects:6.1.6'
+    implementation 'org.aspectj:aspectjweaver:1.9.22'
+
     // Thymeleaf (Spring 6 대응)
     implementation 'org.thymeleaf:thymeleaf:3.1.2.RELEASE'
     implementation 'org.thymeleaf:thymeleaf-spring6:3.1.2.RELEASE'
