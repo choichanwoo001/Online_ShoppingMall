@@ -36,5 +36,5 @@ public class Product {
     private boolean isDeleted;
     private String comment;
 
-    private Category category;
+    private Lv3Category lv3Category;
 }
