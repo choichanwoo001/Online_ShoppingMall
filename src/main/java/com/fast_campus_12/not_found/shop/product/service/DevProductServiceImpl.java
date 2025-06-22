@@ -37,7 +37,7 @@ public class DevProductServiceImpl implements ProductService {
                         .title(p.getTitle())
                         .thumbnail(p.getThumbnail())
                         .price(p.getPrice())
-                        .reviewCount(p.getReviewCount())
+//                        .reviewCount(p.getReviewCount())
                         .comment(p.getComment())
                         .build())
                 .collect(Collectors.toList());
