@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 @Profile("prod")
-public class ProductServiceImpl implements ProductService {
+public abstract class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductSummaryDto> getSummaryByCategory(String category) {
         return List.of();

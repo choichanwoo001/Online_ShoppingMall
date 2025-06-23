@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface ProductService {
     List<ProductSummaryDto> getSummaryByCategory(String category);
+    List<ProductSummaryDto> getSummaryByCategory(String category, String subCategory);
 }
