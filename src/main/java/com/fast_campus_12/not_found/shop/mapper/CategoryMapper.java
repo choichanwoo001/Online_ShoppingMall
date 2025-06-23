@@ -1,6 +1,5 @@
 package com.fast_campus_12.not_found.shop.mapper;
 
-import com.fast_campus_12.not_found.shop.product.dto.CategoryMenuDto;
 import com.fast_campus_12.not_found.shop.product.model.Lv1Category;
 import com.fast_campus_12.not_found.shop.product.model.Lv2Category;
 import com.fast_campus_12.not_found.shop.product.model.Lv3Category;
