@@ -1,5 +1,6 @@
 package com.fast_campus_12.not_found.shop.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -13,10 +14,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.Objects;
 
 @Service
+@RequiredArgsConstructor
 public class EmailService {
-
-    @Autowired
-    private JavaMailSender mailSender;
+    private final JavaMailSender mailSender;
 
     // 인증코드 저장용 (실제로는 Redis 사용 권장)
     private ConcurrentHashMap<String, String> verificationCodes = new ConcurrentHashMap<String, String>();
