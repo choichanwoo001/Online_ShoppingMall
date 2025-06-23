@@ -18,20 +18,20 @@ CREATE TABLE `USERS` (
 ) ENGINE=InnoDB COMMENT='사용자';
 
 CREATE TABLE `USER_DETAIL` (
-                               `login_id` VARCHAR(30) NOT NULL,
+                               `user_id` BIGINT NOT NULL,
                                `email` VARCHAR(255) NULL,
                                `name` VARCHAR(255) NULL,
                                `phone_number` VARCHAR(20) NULL,
                                `birth_date` DATE NULL,
                                `gender` CHAR(1) NULL COMMENT 'M, F',
                                `job_code` INT NOT NULL,
-                               PRIMARY KEY (`login_id`),
+                               PRIMARY KEY (`user_id`),
                                UNIQUE KEY `uk_user_email` (`email`),
                                INDEX `idx_user_detail_job` (`job_code`)
 ) ENGINE=InnoDB COMMENT='사용자 상세';
 
 CREATE TABLE `default_user_address` (
-                                        `login_id` VARCHAR(30) NOT NULL,
+                                        `user_id` BIGINT NOT NULL,
                                         `road_address_1` VARCHAR(255) NULL,
                                         `road_address_2` VARCHAR(255) NULL,
                                         `jibun_address` VARCHAR(255) NULL,
@@ -39,24 +39,24 @@ CREATE TABLE `default_user_address` (
                                         `english_address` VARCHAR(255) NULL,
                                         `zip_code` VARCHAR(10) NULL,
                                         `address_name` VARCHAR(100) NULL,
-                                        PRIMARY KEY (`login_id`)
+                                        PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB COMMENT='기본 사용자 주소';
 
 CREATE TABLE `user_terms_agreement` (
                                         `agreement_id` BIGINT NOT NULL AUTO_INCREMENT,
-                                        `login_id` VARCHAR(30) NOT NULL,
+                                        `user_id` BIGINT NOT NULL,
                                         `terms_id` BIGINT NOT NULL,
                                         `agreed_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
                                         `ip_address` VARCHAR(45) NULL,
                                         PRIMARY KEY (`agreement_id`),
-                                        UNIQUE KEY `uk_user_terms` (`login_id`, `terms_id`),
-                                        INDEX `idx_user_terms_login` (`login_id`),
+                                        UNIQUE KEY `uk_user_terms` (`user_id`, `terms_id`),
+                                        INDEX `idx_user_terms_user` (`user_id`),
                                         INDEX `idx_user_terms_terms` (`terms_id`)
 ) ENGINE=InnoDB COMMENT='사용자 약관 동의';
 
 CREATE TABLE `LOGIN_HISTORY` (
                                  `id` BIGINT NOT NULL AUTO_INCREMENT,
-                                 `login_id` VARCHAR(30) NOT NULL,
+                                 `user_id` BIGINT NOT NULL,
                                  `ip` VARCHAR(45) NULL,
                                  `browser` VARCHAR(255) NULL,
                                  `nation` VARCHAR(100) NULL,
@@ -66,24 +66,24 @@ CREATE TABLE `LOGIN_HISTORY` (
                                  `is_locked` TINYINT(1) NULL DEFAULT 0,
                                  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
                                  PRIMARY KEY (`id`),
-                                 INDEX `idx_login_history_login` (`login_id`, `created_at`),
+                                 INDEX `idx_login_history_user` (`user_id`, `created_at`),
                                  INDEX `idx_login_history_ip` (`ip`),
                                  INDEX `idx_login_history_result` (`attempt_result`, `created_at`)
 ) ENGINE=InnoDB COMMENT='로그인 이력';
 
 CREATE TABLE `refund_account` (
-                                  `login_id` VARCHAR(30) NOT NULL,
+                                  `user_id` BIGINT NOT NULL,
                                   `account_name` VARCHAR(255) NULL,
                                   `bank_name` VARCHAR(255) NULL,
                                   `account_num` VARCHAR(255) NULL,
-                                  PRIMARY KEY (`login_id`)
+                                  PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB COMMENT='환불 계좌';
 
 
 CREATE TABLE `ADMIN_DETAIL` (
-                                `login_id` VARCHAR(30) NOT NULL,
+                                `user_id` BIGINT NOT NULL,
                                 `nickname` VARCHAR(255) NULL,
-                                PRIMARY KEY (`login_id`)
+                                PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB COMMENT='관리자 상세';
 
 
@@ -310,7 +310,7 @@ CREATE TABLE `special_section` (
 
 CREATE TABLE `ORDERS` (
                           `order_id` BIGINT NOT NULL AUTO_INCREMENT,
-                          `login_id` VARCHAR(30) NOT NULL,
+                          `user_id` BIGINT NOT NULL,
                           `user_coupon_id` BIGINT NOT NULL,
                           `order_num` VARCHAR(50) NULL,
                           `total_count` INT NULL DEFAULT 0,
@@ -326,7 +326,7 @@ CREATE TABLE `ORDERS` (
                           `id2` BIGINT NOT NULL,
                           PRIMARY KEY (`order_id`),
                           UNIQUE KEY `uk_orders_num` (`order_num`),
-                          INDEX `idx_orders_login` (`login_id`),
+                          INDEX `idx_orders_user` (`user_id`),
                           INDEX `idx_orders_status` (`order_status`, `created_at`),
                           INDEX `idx_orders_coupon` (`user_coupon_id`),
                           INDEX `idx_orders_id2` (`id2`)
@@ -380,7 +380,7 @@ CREATE TABLE `pg_code` (
 CREATE TABLE `PAYMENT` (
                            `payment_id` BIGINT NOT NULL AUTO_INCREMENT,
                            `order_id` BIGINT NOT NULL,
-                           `login_id` VARCHAR(30) NULL,
+                           `user_id` BIGINT NULL,
                            `order_num` VARCHAR(50) NULL,
                            `paid_amount` DECIMAL(12,2) NULL,
                            `pay_type` VARCHAR(20) NULL COMMENT 'card, bank_transfer, virtual_account, mobile, kakao_pay, naver_pay, payco',
@@ -397,7 +397,7 @@ CREATE TABLE `PAYMENT` (
                            `pay_type_id` BIGINT NOT NULL,
                            PRIMARY KEY (`payment_id`),
                            INDEX `idx_payment_order` (`order_id`),
-                           INDEX `idx_payment_login` (`login_id`),
+                           INDEX `idx_payment_user` (`user_id`),
                            INDEX `idx_payment_status` (`pay_status_id`),
                            INDEX `idx_payment_pg` (`pg_id`),
                            INDEX `idx_payment_type` (`pay_type_id`)
@@ -420,12 +420,12 @@ CREATE TABLE `Pay_type_code` (
 
 CREATE TABLE `Cart` (
                         `cart_id` INT NOT NULL AUTO_INCREMENT,
-                        `login_id` VARCHAR(30) NOT NULL,
+                        `user_id` BIGINT NOT NULL,
                         `created_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
                         `updated_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                         `deleted_at` DATETIME NULL,
                         PRIMARY KEY (`cart_id`),
-                        INDEX `idx_cart_login` (`login_id`)
+                        INDEX `idx_cart_user` (`user_id`)
 ) ENGINE=InnoDB COMMENT='장바구니';
 
 CREATE TABLE `Cart_Item` (
@@ -443,12 +443,12 @@ CREATE TABLE `Cart_Item` (
 
 CREATE TABLE `WISH_LIST` (
                              `wish_id` BIGINT NOT NULL AUTO_INCREMENT,
-                             `login_id` VARCHAR(30) NOT NULL,
+                             `user_id` BIGINT NOT NULL,
                              `product_id` BIGINT NOT NULL,
                              `added_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
                              PRIMARY KEY (`wish_id`),
-                             UNIQUE KEY `uk_wish_list` (`login_id`, `product_id`),
-                             INDEX `idx_wish_list_login` (`login_id`),
+                             UNIQUE KEY `uk_wish_list` (`user_id`, `product_id`),
+                             INDEX `idx_wish_list_user` (`user_id`),
                              INDEX `idx_wish_list_product` (`product_id`)
 ) ENGINE=InnoDB COMMENT='위시리스트';
 
@@ -592,7 +592,7 @@ CREATE TABLE `Refund` (
 
 CREATE TABLE `review` (
                           `review_id` BIGINT NOT NULL AUTO_INCREMENT,
-                          `login_id` VARCHAR(30) NOT NULL,
+                          `user_id` BIGINT NOT NULL,
                           `product_id` BIGINT NOT NULL,
                           `purchase_id` VARCHAR(255) NOT NULL,
                           `rating` TINYINT NOT NULL CHECK (`rating` >= 1 AND `rating` <= 5),
@@ -607,7 +607,7 @@ CREATE TABLE `review` (
                           `updated_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                           `deleted_at` DATETIME NULL,
                           PRIMARY KEY (`review_id`),
-                          INDEX `idx_review_login` (`login_id`),
+                          INDEX `idx_review_user` (`user_id`),
                           INDEX `idx_review_product` (`product_id`),
                           INDEX `idx_review_state` (`state`, `created_at`),
                           INDEX `idx_review_rating` (`rating`)
@@ -616,7 +616,7 @@ CREATE TABLE `review` (
 CREATE TABLE `review_comment` (
                                   `comment_id` INT NOT NULL AUTO_INCREMENT,
                                   `review_id` BIGINT NOT NULL,
-                                  `login_id` VARCHAR(30) NULL,
+                                  `user_id` BIGINT NULL,
                                   `content` TEXT NOT NULL,
                                   `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
                                   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -624,23 +624,23 @@ CREATE TABLE `review_comment` (
                                   `deleted_at` DATETIME NULL,
                                   PRIMARY KEY (`comment_id`),
                                   INDEX `idx_review_comment_review` (`review_id`),
-                                  INDEX `idx_review_comment_login` (`login_id`)
+                                  INDEX `idx_review_comment_user` (`user_id`)
 ) ENGINE=InnoDB COMMENT='리뷰 댓글';
 
 CREATE TABLE `review_like` (
                                `like_id` BIGINT NOT NULL AUTO_INCREMENT,
                                `review_id` BIGINT NOT NULL,
-                               `login_id` VARCHAR(30) NOT NULL,
+                               `user_id` BIGINT NOT NULL,
                                `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
                                PRIMARY KEY (`like_id`),
-                               UNIQUE KEY `uk_review_like` (`review_id`, `login_id`),
+                               UNIQUE KEY `uk_review_like` (`review_id`, `user_id`),
                                INDEX `idx_review_like_review` (`review_id`),
-                               INDEX `idx_review_like_login` (`login_id`)
+                               INDEX `idx_review_like_user` (`user_id`)
 ) ENGINE=InnoDB COMMENT='리뷰 좋아요';
 
 CREATE TABLE `report` (
                           `report_id` BIGINT NOT NULL AUTO_INCREMENT,
-                          `login_id` VARCHAR(30) NOT NULL,
+                          `user_id` BIGINT NOT NULL,
                           `target_type` VARCHAR(20) NOT NULL DEFAULT 'review' COMMENT 'review, comment',
                           `target_id` BIGINT NOT NULL,
                           `reason` TEXT NOT NULL,
@@ -650,7 +650,7 @@ CREATE TABLE `report` (
                           `is_deleted` TINYINT(1) NULL DEFAULT 0,
                           `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
                           PRIMARY KEY (`report_id`),
-                          INDEX `idx_report_login` (`login_id`),
+                          INDEX `idx_report_user` (`user_id`),
                           INDEX `idx_report_target` (`target_type`, `target_id`),
                           INDEX `idx_report_state` (`state`, `created_at`)
 ) ENGINE=InnoDB COMMENT='신고';
@@ -680,7 +680,7 @@ CREATE TABLE `COUPON` (
 
 CREATE TABLE `USER_COUPON` (
                                `user_coupon_id` BIGINT NOT NULL AUTO_INCREMENT,
-                               `login_id` VARCHAR(30) NOT NULL,
+                               `user_id` BIGINT NOT NULL,
                                `coupon_id` BIGINT NOT NULL,
                                `coupon_code` VARCHAR(50) NULL,
                                `issued_at` DATETIME NULL,
@@ -691,7 +691,7 @@ CREATE TABLE `USER_COUPON` (
                                `expire_at` DATETIME NULL,
                                `deleted_at` DATETIME NULL,
                                PRIMARY KEY (`user_coupon_id`),
-                               INDEX `idx_user_coupon_login` (`login_id`),
+                               INDEX `idx_user_coupon_user` (`user_id`),
                                INDEX `idx_user_coupon_coupon` (`coupon_id`),
                                INDEX `idx_user_coupon_code` (`coupon_code`),
                                INDEX `idx_user_coupon_expire` (`expire_at`, `is_used`)
@@ -701,12 +701,12 @@ CREATE TABLE `USER_COUPON` (
 
 CREATE TABLE `mileage` (
                            `mileage_id` BIGINT NOT NULL AUTO_INCREMENT,
-                           `login_id` VARCHAR(30) NOT NULL,
+                           `user_id` BIGINT NOT NULL,
                            `total_earned` DECIMAL(10,2) NULL DEFAULT 0,
                            `total_used` DECIMAL(10,2) NULL DEFAULT 0,
                            `updated_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                            PRIMARY KEY (`mileage_id`),
-                           UNIQUE KEY `uk_mileage_login` (`login_id`)
+                           UNIQUE KEY `uk_mileage_user` (`user_id`)
 ) ENGINE=InnoDB COMMENT='마일리지';
 
 CREATE TABLE `mileage_code` (
@@ -723,7 +723,7 @@ CREATE TABLE `mileage_code` (
 
 CREATE TABLE `mileage_history` (
                                    `history_id` BIGINT NOT NULL AUTO_INCREMENT,
-                                   `login_id` VARCHAR(30) NOT NULL,
+                                   `user_id` BIGINT NOT NULL,
                                    `mileage_id` BIGINT NOT NULL,
                                    `reason_code` VARCHAR(255) NOT NULL,
                                    `related_order_id` BIGINT NULL,
@@ -733,7 +733,7 @@ CREATE TABLE `mileage_history` (
                                    `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
                                    `Field` VARCHAR(100) NULL,
                                    PRIMARY KEY (`history_id`),
-                                   INDEX `idx_mileage_history_login` (`login_id`, `created_at`),
+                                   INDEX `idx_mileage_history_user` (`user_id`, `created_at`),
                                    INDEX `idx_mileage_history_mileage` (`mileage_id`),
                                    INDEX `idx_mileage_history_reason` (`reason_code`),
                                    INDEX `idx_mileage_history_order` (`related_order_id`),
@@ -744,7 +744,7 @@ CREATE TABLE `mileage_history` (
 
 CREATE TABLE `Inquiry` (
                            `inquiry_id` BIGINT NOT NULL AUTO_INCREMENT,
-                           `login_id` VARCHAR(30) NOT NULL,
+                           `user_id` BIGINT NOT NULL,
                            `product_id` BIGINT NULL,
                            `title` VARCHAR(200) NULL,
                            `content` TEXT NULL,
@@ -755,7 +755,7 @@ CREATE TABLE `Inquiry` (
                            `updated_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                            `deleted_at` DATETIME NULL,
                            PRIMARY KEY (`inquiry_id`),
-                           INDEX `idx_inquiry_login` (`login_id`),
+                           INDEX `idx_inquiry_user` (`user_id`),
                            INDEX `idx_inquiry_product` (`product_id`),
                            INDEX `idx_inquiry_status` (`status`, `created_at`)
 ) ENGINE=InnoDB COMMENT='문의';
@@ -841,71 +841,71 @@ ALTER TABLE `Refund` ADD CONSTRAINT `FK_Return_TO_Refund_1` FOREIGN KEY (`return
 ALTER TABLE `Refund` ADD CONSTRAINT `FK_PAYMENT_TO_Refund_1` FOREIGN KEY (`payment_id`) REFERENCES `PAYMENT` (`payment_id`);
 ALTER TABLE `ORDER_ITEM` ADD CONSTRAINT `FK_ORDERS_TO_ORDER_ITEM_1` FOREIGN KEY (`order_id`) REFERENCES `ORDERS` (`order_id`);
 ALTER TABLE `ORDER_ITEM` ADD CONSTRAINT `FK_PRODUCT_SNAPSHOT_TO_ORDER_ITEM_1` FOREIGN KEY (`product_snapshot_id`) REFERENCES `PRODUCT_SNAPSHOT` (`product_snapshot_id`);
-ALTER TABLE `Inquiry` ADD CONSTRAINT `FK_USERS_TO_Inquiry_1` FOREIGN KEY (`login_id`) REFERENCES `USERS` (`login_id`);
+ALTER TABLE `Inquiry` ADD CONSTRAINT `FK_USERS_TO_Inquiry_1` FOREIGN KEY (`user_id`) REFERENCES `USERS` (`user_id`);
 ALTER TABLE `Inquiry` ADD CONSTRAINT `FK_product_TO_Inquiry_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`);
 ALTER TABLE `product_varient_detail` ADD CONSTRAINT `FK_product_variant_TO_product_varient_detail_1` FOREIGN KEY (`product_variant_id`) REFERENCES `product_variant` (`product_variant_id`);
 ALTER TABLE `product_varient_detail` ADD CONSTRAINT `FK_model_TO_product_varient_detail_1` FOREIGN KEY (`model_id`) REFERENCES `model` (`model_id`);
-ALTER TABLE `USER_DETAIL` ADD CONSTRAINT `FK_USERS_TO_USER_DETAIL_1` FOREIGN KEY (`login_id`) REFERENCES `USERS` (`login_id`);
+ALTER TABLE `USER_DETAIL` ADD CONSTRAINT `FK_USERS_TO_USER_DETAIL_1` FOREIGN KEY (`user_id`) REFERENCES `USERS` (`user_id`);
 ALTER TABLE `USER_DETAIL` ADD CONSTRAINT `FK_global_code_TO_USER_DETAIL_1` FOREIGN KEY (`job_code`) REFERENCES `global_code` (`code`);
-ALTER TABLE `USER_COUPON` ADD CONSTRAINT `FK_USERS_TO_USER_COUPON_1` FOREIGN KEY (`login_id`) REFERENCES `USERS` (`login_id`);
+ALTER TABLE `USER_COUPON` ADD CONSTRAINT `FK_USERS_TO_USER_COUPON_1` FOREIGN KEY (`user_id`) REFERENCES `USERS` (`user_id`);
 ALTER TABLE `USER_COUPON` ADD CONSTRAINT `FK_COUPON_TO_USER_COUPON_1` FOREIGN KEY (`coupon_id`) REFERENCES `COUPON` (`coupon_id`);
 ALTER TABLE `inquiry_answer` ADD CONSTRAINT `FK_Inquiry_TO_inquiry_answer_1` FOREIGN KEY (`inquiry_id`) REFERENCES `Inquiry` (`inquiry_id`);
-ALTER TABLE `inquiry_answer` ADD CONSTRAINT `FK_ADMIN_DETAIL_TO_inquiry_answer_1` FOREIGN KEY (`admin_id`) REFERENCES `ADMIN_DETAIL` (`login_id`);
+ALTER TABLE `inquiry_answer` ADD CONSTRAINT `FK_ADMIN_DETAIL_TO_inquiry_answer_1` FOREIGN KEY (`admin_id`) REFERENCES `ADMIN_DETAIL` (`user_id`);
 ALTER TABLE `PRODUCT_SNAPSHOT` ADD CONSTRAINT `FK_product_TO_PRODUCT_SNAPSHOT_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`);
-ALTER TABLE `Cart` ADD CONSTRAINT `FK_USERS_TO_Cart_1` FOREIGN KEY (`login_id`) REFERENCES `USERS` (`login_id`);
+ALTER TABLE `Cart` ADD CONSTRAINT `FK_USERS_TO_Cart_1` FOREIGN KEY (`user_id`) REFERENCES `USERS` (`user_id`);
 ALTER TABLE `Return` ADD CONSTRAINT `FK_ORDERS_TO_Return_1` FOREIGN KEY (`order_id`) REFERENCES `ORDERS` (`order_id`);
-ALTER TABLE `Return` ADD CONSTRAINT `FK_ADMIN_DETAIL_TO_Return_1` FOREIGN KEY (`approve_admin_id`) REFERENCES `ADMIN_DETAIL` (`login_id`);
+ALTER TABLE `Return` ADD CONSTRAINT `FK_ADMIN_DETAIL_TO_Return_1` FOREIGN KEY (`approve_admin_id`) REFERENCES `ADMIN_DETAIL` (`user_id`);
 ALTER TABLE `Return` ADD CONSTRAINT `FK_DELIVERY_EXCEPTION_TO_Return_1` FOREIGN KEY (`delivery_exception_id`) REFERENCES `DELIVERY_EXCEPTION` (`delivery_exception_id`);
 ALTER TABLE `ORDER_HISTORY` ADD CONSTRAINT `FK_ORDERS_TO_ORDER_HISTORY_1` FOREIGN KEY (`order_id`) REFERENCES `ORDERS` (`order_id`);
 ALTER TABLE `ORDER_HISTORY` ADD CONSTRAINT `FK_Order_state_code_TO_ORDER_HISTORY_1` FOREIGN KEY (`id2`) REFERENCES `Order_state_code` (`id`);
 ALTER TABLE `product_variant_image` ADD CONSTRAINT `FK_product_variant_TO_product_variant_image_1` FOREIGN KEY (`variant_id`) REFERENCES `product_variant` (`product_variant_id`);
 ALTER TABLE `PRODUCT_OPTION_PRICE` ADD CONSTRAINT `FK_product_variant_TO_PRODUCT_OPTION_PRICE_1` FOREIGN KEY (`product_variant_id`) REFERENCES `product_variant` (`product_variant_id`);
-ALTER TABLE `default_user_address` ADD CONSTRAINT `FK_USER_DETAIL_TO_default_user_address_1` FOREIGN KEY (`login_id`) REFERENCES `USER_DETAIL` (`login_id`);
-ALTER TABLE `ORDERS` ADD CONSTRAINT `FK_USERS_TO_ORDERS_1` FOREIGN KEY (`login_id`) REFERENCES `USERS` (`login_id`);
+ALTER TABLE `default_user_address` ADD CONSTRAINT `FK_USER_DETAIL_TO_default_user_address_1` FOREIGN KEY (`user_id`) REFERENCES `USER_DETAIL` (`user_id`);
+ALTER TABLE `ORDERS` ADD CONSTRAINT `FK_USERS_TO_ORDERS_1` FOREIGN KEY (`user_id`) REFERENCES `USERS` (`user_id`);
 ALTER TABLE `ORDERS` ADD CONSTRAINT `FK_USER_COUPON_TO_ORDERS_1` FOREIGN KEY (`user_coupon_id`) REFERENCES `USER_COUPON` (`user_coupon_id`);
 ALTER TABLE `ORDERS` ADD CONSTRAINT `FK_Order_state_code_TO_ORDERS_1` FOREIGN KEY (`id2`) REFERENCES `Order_state_code` (`id`);
 ALTER TABLE `review_comment` ADD CONSTRAINT `FK_review_TO_review_comment_1` FOREIGN KEY (`review_id`) REFERENCES `review` (`review_id`);
-ALTER TABLE `review_comment` ADD CONSTRAINT `FK_USERS_TO_review_comment_1` FOREIGN KEY (`login_id`) REFERENCES `USERS` (`login_id`);
-ALTER TABLE `review` ADD CONSTRAINT `FK_USERS_TO_review_1` FOREIGN KEY (`login_id`) REFERENCES `USERS` (`login_id`);
+ALTER TABLE `review_comment` ADD CONSTRAINT `FK_USERS_TO_review_comment_1` FOREIGN KEY (`user_id`) REFERENCES `USERS` (`user_id`);
+ALTER TABLE `review` ADD CONSTRAINT `FK_USERS_TO_review_1` FOREIGN KEY (`user_id`) REFERENCES `USERS` (`user_id`);
 ALTER TABLE `review` ADD CONSTRAINT `FK_product_TO_review_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`);
 ALTER TABLE `product_variant` ADD CONSTRAINT `FK_product_TO_product_variant_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`);
 ALTER TABLE `product_variant` MODIFY COLUMN `color_id` BIGINT NOT NULL;
 ALTER TABLE `product_variant` ADD CONSTRAINT `FK_Colors_TO_product_variant_1` FOREIGN KEY (`color_id`) REFERENCES `Colors` (`color_id`);
 ALTER TABLE `product` ADD CONSTRAINT `FK_lv3_TO_product_1` FOREIGN KEY (`lv3_id`) REFERENCES `lv3` (`lv3_id`);
 ALTER TABLE `PAYMENT` ADD CONSTRAINT `FK_ORDERS_TO_PAYMENT_1` FOREIGN KEY (`order_id`) REFERENCES `ORDERS` (`order_id`);
-ALTER TABLE `PAYMENT` ADD CONSTRAINT `FK_USERS_TO_PAYMENT_1` FOREIGN KEY (`login_id`) REFERENCES `USERS` (`login_id`);
+ALTER TABLE `PAYMENT` ADD CONSTRAINT `FK_USERS_TO_PAYMENT_1` FOREIGN KEY (`user_id`) REFERENCES `USERS` (`user_id`);
 ALTER TABLE `PAYMENT` ADD CONSTRAINT `FK_pg_code_TO_PAYMENT_1` FOREIGN KEY (`pg_id`) REFERENCES `pg_code` (`pg_id`);
 ALTER TABLE `PAYMENT` ADD CONSTRAINT `FK_pay_status_code_TO_PAYMENT_1` FOREIGN KEY (`pay_status_id`) REFERENCES `pay_status_code` (`pay_status_id`);
 ALTER TABLE `PAYMENT` ADD CONSTRAINT `FK_Pay_type_code_TO_PAYMENT_1` FOREIGN KEY (`pay_type_id`) REFERENCES `Pay_type_code` (`pay_type_id`);
 ALTER TABLE `Cart_Item` ADD CONSTRAINT `FK_Cart_TO_Cart_Item_1` FOREIGN KEY (`cart_id`) REFERENCES `Cart` (`cart_id`);
 ALTER TABLE `Cart_Item` ADD CONSTRAINT `FK_product_TO_Cart_Item_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`);
 ALTER TABLE `Cart_Item` ADD CONSTRAINT `FK_product_variant_TO_Cart_Item_1` FOREIGN KEY (`product_variant_id`) REFERENCES `product_variant` (`product_variant_id`);
-ALTER TABLE `user_terms_agreement` ADD CONSTRAINT `FK_USERS_TO_user_terms_agreement_1` FOREIGN KEY (`login_id`) REFERENCES `USERS` (`login_id`);
+ALTER TABLE `user_terms_agreement` ADD CONSTRAINT `FK_USERS_TO_user_terms_agreement_1` FOREIGN KEY (`user_id`) REFERENCES `USERS` (`user_id`);
 ALTER TABLE `user_terms_agreement` ADD CONSTRAINT `FK_terms_TO_user_terms_agreement_1` FOREIGN KEY (`terms_id`) REFERENCES `terms` (`terms_id`);
-ALTER TABLE `report` ADD CONSTRAINT `FK_USERS_TO_report_1` FOREIGN KEY (`login_id`) REFERENCES `USERS` (`login_id`);
+ALTER TABLE `report` ADD CONSTRAINT `FK_USERS_TO_report_1` FOREIGN KEY (`user_id`) REFERENCES `USERS` (`user_id`);
 ALTER TABLE `Shipment` ADD CONSTRAINT `FK_ORDERS_TO_Shipment_1` FOREIGN KEY (`order_id`) REFERENCES `ORDERS` (`order_id`);
 ALTER TABLE `Shipment` ADD CONSTRAINT `FK_handover_TO_Shipment_1` FOREIGN KEY (`handover_id`) REFERENCES `handover` (`handover_id`);
 ALTER TABLE `Shipment` ADD CONSTRAINT `FK_Delivery_Company_API_TO_Shipment_1` FOREIGN KEY (`delivery_company_id`) REFERENCES `Delivery_Company_API` (`delivery_company_id`);
 ALTER TABLE `Shipment` ADD CONSTRAINT `FK_Return_TO_Shipment_1` FOREIGN KEY (`return_id`) REFERENCES `Return` (`return_id`);
-ALTER TABLE `ADMIN_DETAIL` ADD CONSTRAINT `FK_USERS_TO_ADMIN_DETAIL_1` FOREIGN KEY (`login_id`) REFERENCES `USERS` (`login_id`);
+ALTER TABLE `ADMIN_DETAIL` ADD CONSTRAINT `FK_USERS_TO_ADMIN_DETAIL_1` FOREIGN KEY (`user_id`) REFERENCES `USERS` (`user_id`);
 ALTER TABLE `review_like` ADD CONSTRAINT `FK_review_TO_review_like_1` FOREIGN KEY (`review_id`) REFERENCES `review` (`review_id`);
-ALTER TABLE `review_like` ADD CONSTRAINT `FK_USERS_TO_review_like_1` FOREIGN KEY (`login_id`) REFERENCES `USERS` (`login_id`);
+ALTER TABLE `review_like` ADD CONSTRAINT `FK_USERS_TO_review_like_1` FOREIGN KEY (`user_id`) REFERENCES `USERS` (`user_id`);
 ALTER TABLE `product_description_image` ADD CONSTRAINT `FK_product_TO_product_description_image_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`);
-ALTER TABLE `mileage_history` ADD CONSTRAINT `FK_USERS_TO_mileage_history_1` FOREIGN KEY (`login_id`) REFERENCES `USERS` (`login_id`);
+ALTER TABLE `mileage_history` ADD CONSTRAINT `FK_USERS_TO_mileage_history_1` FOREIGN KEY (`user_id`) REFERENCES `USERS` (`user_id`);
 ALTER TABLE `mileage_history` ADD CONSTRAINT `FK_mileage_TO_mileage_history_1` FOREIGN KEY (`mileage_id`) REFERENCES `mileage` (`mileage_id`);
 ALTER TABLE `mileage_history` ADD CONSTRAINT `FK_mileage_code_TO_mileage_history_1` FOREIGN KEY (`reason_code`) REFERENCES `mileage_code` (`reason_code`);
 ALTER TABLE `mileage_history` ADD CONSTRAINT `FK_ORDERS_TO_mileage_history_1` FOREIGN KEY (`related_order_id`) REFERENCES `ORDERS` (`order_id`);
 ALTER TABLE `mileage_history` ADD CONSTRAINT `FK_review_TO_mileage_history_1` FOREIGN KEY (`review_id`) REFERENCES `review` (`review_id`);
-ALTER TABLE `WISH_LIST` ADD CONSTRAINT `FK_USERS_TO_WISH_LIST_1` FOREIGN KEY (`login_id`) REFERENCES `USERS` (`login_id`);
+ALTER TABLE `WISH_LIST` ADD CONSTRAINT `FK_USERS_TO_WISH_LIST_1` FOREIGN KEY (`user_id`) REFERENCES `USERS` (`user_id`);
 ALTER TABLE `WISH_LIST` ADD CONSTRAINT `FK_product_TO_WISH_LIST_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`);
 ALTER TABLE `Shipment_related_code` ADD CONSTRAINT `FK_Shipment_TO_Shipment_related_code_1` FOREIGN KEY (`shipment_id`) REFERENCES `Shipment` (`shipment_id`);
-ALTER TABLE `LOGIN_HISTORY` ADD CONSTRAINT `FK_USERS_TO_LOGIN_HISTORY_1` FOREIGN KEY (`login_id`) REFERENCES `USERS` (`login_id`);
+ALTER TABLE `LOGIN_HISTORY` ADD CONSTRAINT `FK_USERS_TO_LOGIN_HISTORY_1` FOREIGN KEY (`user_id`) REFERENCES `USERS` (`user_id`);
 ALTER TABLE `lv2` ADD CONSTRAINT `FK_lv1_TO_lv2_1` FOREIGN KEY (`lv1_id`) REFERENCES `lv1` (`lv1_id`);
-ALTER TABLE `mileage` ADD CONSTRAINT `FK_USERS_TO_mileage_1` FOREIGN KEY (`login_id`) REFERENCES `USERS` (`login_id`);
+ALTER TABLE `mileage` ADD CONSTRAINT `FK_USERS_TO_mileage_1` FOREIGN KEY (`user_id`) REFERENCES `USERS` (`user_id`);
 ALTER TABLE `lv3` ADD CONSTRAINT `FK_lv2_TO_lv3_1` FOREIGN KEY (`lv2_id`) REFERENCES `lv2` (`lv2_id`);
-ALTER TABLE `notice` ADD CONSTRAINT `FK_ADMIN_DETAIL_TO_notice_1` FOREIGN KEY (`created_by`) REFERENCES `ADMIN_DETAIL` (`login_id`);
+ALTER TABLE `notice` ADD CONSTRAINT `FK_ADMIN_DETAIL_TO_notice_1` FOREIGN KEY (`created_by`) REFERENCES `ADMIN_DETAIL` (`user_id`);
 ALTER TABLE `Exchange` ADD CONSTRAINT `FK_Return_TO_Exchange_1` FOREIGN KEY (`return_id`) REFERENCES `Return` (`return_id`);
 ALTER TABLE `Exchange` ADD CONSTRAINT `FK_ORDERS_TO_Exchange_1` FOREIGN KEY (`original_order_id`) REFERENCES `ORDERS` (`order_id`);
 ALTER TABLE `Exchange` ADD CONSTRAINT `FK_ORDERS_TO_Exchange_2` FOREIGN KEY (`exchange_order_id`) REFERENCES `ORDERS` (`order_id`);
 ALTER TABLE `DELIVERY_EXCEPTION` ADD CONSTRAINT `FK_Shipment_TO_DELIVERY_EXCEPTION_1` FOREIGN KEY (`shipment_id`) REFERENCES `Shipment` (`shipment_id`);
-ALTER TABLE `refund_account` ADD CONSTRAINT `FK_USER_DETAIL_TO_refund_account_1` FOREIGN KEY (`login_id`) REFERENCES `USER_DETAIL` (`login_id`);
+ALTER TABLE `refund_account` ADD CONSTRAINT `FK_USER_DETAIL_TO_refund_account_1` FOREIGN KEY (`user_id`) REFERENCES `USER_DETAIL` (`user_id`);
