@@ -1,5 +1,7 @@
 package com.fast_campus_12.not_found.shop.mapper;
 
+import com.fast_campus_12.not_found.shop.product.dto.FlatSubCategoryDto;
+import com.fast_campus_12.not_found.shop.product.dto.SubCategoryDto;
 import com.fast_campus_12.not_found.shop.product.model.Lv1Category;
 import com.fast_campus_12.not_found.shop.product.model.Lv2Category;
 import com.fast_campus_12.not_found.shop.product.model.Lv3Category;
@@ -14,9 +16,18 @@ public interface CategoryMapper {
     @Select("SELECT * FROM lv1 WHERE is_active = 'Y' ORDER BY sort_order")
     List<Lv1Category> getLv1Categories();
 
-    // Lv3 조회 by Lv2
-    @Select("SELECT * FROM lv3 WHERE lv2_id = #{lv2Id} AND is_active = 'Y' ORDER BY sort_order")
-    List<Lv3Category> getLv3ByLv2(String lv2Id);
+    @Select("""
+    SELECT 
+        l2.name AS lv2Name,
+        l3.name AS categoryName,
+        CONCAT('/product/category/', l2.name, '/', l3.name) AS link
+    FROM lv3 l3
+    JOIN lv2 l2 ON l3.lv2_id = l2.lv2_id
+    WHERE l2.is_active = 'Y'
+      AND l3.is_active = 'Y'
+    ORDER BY l2.sort_order, l3.sort_order
+""")
+    List<FlatSubCategoryDto> getAllSubCategoriesGroupedByLv2();
 
     @Select("SELECT * FROM lv1 WHERE is_active = 'Y' ORDER BY sort_order")
     @Results(id = "lv1WithLv2Map", value = {
@@ -39,4 +50,7 @@ public interface CategoryMapper {
             @Result(column = "is_active", property = "isActive")
     })
     List<Lv2Category> getLv2ByLv1(String lv1Id);
+
+
+
 }
