@@ -2,15 +2,18 @@
     <h1 class="category_tit" th:text="${subCategory}">KNIT</h1>
     <div class="subCategory">
         <ul>
-            <li><a href="#">All</a></li>
-            <li><a href="coat">코트</a></li>
-            <li><a href="coat">자켓</a></li>
-            <li><a href="coat">수트</a></li>
-            <li><a href="coat">패딩</a></li>
-            <li><a href="coat">가죽</a></li>
-            <li><a href="coat">바람막이</a></li>
-            <li><a href="coat">야상</a></li>
-            <li><a href="coat">데님</a></li>
+            <li th:each="menu : ${categoryMenuList}">
+                <a th:href="${menu.categoryLink}" th:text="${menu.categoryName}"></a>
+            </li>
+<!--            <li><a href="#">All</a></li>-->
+<!--            <li><a href="coat">코트</a></li>-->
+<!--            <li><a href="coat">자켓</a></li>-->
+<!--            <li><a href="coat"> 수트</a></li>-->
+<!--            <li><a href="coat">패딩</a></li>-->
+<!--            <li><a href="coat">가죽</a></li>-->
+<!--            <li><a href="coat">바람막이</a></li>-->
+<!--            <li><a href="coat">야상</a></li>-->
+<!--            <li><a href="coat">데님</a></li>-->
         </ul>
     </div>
     <div class="product_list_area">

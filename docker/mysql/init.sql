@@ -440,7 +440,7 @@ CREATE TABLE `COUPON` (
 
 CREATE TABLE `product` (
                            `product_id` BIGINT NOT NULL AUTO_INCREMENT,
-                           `lv3_id` VARCHAR(2) NOT NULL,
+                           `lv3_id` VARCHAR(8) NOT NULL,
                            `title` VARCHAR(200) NOT NULL,
                            `price` DECIMAL(10,2) NOT NULL,
                            `discount_price` DECIMAL(10,2) NULL,
@@ -697,8 +697,8 @@ CREATE TABLE `LOGIN_HISTORY` (
 ) ENGINE=InnoDB COMMENT='로그인 이력';
 
 CREATE TABLE `lv2` (
-                       `lv2_id` VARCHAR(2) NOT NULL,
-                       `lv1_id` VARCHAR(2) NOT NULL,
+                       `lv2_id` VARCHAR(8) NOT NULL,
+                       `lv1_id` VARCHAR(8) NOT NULL,
                        `name` VARCHAR(100) NULL,
                        `sort_order` INT NULL DEFAULT 0,
                        `is_active` CHAR(1) NULL DEFAULT 'Y',
@@ -718,8 +718,8 @@ CREATE TABLE `mileage` (
 ) ENGINE=InnoDB COMMENT='마일리지';
 
 CREATE TABLE `lv3` (
-                       `lv3_id` VARCHAR(2) NOT NULL,
-                       `lv2_id` VARCHAR(2) NOT NULL,
+                       `lv3_id` VARCHAR(8) NOT NULL,
+                       `lv2_id` VARCHAR(8) NOT NULL,
                        `name` VARCHAR(100) NULL,
                        `sort_order` INT NULL DEFAULT 0,
                        `is_active` CHAR(1) NULL DEFAULT 'Y',
@@ -738,7 +738,7 @@ CREATE TABLE `CopyOfspecial_section` (
 ) ENGINE=InnoDB;
 
 CREATE TABLE `lv1` (
-                       `lv1_id` VARCHAR(2) NOT NULL,
+                       `lv1_id` VARCHAR(8) NOT NULL,
                        `name` VARCHAR(100) NULL,
                        `sort_order` INT NULL DEFAULT 0,
                        `is_active` CHAR(1) NULL DEFAULT 'Y',
