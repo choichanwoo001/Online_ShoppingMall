@@ -27,12 +27,6 @@ public class UserDAO {
         return exists;
     }
 
-    public boolean existsByEmail(String email) {
-        boolean exists = userMapper.existsByEmail(email);
-        log.debug("email 중복 확인 - email: {}, exists: {}", email, exists);
-        return exists;
-    }
-
     public String insertUser(User user) {
         userMapper.insertUser(user);
         return user.getUserId();
