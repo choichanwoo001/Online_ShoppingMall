@@ -2,6 +2,7 @@ package com.fast_campus_12.not_found.shop.product.model;
 
 import com.fast_campus_12.not_found.shop.product.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Product {
     private Long id;
     private String title;
@@ -32,5 +34,8 @@ public class Product {
     private Date updatedAt;
     private Date deletedAt;
     private boolean isDeleted;
+    private String comment;
+
+    private Lv3Category lv3Category;
 }
 

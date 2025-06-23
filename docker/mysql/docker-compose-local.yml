@@ -9,7 +9,7 @@ services:
       MYSQL_USER: mysqluser
       MYSQL_PASSWORD: mysqluserpw
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - db-data:/var/lib/mysql
 volumes:
