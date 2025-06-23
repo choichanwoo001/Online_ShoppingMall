@@ -8,6 +8,7 @@ import com.fast_campus_12.not_found.shop.entity.UserDetail;
 import com.fast_campus_12.not_found.shop.mapper.UserAddressMapper;
 import com.fast_campus_12.not_found.shop.mapper.UserDetailMapper;
 import com.fast_campus_12.not_found.shop.mapper.UserMapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j; // 올바른 import
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,13 +21,12 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 @Slf4j
+@RequiredArgsConstructor
 @Service
 public class UserService {
     private final UserMapper userMapper;
     private final UserDetailMapper userDetailMapper;
     private final UserAddressMapper userAddressMapper;
-
-    @Autowired
     private UserDAO userDAO;
 
     private static final int BCRYPT_ROUNDS = 12;
@@ -36,12 +36,6 @@ public class UserService {
     public static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[a-zA-Z])(?=.*\\d)[a-zA-Z\\d]{4,16}$");
     public static final Pattern USER_NAME_PATTERN = Pattern.compile("^[가-힣a-zA-Z]{2,20}$");
     public static final Pattern EMAIL_PATTERN = Pattern.compile("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$");
-
-    public UserService(UserMapper userMapper, UserDetailMapper userDetailMapper, UserAddressMapper userAddressMapper) {
-        this.userMapper = userMapper;
-        this.userDetailMapper = userDetailMapper;
-        this.userAddressMapper = userAddressMapper;
-    }
 
     /**
      * 아이디 중복 확인

@@ -11,6 +11,7 @@ html {
 	border:3px dashed darkblue;
 	padding:2rem 0;
 }
+
 .category_tit {
 	text-align:center;
 	font-size:1.3rem;
@@ -617,7 +618,6 @@ html {
 	}
 
 }
-
 /* ---------- 미디어쿼리 --------- */
 
 @media screen and (max-width: 1280px){

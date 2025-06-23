@@ -52,9 +52,4 @@ public class WebConfig implements WebMvcConfigurer {
                 .addResourceLocations("/resources/");
     }
 
-    // 빈등록 없어서 임시 추가
-    @Bean
-    public ProductService productService() {
-        return new ProductServiceImpl();
-    }
 }
