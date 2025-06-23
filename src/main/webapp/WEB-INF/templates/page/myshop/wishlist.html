@@ -1,0 +1,119 @@
+<div th:fragment="content">
+    <div class="header">
+        <div class="container">
+            <div class="breadcrumb">
+                홈 <span>></span> 마이쇼핑 <span>></span> 관심상품
+            </div>
+            <h1 class="page-title">관심상품</h1>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="wishlist-container">
+            <div class="wishlist-header">
+                <div class="select-all">
+                    <input type="checkbox" id="selectAll">
+                    <label for="selectAll">전체선택</label>
+                </div>
+                <div class="header-labels">
+                    <div>상품정보</div>
+                    <div>판매가</div>
+                    <div>선택</div>
+                </div>
+            </div>
+
+            <div class="wishlist-items">
+                <!-- 관심상품 아이템 1 -->
+                <div class="wishlist-item">
+                    <div class="item-checkbox">
+                        <input type="checkbox" class="item-select" data-product-id="1">
+                    </div>
+                    <div class="item-content">
+                        <div class="product-info">
+                            <img src="https://via.placeholder.com/80x80" alt="하버 사이치기 체크셔츠" class="product-image">
+                            <div class="product-details">
+                                <h3>하버 사이치기 체크셔츠(high O)</h3>
+                                <span class="product-status">품절예약</span>
+                            </div>
+                        </div>
+                        <div class="stock-status out-of-stock">일시품절</div>
+                        <div class="price">49,900원</div>
+                        <div class="actions">
+                            <button class="btn btn-primary">주문하기</button>
+                            <button class="btn btn-secondary">장바구니담기</button>
+                            <button class="btn btn-danger">삭제</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 관심상품 아이템 2 -->
+                <div class="wishlist-item">
+                    <div class="item-checkbox">
+                        <input type="checkbox" class="item-select" data-product-id="2">
+                    </div>
+                    <div class="item-content">
+                        <div class="product-info">
+                            <img src="https://via.placeholder.com/80x80" alt="베이직 코튼 티셔츠" class="product-image">
+                            <div class="product-details">
+                                <h3>베이직 코튼 티셔츠</h3>
+                                <span class="product-status">판매중</span>
+                            </div>
+                        </div>
+                        <div class="stock-status in-stock">판매중</div>
+                        <div class="price">29,900원</div>
+                        <div class="actions">
+                            <button class="btn btn-primary">주문하기</button>
+                            <button class="btn btn-secondary">장바구니담기</button>
+                            <button class="btn btn-danger">삭제</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 관심상품 아이템 3 -->
+                <div class="wishlist-item">
+                    <div class="item-checkbox">
+                        <input type="checkbox" class="item-select" data-product-id="3">
+                    </div>
+                    <div class="item-content">
+                        <div class="product-info">
+                            <img src="https://via.placeholder.com/80x80" alt="캐주얼 데님 자켓" class="product-image">
+                            <div class="product-details">
+                                <h3>캐주얼 데님 자켓</h3>
+                                <span class="product-status">판매중</span>
+                            </div>
+                        </div>
+                        <div class="stock-status in-stock">판매중</div>
+                        <div class="price">89,900원</div>
+                        <div class="actions">
+                            <button class="btn btn-primary">주문하기</button>
+                            <button class="btn btn-secondary">장바구니담기</button>
+                            <button class="btn btn-danger">삭제</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bottom-actions">
+                <div class="selected-actions">
+                    <button class="btn-bulk delete">선택삭제</button>
+                </div>
+                <div class="selected-actions">
+                    <button class="btn-bulk order">전체상품주문</button>
+                    <button class="btn-bulk cart">관심상품 비우기</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 페이지네이션 -->
+        <div class="pagination">
+            <button disabled>≪</button>
+            <button disabled>‹</button>
+            <button class="active">1</button>
+            <button>›</button>
+            <button>≫</button>
+        </div>
+    </div>
+
+    <link rel="stylesheet" th:href="@{/resources/css/wishlist.css}" />
+    <script th:src="@{/resources/js/wishlist.js}"></script>
+</div>
