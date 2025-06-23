@@ -34,12 +34,19 @@ dependencies {
     implementation 'org.springframework:spring-jdbc:6.1.6'
     implementation 'org.springframework:spring-tx:6.1.6'
 
+    // AOP
+    implementation 'org.springframework:spring-aop:6.1.6'
+    implementation 'org.springframework:spring-aspects:6.1.6'
+    implementation 'org.aspectj:aspectjweaver:1.9.22'
+
     // Thymeleaf (Spring 6 대응)
     implementation 'org.thymeleaf:thymeleaf:3.1.2.RELEASE'
     implementation 'org.thymeleaf:thymeleaf-spring6:3.1.2.RELEASE'
 
     // Jakarta Servlet API
     compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+
+    implementation 'jakarta.annotation:jakarta.annotation-api:2.1.1'
 
     // Log4j2 core + API
     implementation 'org.apache.logging.log4j:log4j-slf4j2-impl:2.20.0'
@@ -70,6 +77,19 @@ dependencies {
     // thymeleaf
     implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.1.0'
 
+    // Jackson for JSON
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.15.2'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.15.2'
+
+    // Spring Context Support (JavaMail 지원)
+    implementation 'org.springframework:spring-context-support:6.1.6' // 버전 맞추기
+
+    // JavaMail
+    implementation 'com.sun.mail:jakarta.mail:2.0.1' // jakarta.mail 사용
+
+    // jBCrypt 라이브러리(passwordEncoder)
+    implementation 'org.mindrot:jbcrypt:0.4'
 }
 
     

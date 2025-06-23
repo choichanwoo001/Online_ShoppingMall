@@ -19,21 +19,13 @@
 
     <nav class="category-nav">
         <ul class="main-menu">
-            <li><a href="#">BEST</a></li>
-            <li><a href="#">NEW</a></li>
-            <li><a href="#">OUTER</a></li>
-            <li><a href="#">TOP</a></li>
-            <li><a href="#">KNIT</a></li>
-            <li><a href="#">SHIRTS</a></li>
-            <li><a href="#">PANTS</a></li>
-            <li><a href="#">SHOES</a></li>
-            <li><a href="#">BAG</a></li>
-            <li><a href="#">ACC</a></li>
-            <li><a href="#">SALE</a></li>
+            <li th:each="menu : ${categoryMenuList}">
+                <a th:href="${menu.categoryLink}" th:text="${menu.categoryName}"></a>
+            </li>
         </ul>
 
         <ul class="sub-menu">
-            <li><a href="#">회원가입</a></li>
+            <li><a href="signup/">회원가입</a></li>
             <li><a href="#">로그인</a></li>
             <li><a href="#">주문조회</a></li>
             <li><a href="#">마이페이지</a></li>

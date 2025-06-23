@@ -1,0 +1,99 @@
+<div th:fragment="content">
+    <h1 class="category_tit">장바구니</h1>
+    <div class="cart-container">
+        <div class="cart-content-wrapper">
+            <div class="cart-items-section">
+                <div class="cart-item">
+                    <div class="item-selection">
+                        <input type="checkbox" class="item-checkbox" checked>
+                    </div>
+                    <div class="item-image-area">
+                        <img src="https://via.placeholder.com/100x120" alt="상품 이미지" class="item-image">
+                    </div>
+                    <div class="item-details">
+                        <div class="item-name-price">
+                            <p class="item-name">A. 프린 박스티에 원피스</p>
+                            <p class="item-price">
+                                <span class="original-price">65,000원</span>
+                                <span class="discounted-price">45,500원</span>
+                            </p>
+                        </div>
+                        <p class="item-options">[옵션 블랙/S]</p>
+                        <button id="showMyPopupBtn" class="option-change-button">옵션변경</button>
+                        <div class="item-quantity-controls">
+                            <button class="quantity-minus">-</button>
+                            <input type="text" value="1" class="quantity-input">
+                            <button class="quantity-plus">+</button>
+                        </div>
+                    </div>
+                    <button class="item-delete-button">삭제</button>
+                </div>
+
+                <div class="cart-item">
+                    <div class="item-selection">
+                        <input type="checkbox" class="item-checkbox" checked>
+                    </div>
+                    <div class="item-image-area">
+                        <img src="https://via.placeholder.com/100x120" alt="상품 이미지" class="item-image">
+                    </div>
+                    <div class="item-details">
+                        <div class="item-name-price">
+                            <p class="item-name">Farben 바스락 싱글자켓</p>
+                            <p class="item-price">93,000원</p>
+                        </div>
+                        <p class="item-options">[옵션 블랙/FREE]</p>
+                        <button class="option-change-button">옵션변경</button>
+                        <div class="item-quantity-controls">
+                            <button class="quantity-minus">-</button>
+                            <input type="text" value="1" class="quantity-input">
+                            <button class="quantity-plus">+</button>
+                        </div>
+                    </div>
+                    <button class="item-delete-button">삭제</button>
+                </div>
+
+                <div class="cart-actions-bottom">
+                    <button class="btn-primary">견적서출력</button>
+                </div>
+            </div>
+
+            <div class="order-summary-section">
+                <div class="summary-line">
+                    <span class="summary-label">상품 합계금액</span>
+                    <span class="summary-value">158,000원</span>
+                </div>
+                <div class="summary-line">
+                    <span class="summary-label">총 할인금액</span>
+                    <span class="summary-value">19,500원</span>
+                </div>
+                <div class="summary-line">
+                    <span class="summary-label">배송비</span>
+                    <span class="summary-value">0원</span>
+                </div>
+                <div class="summary-total-line">
+                    <span class="summary-label">총 주문 합계</span>
+                    <span class="summary-total-value">138,500원</span>
+                </div>
+                <button class="order-button full-order">전체상품주문</button>
+                <button class="order-button selected-order">선택상품주문</button>
+            </div>
+        </div>
+
+        <div class="bottom-selection-actions">
+            <button class="btn-secondary">전체선택</button>
+            <button class="btn-secondary">선택삭제</button>
+        </div>
+
+    </div>
+    <script th:inline="javascript">
+        // DOMContentLoaded 이벤트 리스너 제거
+        const openCartPopupBtn = document.getElementById('showMyPopupBtn');
+
+        if (openCartPopupBtn) {
+            openCartPopupBtn.addEventListener('click', () => {
+                // alert('alert from cart.html inline script!'); // 테스트를 위한 alert
+                window.openCommonPopup('commonModalPopup');
+            });
+        }
+    </script>
+</div>
