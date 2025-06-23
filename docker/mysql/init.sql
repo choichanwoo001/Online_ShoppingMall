@@ -28,7 +28,7 @@ CREATE TABLE `ORDER_ITEM` (
 
 CREATE TABLE `Inquiry` (
                            `inquiry_id` BIGINT NOT NULL AUTO_INCREMENT,
-                           `user_id` BIGINT NOT NULL,
+                           `user_id` VARCHAR(50) NOT NULL,
                            `product_id` BIGINT NULL,
                            `title` VARCHAR(200) NULL,
                            `content` TEXT NULL,
@@ -70,7 +70,7 @@ CREATE TABLE `model` (
 ) ENGINE=InnoDB COMMENT='모델';
 
 CREATE TABLE `USER_DETAIL` (
-                               `user_id` BIGINT NOT NULL,
+                               `user_id` VARCHAR(50) NOT NULL,
                                `email` VARCHAR(255) NULL,
                                `name` VARCHAR(255) NULL,
                                `phone_number` VARCHAR(20) NULL,
@@ -90,7 +90,7 @@ CREATE TABLE `pay_status_code` (
 
 CREATE TABLE `USER_COUPON` (
                                `user_coupon_id` BIGINT NOT NULL AUTO_INCREMENT,
-                               `user_id` BIGINT NOT NULL,
+                               `user_id` VARCHAR(50) NOT NULL,
                                `coupon_id` BIGINT NOT NULL,
                                `coupon_code` VARCHAR(50) NULL,
                                `issued_at` DATETIME NULL,
@@ -110,7 +110,7 @@ CREATE TABLE `USER_COUPON` (
 CREATE TABLE `inquiry_answer` (
                                   `inquiry_answer_id` BIGINT NOT NULL AUTO_INCREMENT,
                                   `inquiry_id` BIGINT NOT NULL,
-                                  `admin_id` BIGINT NOT NULL,
+                                  `admin_id` VARCHAR(50) NOT NULL,
                                   `content` TEXT NULL,
                                   `created_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
                                   `updated_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -202,7 +202,7 @@ CREATE TABLE `Colors` (
 
 CREATE TABLE `Cart` (
                         `cart_id` INT NOT NULL AUTO_INCREMENT,
-                        `user_id` BIGINT NOT NULL,
+                        `user_id` VARCHAR(50) NOT NULL,
                         `created_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
                         `updated_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                         `deleted_at` DATETIME NULL,
@@ -213,7 +213,7 @@ CREATE TABLE `Cart` (
 CREATE TABLE `Return` (
                           `return_id` BIGINT NOT NULL AUTO_INCREMENT,
                           `order_id` BIGINT NOT NULL COMMENT '주문에 고객정보 있음',
-                          `approve_admin_id` BIGINT NOT NULL,
+                          `approve_admin_id` VARCHAR(50) NOT NULL,
                           `delivery_exception_id` BIGINT NOT NULL,
                           `return_judgement` VARCHAR(500) NULL,
                           `judgment_reason` VARCHAR(500) NULL,
@@ -306,20 +306,20 @@ CREATE TABLE `PRODUCT_OPTION_PRICE` (
 ) ENGINE=InnoDB COMMENT='상품 옵션 가격';
 
 CREATE TABLE `default_user_address` (
-                                        `user_id` BIGINT NOT NULL,
+                                        `user_id` VARCHAR(50) NOT NULL,
                                         `road_address_1` VARCHAR(255) NULL,
                                         `road_address_2` VARCHAR(255) NULL,
                                         `jibun_address` VARCHAR(255) NULL,
                                         `detail_address` VARCHAR(255) NULL,
                                         `english_address` VARCHAR(255) NULL,
-                                        `zip_code` VARCHAR(10) NULL,
+                                        `zip_code` INT NULL,
                                         `address_name` VARCHAR(100) NULL,
                                         PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB COMMENT='기본 사용자 주소';
 
 CREATE TABLE `ORDERS` (
                           `order_id` BIGINT NOT NULL AUTO_INCREMENT,
-                          `user_id` BIGINT NOT NULL,
+                          `user_id` VARCHAR(50) NOT NULL,
                           `user_coupon_id` BIGINT NOT NULL,
                           `order_num` VARCHAR(50) NULL,
                           `total_count` INT NULL DEFAULT 0,
@@ -344,7 +344,7 @@ CREATE TABLE `ORDERS` (
 CREATE TABLE `review_comment` (
                                   `comment_id` INT NOT NULL AUTO_INCREMENT,
                                   `review_id` BIGINT NOT NULL,
-                                  `user_id` BIGINT NULL,
+                                  `user_id` VARCHAR(50) NULL,
                                   `content` TEXT NOT NULL,
                                   `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
                                   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -357,7 +357,7 @@ CREATE TABLE `review_comment` (
 
 CREATE TABLE `review` (
                           `review_id` BIGINT NOT NULL AUTO_INCREMENT,
-                          `user_id` BIGINT NOT NULL,
+                          `user_id` VARCHAR(50) NOT NULL,
                           `product_id` BIGINT NOT NULL,
                           `purchase_id` VARCHAR(255) NOT NULL,
                           `rating` TINYINT NOT NULL CHECK (`rating` >= 1 AND `rating` <= 5),
@@ -473,7 +473,7 @@ CREATE TABLE `product` (
 CREATE TABLE `PAYMENT` (
                            `payment_id` BIGINT NOT NULL AUTO_INCREMENT,
                            `order_id` BIGINT NOT NULL,
-                           `user_id` BIGINT NULL,
+                           `user_id` VARCHAR(50) NULL,
                            `order_num` VARCHAR(50) NULL,
                            `paid_amount` DECIMAL(12,2) NULL,
                            `pay_type` VARCHAR(20) NULL COMMENT 'card, bank_transfer, virtual_account, mobile, kakao_pay, naver_pay, payco',
@@ -511,7 +511,7 @@ CREATE TABLE `Cart_Item` (
 
 CREATE TABLE `user_terms_agreement` (
                                         `agreement_id` BIGINT NOT NULL AUTO_INCREMENT,
-                                        `user_id` BIGINT NOT NULL,
+                                        `user_id` VARCHAR(50) NOT NULL,
                                         `terms_id` BIGINT NOT NULL,
                                         `agreed_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
                                         `ip_address` VARCHAR(45) NULL,
@@ -523,7 +523,7 @@ CREATE TABLE `user_terms_agreement` (
 
 CREATE TABLE `report` (
                           `report_id` BIGINT NOT NULL AUTO_INCREMENT,
-                          `user_id` BIGINT NOT NULL,
+                          `user_id` VARCHAR(50) NOT NULL,
                           `target_type` VARCHAR(20) NOT NULL DEFAULT 'review' COMMENT 'review, comment',
                           `target_id` BIGINT NOT NULL,
                           `reason` TEXT NOT NULL,
@@ -587,7 +587,7 @@ CREATE TABLE `handover` (
 ) ENGINE=InnoDB COMMENT='인수인계';
 
 CREATE TABLE `ADMIN_DETAIL` (
-                                `user_id` BIGINT NOT NULL,
+                                `user_id` VARCHAR(50) NOT NULL,
                                 `nickname` VARCHAR(255) NULL,
                                 PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB COMMENT='관리자 상세';
@@ -595,7 +595,7 @@ CREATE TABLE `ADMIN_DETAIL` (
 CREATE TABLE `review_like` (
                                `like_id` BIGINT NOT NULL AUTO_INCREMENT,
                                `review_id` BIGINT NOT NULL,
-                               `user_id` BIGINT NOT NULL,
+                               `user_id` VARCHAR(50) NOT NULL,
                                `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
                                PRIMARY KEY (`like_id`),
                                UNIQUE KEY `uk_review_like` (`review_id`, `user_id`),
@@ -630,7 +630,7 @@ CREATE TABLE `product_description_image` (
 
 CREATE TABLE `mileage_history` (
                                    `history_id` BIGINT NOT NULL AUTO_INCREMENT,
-                                   `user_id` BIGINT NOT NULL,
+                                   `user_id` VARCHAR(50) NOT NULL,
                                    `mileage_id` BIGINT NOT NULL,
                                    `reason_code` VARCHAR(255) NOT NULL,
                                    `related_order_id` BIGINT NULL,
@@ -649,7 +649,7 @@ CREATE TABLE `mileage_history` (
 
 CREATE TABLE `WISH_LIST` (
                              `wish_id` BIGINT NOT NULL AUTO_INCREMENT,
-                             `user_id` BIGINT NOT NULL,
+                             `user_id` VARCHAR(50) NOT NULL,
                              `product_id` BIGINT NOT NULL,
                              `added_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
                              PRIMARY KEY (`wish_id`),
@@ -672,7 +672,7 @@ CREATE TABLE `Shipment_related_code` (
 
 CREATE TABLE `LOGIN_HISTORY` (
                                  `id` BIGINT NOT NULL AUTO_INCREMENT,
-                                 `user_id` BIGINT NOT NULL,
+                                 `user_id` VARCHAR(50) NOT NULL,
                                  `ip` VARCHAR(45) NULL,
                                  `browser` VARCHAR(255) NULL,
                                  `nation` VARCHAR(100) NULL,
@@ -700,7 +700,7 @@ CREATE TABLE `lv2` (
 
 CREATE TABLE `mileage` (
                            `mileage_id` BIGINT NOT NULL AUTO_INCREMENT,
-                           `user_id` BIGINT NOT NULL,
+                           `user_id` VARCHAR(50) NOT NULL,
                            `total_earned` DECIMAL(10,2) NULL DEFAULT 0,
                            `total_used` DECIMAL(10,2) NULL DEFAULT 0,
                            `updated_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -741,7 +741,7 @@ CREATE TABLE `notice` (
                           `created_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
                           `updated_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                           `deleted_at` DATETIME NULL,
-                          `created_by` BIGINT NULL,
+                          `created_by` VARCHAR(50) NULL,
                           PRIMARY KEY (`notice_id`),
                           INDEX `idx_notice_category` (`category`, `is_active`),
                           INDEX `idx_notice_pinned` (`is_pinned`, `created_at`),
@@ -786,7 +786,7 @@ CREATE TABLE `DELIVERY_EXCEPTION` (
 ) ENGINE=InnoDB COMMENT='배송 예외';
 
 CREATE TABLE `refund_account` (
-                                  `user_id` BIGINT NOT NULL,
+                                  `user_id` VARCHAR(50) NOT NULL,
                                   `account_name` VARCHAR(255) NULL,
                                   `bank_name` VARCHAR(255) NULL,
                                   `account_num` VARCHAR(255) NULL,
