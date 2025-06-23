@@ -37,7 +37,7 @@ public class ProductViewController {
     public String productBySubCategory(@PathVariable("category") String category,
                                        @PathVariable("subCategory") String subCategory,
                                        Model model) {
-        List<ProductSummaryDto> productList = productService.getSummaryByCategory(category);
+        List<ProductSummaryDto> productList = productService.getSummaryByCategory(category, subCategory);
 
         model.addAttribute("title", category.toUpperCase());
         model.addAttribute("productList", productList);
