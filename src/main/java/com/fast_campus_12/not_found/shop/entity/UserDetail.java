@@ -18,5 +18,4 @@ public class UserDetail {
     private String phoneNumber;     // 전화번호
     private LocalDate birthDate;    // 생년월일
     private String gender;          // 성별
-//    private Integer jobCode;        // 직업 코드
 }

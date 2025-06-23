@@ -10,7 +10,6 @@ import com.fast_campus_12.not_found.shop.mapper.UserDetailMapper;
 import com.fast_campus_12.not_found.shop.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j; // 올바른 import
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.mindrot.jbcrypt.BCrypt;
@@ -27,7 +26,7 @@ public class UserService {
     private final UserMapper userMapper;
     private final UserDetailMapper userDetailMapper;
     private final UserAddressMapper userAddressMapper;
-    private UserDAO userDAO;
+    private final UserDAO userDAO;
 
     private static final int BCRYPT_ROUNDS = 12;
 

@@ -18,9 +18,6 @@ public interface UserMapper {
     @Select("SELECT EXISTS(SELECT 1 FROM USERS WHERE user_id = #{userId})")
     boolean existsByUserId(@Param("userId") String userId);
 
-    @Select("SELECT EXISTS(SELECT 1 FROM USERS WHERE email = #{email})")
-    boolean existsByEmail(@Param("email") String email);
-
     @Insert("INSERT INTO USERS (user_id, password, is_activate, created_at, updated_at, role, is_deleted, deleted_at) " +
             "VALUES (#{userId}, #{password}, #{isActivate}, #{createdAt}, #{updatedAt}, #{role}, #{isDeleted}, #{deletedAt})")
     void insertUser(User user);
