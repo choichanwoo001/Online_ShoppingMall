@@ -77,6 +77,19 @@ dependencies {
     // thymeleaf
     implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.1.0'
 
+    // Jackson for JSON
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.15.2'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.15.2'
+
+    // Spring Context Support (JavaMail 지원)
+    implementation 'org.springframework:spring-context-support:6.1.6' // 버전 맞추기
+
+    // JavaMail
+    implementation 'com.sun.mail:jakarta.mail:2.0.1' // jakarta.mail 사용
+
+    // jBCrypt 라이브러리(passwordEncoder)
+    implementation 'org.mindrot:jbcrypt:0.4'
 }
 
     
