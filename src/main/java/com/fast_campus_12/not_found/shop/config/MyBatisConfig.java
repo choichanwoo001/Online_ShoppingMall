@@ -5,12 +5,14 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
 
 @Configuration
-@PropertySource("classpath:db.properties")
+@PropertySource("classpath:db-railway.properties")
 @MapperScan("com.fast_campus_12.not_found.shop.mapper")
 public class MyBatisConfig {
 
@@ -41,7 +43,10 @@ public class MyBatisConfig {
         SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
         factoryBean.setDataSource(dataSource);
 
-        // Mapper XML 없이 인터페이스 기반으로 사용 → 별도 mapperLocations 생략
+        // XML 쿼리 등록
+        Resource[] resources = new PathMatchingResourcePatternResolver()
+                .getResources("classpath:/mapper/**/*.xml");
+        factoryBean.setMapperLocations(resources);
 
         return factoryBean.getObject();
     }
