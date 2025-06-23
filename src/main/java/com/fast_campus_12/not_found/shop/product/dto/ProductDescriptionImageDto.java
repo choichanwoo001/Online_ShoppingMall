@@ -1,5 +1,6 @@
 package com.fast_campus_12.not_found.shop.product.dto;
 
+import com.fast_campus_12.not_found.shop.product.model.ImageFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,4 +18,5 @@ public class ProductDescriptionImageDto {
     private String showDevice;
     private String url;
     private Integer renderPriority;
+    private ImageFormat format;
 }

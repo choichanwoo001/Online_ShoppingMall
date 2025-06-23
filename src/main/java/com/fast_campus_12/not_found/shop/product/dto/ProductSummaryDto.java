@@ -6,6 +6,7 @@ import lombok.*;
 @Getter
 @Builder
 public class ProductSummaryDto {
+
     private Long id;
     private String title;
     private String thumbnail;
