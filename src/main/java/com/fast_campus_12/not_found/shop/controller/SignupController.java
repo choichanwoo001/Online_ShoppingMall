@@ -5,9 +5,9 @@ import com.fast_campus_12.not_found.shop.dto.SignupRequest;
 import com.fast_campus_12.not_found.shop.dto.ApiResponse;
 import com.fast_campus_12.not_found.shop.service.UserService;
 import com.fast_campus_12.not_found.shop.service.EmailService;
-import groovy.util.logging.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,20 +19,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
+@RequiredArgsConstructor
 @Controller
 public class SignupController {
-    private static final Logger logger = LoggerFactory.getLogger(SignupController.class);
-
     private final UserService userService;
     private final EmailService emailService;
     private final UserDAO userDAO;
-
-    @Autowired
-    public SignupController(UserService userService, EmailService emailService, UserDAO userDAO) {
-        this.userService = userService;
-        this.emailService = emailService;
-        this.userDAO = userDAO;
-    }
     /**
      * 회원가입 페이지 표시
      */
@@ -55,13 +47,13 @@ public class SignupController {
 
 
             // 입력값 디버깅
-            logger.debug("=== 중복확인 디버깅 시작 ===");
-            logger.debug("받은 userId: [{}]", userId);
-            logger.debug("userId 길이: {}", userId != null ? userId.length() : "null");
+            log.debug("=== 중복확인 디버깅 시작 ===");
+            log.debug("받은 userId: [{}]", userId);
+            log.debug("userId 길이: {}", userId != null ? userId.length() : "null");
 
             // 유효성 검사
             if (userId == null || userId.trim().isEmpty()) {
-                logger.debug("❌ userId가 비어있음");
+                log.debug("❌ userId가 비어있음");
                 return new ResponseEntity<ApiResponse>(
                         new ApiResponse(false, "아이디를 입력해주세요.", null),
                         HttpStatus.BAD_REQUEST);
@@ -72,24 +64,24 @@ public class SignupController {
                         new ApiResponse(false, "영문+숫자 혼용 4~16자로 입력해주세요.", null),
                         HttpStatus.BAD_REQUEST);
             }
-            logger.debug("✅ 유효성 검사 통과");
+            log.debug("✅ 유효성 검사 통과");
 
             boolean isAvailable = userService.isUserIdAvailable(userId);
-            logger.debug("DB 조회 결과 - 사용가능: {}", isAvailable);
+            log.debug("DB 조회 결과 - 사용가능: {}", isAvailable);
 
             Map<String, Object> data = new HashMap<String, Object>();
             data.put("available", isAvailable);
 
-            logger.debug("=== 중복확인 성공 ===");
+            log.debug("=== 중복확인 성공 ===");
             return new ResponseEntity<ApiResponse>(
                     new ApiResponse(true, "조회 완료", data),
                     HttpStatus.OK);
 
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("❌ 중복확인 중 예외 발생", e);
-            logger.error("예외 타입: {}", e.getClass().getSimpleName());
-            logger.error("예외 메시지: {}", e.getMessage());
+            log.error("❌ 중복확인 중 예외 발생", e);
+            log.error("예외 타입: {}", e.getClass().getSimpleName());
+            log.error("예외 메시지: {}", e.getMessage());
             return new ResponseEntity<ApiResponse>(
                     new ApiResponse(false, "서버 오류가 발생했습니다.", null),
                     HttpStatus.INTERNAL_SERVER_ERROR);
@@ -147,13 +139,13 @@ public class SignupController {
         String email = request.get("email");
         String code = request.get("code");
 
-        logger.debug("=== 이메일 인증 확인 ===");
-        logger.debug("email: {}, code: {}", email, code);
+        log.debug("=== 이메일 인증 확인 ===");
+        log.debug("email: {}, code: {}", email, code);
 
         try {
 
             boolean isVerified = emailService.verifyEmailCode(email, code);
-            logger.debug("인증 결과: {}", isVerified);
+            log.debug("인증 결과: {}", isVerified);
 
             Map<String, Object> data = new HashMap<String, Object>();
             data.put("verified", isVerified);

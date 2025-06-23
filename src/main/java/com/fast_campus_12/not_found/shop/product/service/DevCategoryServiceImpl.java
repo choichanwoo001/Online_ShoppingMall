@@ -2,20 +2,23 @@ package com.fast_campus_12.not_found.shop.product.service;
 
 import com.fast_campus_12.not_found.shop.mapper.CategoryMapper;
 import com.fast_campus_12.not_found.shop.product.dto.CategoryMenuDto;
+import com.fast_campus_12.not_found.shop.product.dto.FlatSubCategoryDto;
+import com.fast_campus_12.not_found.shop.product.dto.SubCategoryDto;
 import com.fast_campus_12.not_found.shop.product.model.Lv1Category;
 import com.fast_campus_12.not_found.shop.product.model.Lv2Category;
-import groovy.util.logging.Slf4j;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@lombok.extern.slf4j.Slf4j
 @Service
 @Profile("dev")
 @RequiredArgsConstructor
@@ -27,37 +30,33 @@ public class DevCategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public List<CategoryMenuDto> getCategoryMenus() {
-        log.info("Generating category menus");
-        long start = System.currentTimeMillis();
         List<Lv1Category> categories = categoryMapper.getLv1CategoriesWithLv2();
 
         List<CategoryMenuDto> dynamicMenus = toCategoryMenuDtoList(categories);
         List<CategoryMenuDto> fixedMenus = getPredefinedMenus();
-
-
-        long end = System.currentTimeMillis();
-        log.info("Success to generate category menus in {} ms", end - start);
 
         return Stream.concat(fixedMenus.stream(), dynamicMenus.stream())
                 .sorted(Comparator.comparingInt(CategoryMenuDto::getPriority))
                 .collect(Collectors.toList());
     }
 
-//    private List<CategoryMenuDto> generateDummyCategoryMenus() {
-//        return List.of(
-//                CategoryMenuDto.builder().categoryName("BEST").categoryLink("/product/category/best").priority(0).build(),
-//                CategoryMenuDto.builder().categoryName("NEW").categoryLink("/product/category/new").priority(1).build(),
-//                CategoryMenuDto.builder().categoryName("OUTER").categoryLink("/product/category/outer").priority(2).build(),
-//                CategoryMenuDto.builder().categoryName("TOP").categoryLink("/product/category/top").priority(3).build(),
-//                CategoryMenuDto.builder().categoryName("KNIT").categoryLink("/product/category/knit").priority(4).build(),
-//                CategoryMenuDto.builder().categoryName("SHIRTS").categoryLink("/product/category/shirts").priority(5).build(),
-//                CategoryMenuDto.builder().categoryName("PANTS").categoryLink("/product/category/pants").priority(6).build(),
-//                CategoryMenuDto.builder().categoryName("SHOES").categoryLink("/product/category/shoes").priority(7).build(),
-//                CategoryMenuDto.builder().categoryName("BAG").categoryLink("/product/category/bag").priority(8).build(),
-//                CategoryMenuDto.builder().categoryName("ACC").categoryLink("/product/category/acc").priority(9).build(),
-//                CategoryMenuDto.builder().categoryName("SALE").categoryLink("/product/category/sale").priority(10).build()
-//        );
-//    }
+    @Override
+    public Map<String, List<SubCategoryDto>> getSubCategoryMenus() {
+        List<FlatSubCategoryDto> flat = categoryMapper.getAllSubCategoriesGroupedByLv2();
+
+        return flat.stream()
+                .collect(Collectors.groupingBy(
+                        FlatSubCategoryDto::getLv2Name,
+                        LinkedHashMap::new,
+                        Collectors.mapping(
+                                row -> SubCategoryDto.builder()
+                                        .categoryName(row.getCategoryName())
+                                        .link(row.getLink())
+                                        .build(),
+                                Collectors.toList()
+                        )
+                ));
+    }
 
     private List<CategoryMenuDto> getPredefinedMenus() {
         return List.of(

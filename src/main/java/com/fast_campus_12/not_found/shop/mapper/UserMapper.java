@@ -25,12 +25,6 @@ public interface UserMapper {
             "VALUES (#{userId}, #{password}, #{isActivate}, #{createdAt}, #{updatedAt}, #{role}, #{isDeleted}, #{deletedAt})")
     void insertUser(User user);
 
-    @Update("UPDATE USERS SET password = #{password}, updated_at = #{updatedAt} WHERE user_id = #{userId}")
-    void updateUserPassword(User user);
-
-    @Select("SELECT * FROM USERS WHERE user_id = #{userId}")
-    User findByUserId(@Param("userId") String userId);
-
 //    @Insert("INSERT INTO default_user_address " +
 //            "(user_id, road_address_1, road_address_2, jibun_address, detail_address, english_address, zip_code, address_name) " +
 //            "VALUES (#{userId}, #{roadAddress1}, #{roadAddress2}, #{jibunAddress}, #{detailAddress}, #{englishAddress}, #{zipCode}, #{addressName})")
