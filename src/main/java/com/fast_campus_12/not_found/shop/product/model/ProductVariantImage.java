@@ -26,10 +26,10 @@ public class ProductVariantImage {
     private LocalDateTime createdAt;
 }
 
-enum ImageFormat {
+public enum ImageFormat {
     JPG, PNG, WEBP
 }
 
-enum ImageType {
+public enum ImageType {
     MAIN, FRONT, BACK, SIDE, ZOOM
 }

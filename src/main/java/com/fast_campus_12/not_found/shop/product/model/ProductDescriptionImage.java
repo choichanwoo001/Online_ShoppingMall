@@ -21,7 +21,3 @@ public class ProductDescriptionImage {
 
     private BigInteger productId;
 }
-
-enum ImageFormat {
-    JPG, PNG, WEBP
-}

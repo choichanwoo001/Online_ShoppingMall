@@ -21,6 +21,6 @@ public class Model {
     private Boolean isActive;
 }
 
-enum Gender {
+public enum Gender {
     M, F
 }
