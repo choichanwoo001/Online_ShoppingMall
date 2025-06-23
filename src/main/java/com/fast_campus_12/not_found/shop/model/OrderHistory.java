@@ -5,7 +5,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class OrderHistoryModel {
+public class OrderHistory {
     private Long historyId;
     private Long orderId;
     private String status;

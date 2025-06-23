@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class OrderModel {
+public class Order {
         private Long orderId;
         private String loginId;
         private Long userCouponId;
