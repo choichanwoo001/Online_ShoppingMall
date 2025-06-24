@@ -22,16 +22,8 @@ public class DevProductServiceImpl implements ProductService {
     private final ProductDynamicQueryMapper productDynamicQueryMapper;
 
     @Override
-    public List<ProductSummaryDto> getSummaryByCategory(String lv2CategoryName) {
-
-        List<Product> productList = productDynamicQueryMapper.findProductListByCategory(lv2CategoryName, null);
-        return toSummaryDtoList(productList);
-
-    }
-
-    @Override
-    public List<ProductSummaryDto> getSummaryByCategory(String lv2CategoryName, String lv3CategoryName) {
-        List<Product> productList = productDynamicQueryMapper.findProductListByCategory(lv2CategoryName, lv3CategoryName);
+    public List<ProductSummaryDto> getSummaryByCategory(String lv2CategoryName, String lv3CategoryName, int offset, int limit) {
+        List<Product> productList = productDynamicQueryMapper.findProductListByCategory(lv2CategoryName, lv3CategoryName, offset, limit);
         return toSummaryDtoList(productList);
     }
 
