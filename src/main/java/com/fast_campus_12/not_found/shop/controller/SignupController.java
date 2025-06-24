@@ -24,6 +24,7 @@ public class SignupController {
     private final UserService userService;
     private final EmailService emailService;
     private final UserDAO userDAO;
+
     /**
      * 회원가입 페이지 표시
      */
@@ -42,17 +43,16 @@ public class SignupController {
     public ResponseEntity<ApiResponse> checkDuplicateId(@RequestBody Map<String, String> request) {
 
         try {
-            String userId = request.get("userId");
-
+            String userId = request.get("userId");  // 실제로는 LOGIN_ID
 
             // 입력값 디버깅
-            log.debug("=== 중복확인 디버깅 시작 ===");
-            log.debug("받은 userId: [{}]", userId);
-            log.debug("userId 길이: {}", userId != null ? userId.length() : "null");
+            log.debug("=== LOGIN_ID 중복확인 디버깅 시작 ===");
+            log.debug("받은 loginId: [{}]", userId);
+            log.debug("loginId 길이: {}", userId != null ? userId.length() : "null");
 
             // 유효성 검사
             if (userId == null || userId.trim().isEmpty()) {
-                log.debug("❌ userId가 비어있음");
+                log.debug("❌ loginId가 비어있음");
                 return new ResponseEntity<ApiResponse>(
                         new ApiResponse(false, "아이디를 입력해주세요.", null),
                         HttpStatus.BAD_REQUEST);
@@ -65,13 +65,14 @@ public class SignupController {
             }
             log.debug("✅ 유효성 검사 통과");
 
+            // LOGIN_ID 중복 확인
             boolean isAvailable = userService.isUserIdAvailable(userId);
             log.debug("DB 조회 결과 - 사용가능: {}", isAvailable);
 
             Map<String, Object> data = new HashMap<String, Object>();
             data.put("available", isAvailable);
 
-            log.debug("=== 중복확인 성공 ===");
+            log.debug("=== LOGIN_ID 중복확인 성공 ===");
             return new ResponseEntity<ApiResponse>(
                     new ApiResponse(true, "조회 완료", data),
                     HttpStatus.OK);
@@ -176,11 +177,12 @@ public class SignupController {
                         HttpStatus.BAD_REQUEST);
             }
 
-            // 회원가입 처리
-            String userId = userService.signup(request);
+            // 회원가입 처리 (PK 반환)
+            Long userPkId = userService.signup(request);
 
             Map<String, Object> data = new HashMap<String, Object>();
-            data.put("userId", userId);
+            data.put("userId", request.getUserId());  // 화면에는 LOGIN_ID 반환
+            data.put("userPkId", userPkId);          // 내부적으로는 PK도 반환
 
             return new ResponseEntity<ApiResponse>(
                     new ApiResponse(true, "회원가입이 완료되었습니다.", data),

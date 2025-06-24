@@ -1,5 +1,6 @@
 package com.fast_campus_12.not_found.shop.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
@@ -25,6 +26,7 @@ public class WishlistItemDto {
     private Integer reviewCount;
     private String tags;
     private String categoryName;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime addedAt;
     private Boolean enabled;
 }
