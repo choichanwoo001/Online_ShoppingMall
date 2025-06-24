@@ -161,7 +161,8 @@ CREATE TABLE `PRODUCT_SNAPSHOT` (
 ) ENGINE=InnoDB COMMENT='상품 스냅샷';
 
 CREATE TABLE `USERS` (
-                         `user_id` VARCHAR(50) NOT NULL,
+                         `user_id` BIGINT NOT NULL AUTO_INCREMENT,
+                         `login_id` VARCHAR(30) NOT NULL UNIQUE,
                          `password` VARCHAR(255) NULL,
                          `is_activate` TINYINT(1) NULL DEFAULT 1,
                          `created_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
@@ -170,6 +171,7 @@ CREATE TABLE `USERS` (
                          `role` VARCHAR(20) NULL DEFAULT 'USER' COMMENT 'ADMIN, USER',
                          `is_deleted` TINYINT(1) NULL DEFAULT 0,
                          PRIMARY KEY (`user_id`),
+                         UNIQUE KEY `uk_users_login_id` (`login_id`),
                          INDEX `idx_users_role` (`role`),
                          INDEX `idx_users_active` (`is_activate`, `is_deleted`)
 ) ENGINE=InnoDB COMMENT='사용자';
@@ -440,7 +442,7 @@ CREATE TABLE `COUPON` (
 
 CREATE TABLE `product` (
                            `product_id` BIGINT NOT NULL AUTO_INCREMENT,
-                           `lv3_id` VARCHAR(8) NOT NULL,
+                           `lv3_id` VARCHAR(2) NOT NULL,
                            `title` VARCHAR(200) NOT NULL,
                            `price` DECIMAL(10,2) NOT NULL,
                            `discount_price` DECIMAL(10,2) NULL,
@@ -536,18 +538,7 @@ CREATE TABLE `report` (
                           INDEX `idx_report_state` (`state`, `created_at`)
 ) ENGINE=InnoDB COMMENT='신고';
 
-CREATE TABLE `CopyOfORDER_HISTORY` (
-                                       `history_id` BIGINT NOT NULL AUTO_INCREMENT,
-                                       `status` VARCHAR(50) NULL,
-                                       `comment` TEXT NULL,
-                                       `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-                                       `created_by` VARCHAR(255) NULL,
-                                       `payment_id` BIGINT NOT NULL,
-                                       `id2` BIGINT NOT NULL,
-                                       PRIMARY KEY (`history_id`),
-                                       INDEX `idx_copy_order_history_payment` (`payment_id`),
-                                       INDEX `idx_copy_order_history_id2` (`id2`)
-) ENGINE=InnoDB;
+
 
 CREATE TABLE `Shipment` (
                             `shipment_id` VARCHAR(50) NOT NULL,
@@ -697,8 +688,8 @@ CREATE TABLE `LOGIN_HISTORY` (
 ) ENGINE=InnoDB COMMENT='로그인 이력';
 
 CREATE TABLE `lv2` (
-                       `lv2_id` VARCHAR(8) NOT NULL,
-                       `lv1_id` VARCHAR(8) NOT NULL,
+                       `lv2_id` VARCHAR(2) NOT NULL,
+                       `lv1_id` VARCHAR(2) NOT NULL,
                        `name` VARCHAR(100) NULL,
                        `sort_order` INT NULL DEFAULT 0,
                        `is_active` CHAR(1) NULL DEFAULT 'Y',
@@ -718,8 +709,8 @@ CREATE TABLE `mileage` (
 ) ENGINE=InnoDB COMMENT='마일리지';
 
 CREATE TABLE `lv3` (
-                       `lv3_id` VARCHAR(8) NOT NULL,
-                       `lv2_id` VARCHAR(8) NOT NULL,
+                       `lv3_id` VARCHAR(2) NOT NULL,
+                       `lv2_id` VARCHAR(2) NOT NULL,
                        `name` VARCHAR(100) NULL,
                        `sort_order` INT NULL DEFAULT 0,
                        `is_active` CHAR(1) NULL DEFAULT 'Y',
@@ -728,17 +719,10 @@ CREATE TABLE `lv3` (
                        INDEX `idx_lv3_active` (`is_active`, `sort_order`)
 ) ENGINE=InnoDB COMMENT='3단계 카테고리';
 
-CREATE TABLE `CopyOfspecial_section` (
-                                         `special_id` VARCHAR(2) NOT NULL,
-                                         `product_id` BIGINT NOT NULL,
-                                         `special_id2` VARCHAR(2) NOT NULL,
-                                         PRIMARY KEY (`special_id`),
-                                         INDEX `idx_copy_special_product` (`product_id`),
-                                         INDEX `idx_copy_special_id2` (`special_id2`)
-) ENGINE=InnoDB;
+
 
 CREATE TABLE `lv1` (
-                       `lv1_id` VARCHAR(8) NOT NULL,
+                       `lv1_id` VARCHAR(2) NOT NULL,
                        `name` VARCHAR(100) NULL,
                        `sort_order` INT NULL DEFAULT 0,
                        `is_active` CHAR(1) NULL DEFAULT 'Y',
@@ -856,8 +840,6 @@ ALTER TABLE `Cart_Item` ADD CONSTRAINT `FK_product_variant_TO_Cart_Item_1` FOREI
 ALTER TABLE `user_terms_agreement` ADD CONSTRAINT `FK_USERS_TO_user_terms_agreement_1` FOREIGN KEY (`user_id`) REFERENCES `USERS` (`user_id`);
 ALTER TABLE `user_terms_agreement` ADD CONSTRAINT `FK_terms_TO_user_terms_agreement_1` FOREIGN KEY (`terms_id`) REFERENCES `terms` (`terms_id`);
 ALTER TABLE `report` ADD CONSTRAINT `FK_USERS_TO_report_1` FOREIGN KEY (`user_id`) REFERENCES `USERS` (`user_id`);
-ALTER TABLE `CopyOfORDER_HISTORY` ADD CONSTRAINT `FK_PAYMENT_TO_CopyOfORDER_HISTORY_1` FOREIGN KEY (`payment_id`) REFERENCES `PAYMENT` (`payment_id`);
-ALTER TABLE `CopyOfORDER_HISTORY` ADD CONSTRAINT `FK_pay_status_code_TO_CopyOfORDER_HISTORY_1` FOREIGN KEY (`id2`) REFERENCES `pay_status_code` (`pay_status_id`);
 ALTER TABLE `Shipment` ADD CONSTRAINT `FK_ORDERS_TO_Shipment_1` FOREIGN KEY (`order_id`) REFERENCES `ORDERS` (`order_id`);
 ALTER TABLE `Shipment` ADD CONSTRAINT `FK_handover_TO_Shipment_1` FOREIGN KEY (`handover_id`) REFERENCES `handover` (`handover_id`);
 ALTER TABLE `Shipment` ADD CONSTRAINT `FK_Delivery_Company_API_TO_Shipment_1` FOREIGN KEY (`delivery_company_id`) REFERENCES `Delivery_Company_API` (`delivery_company_id`);
@@ -878,8 +860,6 @@ ALTER TABLE `LOGIN_HISTORY` ADD CONSTRAINT `FK_USERS_TO_LOGIN_HISTORY_1` FOREIGN
 ALTER TABLE `lv2` ADD CONSTRAINT `FK_lv1_TO_lv2_1` FOREIGN KEY (`lv1_id`) REFERENCES `lv1` (`lv1_id`);
 ALTER TABLE `mileage` ADD CONSTRAINT `FK_USERS_TO_mileage_1` FOREIGN KEY (`user_id`) REFERENCES `USERS` (`user_id`);
 ALTER TABLE `lv3` ADD CONSTRAINT `FK_lv2_TO_lv3_1` FOREIGN KEY (`lv2_id`) REFERENCES `lv2` (`lv2_id`);
-ALTER TABLE `CopyOfspecial_section` ADD CONSTRAINT `FK_product_TO_CopyOfspecial_section_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`);
-ALTER TABLE `CopyOfspecial_section` ADD CONSTRAINT `FK_special_section_TO_CopyOfspecial_section_1` FOREIGN KEY (`special_id2`) REFERENCES `special_section` (`special_id`);
 ALTER TABLE `notice` ADD CONSTRAINT `FK_ADMIN_DETAIL_TO_notice_1` FOREIGN KEY (`created_by`) REFERENCES `ADMIN_DETAIL` (`user_id`);
 ALTER TABLE `Exchange` ADD CONSTRAINT `FK_Return_TO_Exchange_1` FOREIGN KEY (`return_id`) REFERENCES `Return` (`return_id`);
 ALTER TABLE `Exchange` ADD CONSTRAINT `FK_ORDERS_TO_Exchange_1` FOREIGN KEY (`original_order_id`) REFERENCES `ORDERS` (`order_id`);
