@@ -13,44 +13,58 @@ import java.util.List;
 public interface CategoryMapper {
 
     // Lv1 조회
-    @Select("SELECT * FROM lv1 WHERE is_active = 'Y' ORDER BY sort_order")
+    @Select("""
+        SELECT * 
+        FROM CATEGORY_LV1 
+        WHERE IS_ACTIVE = 'Y' 
+        ORDER BY SORT_ORDER
+    """)
     List<Lv1Category> getLv1Categories();
 
+    // Lv2 기준으로 Lv3를 묶어 조회
     @Select("""
-    SELECT 
-        l2.name AS lv2Name,
-        l3.name AS categoryName,
-        CONCAT('/product/category/', l2.name, '/', l3.name) AS link
-    FROM lv3 l3
-    JOIN lv2 l2 ON l3.lv2_id = l2.lv2_id
-    WHERE l2.is_active = 'Y'
-      AND l3.is_active = 'Y'
-    ORDER BY l2.sort_order, l3.sort_order
-""")
+        SELECT 
+            l2.NAME AS lv2Name,
+            l3.NAME AS categoryName,
+            CONCAT('/product/category/', l2.NAME, '/', l3.NAME) AS link
+        FROM CATEGORY_LV3 l3
+        JOIN CATEGORY_LV2 l2 ON l3.CATEGORY_LV2_ID = l2.CATEGORY_LV2_ID
+        WHERE l2.IS_ACTIVE = 'Y'
+          AND l3.IS_ACTIVE = 'Y'
+        ORDER BY l2.SORT_ORDER, l3.SORT_ORDER
+    """)
     List<FlatSubCategoryDto> getAllSubCategoriesGroupedByLv2();
 
-    @Select("SELECT * FROM lv1 WHERE is_active = 'Y' ORDER BY sort_order")
+    // Lv1 + Lv2 트리 구조 조회
+    @Select("""
+        SELECT * 
+        FROM CATEGORY_LV1 
+        WHERE IS_ACTIVE = 'Y' 
+        ORDER BY SORT_ORDER
+    """)
     @Results(id = "lv1WithLv2Map", value = {
-            @Result(column = "lv1_id", property = "lv1Id"),
-            @Result(column = "name", property = "name"),
-            @Result(column = "sort_order", property = "sortOrder"),
-            @Result(column = "is_active", property = "isActive"),
-            @Result(property = "children", column = "lv1_id",
+            @Result(column = "CATEGORY_LV1_ID", property = "lv1Id"),
+            @Result(column = "NAME", property = "name"),
+            @Result(column = "SORT_ORDER", property = "sortOrder"),
+            @Result(column = "IS_ACTIVE", property = "isActive"),
+            @Result(property = "children", column = "CATEGORY_LV1_ID",
                     many = @Many(select = "getLv2ByLv1"))
     })
     List<Lv1Category> getLv1CategoriesWithLv2();
 
-
-    @Select("SELECT * FROM lv2 WHERE lv1_id = #{lv1Id} AND is_active = 'Y' ORDER BY sort_order")
+    @Select("""
+        SELECT * 
+        FROM CATEGORY_LV2 
+        WHERE CATEGORY_LV1_ID = #{lv1Id} 
+          AND IS_ACTIVE = 'Y' 
+        ORDER BY SORT_ORDER
+    """)
     @Results(id = "lv2Map", value = {
-            @Result(column = "lv2_id", property = "lv2Id"),
-            @Result(column = "lv1_id", property = "lv1Id"),
-            @Result(column = "name", property = "name"),
-            @Result(column = "sort_order", property = "sortOrder"),
-            @Result(column = "is_active", property = "isActive")
+            @Result(column = "CATEGORY_LV2_ID", property = "lv2Id"),
+            @Result(column = "CATEGORY_LV1_ID", property = "lv1Id"),
+            @Result(column = "NAME", property = "name"),
+            @Result(column = "SORT_ORDER", property = "sortOrder"),
+            @Result(column = "IS_ACTIVE", property = "isActive")
     })
     List<Lv2Category> getLv2ByLv1(String lv1Id);
-
-
-
 }

@@ -18,12 +18,15 @@ public interface UserMapper {
     @Select("SELECT EXISTS(SELECT 1 FROM USERS WHERE user_id = #{userId})")
     boolean existsByUserId(@Param("userId") String userId);
 
-    @Select("SELECT EXISTS(SELECT 1 FROM USERS WHERE email = #{email})")
-    boolean existsByEmail(@Param("email") String email);
-
     @Insert("INSERT INTO USERS (user_id, password, is_activate, created_at, updated_at, role, is_deleted, deleted_at) " +
             "VALUES (#{userId}, #{password}, #{isActivate}, #{createdAt}, #{updatedAt}, #{role}, #{isDeleted}, #{deletedAt})")
     void insertUser(User user);
+
+    @Update("UPDATE USERS SET password = #{password}, updated_at = #{updatedAt} WHERE user_id = #{userId}")
+    void updateUserPassword(User user);
+
+    @Select("SELECT * FROM USERS WHERE user_id = #{userId}")
+    User findByUserId(@Param("userId") String userId);
 
 //    @Insert("INSERT INTO default_user_address " +
 //            "(user_id, road_address_1, road_address_2, jibun_address, detail_address, english_address, zip_code, address_name) " +
