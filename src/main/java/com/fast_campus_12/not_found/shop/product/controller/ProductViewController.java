@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.math.BigInteger;
 import java.util.List;
 
 @Controller
@@ -17,6 +18,14 @@ import java.util.List;
 public class ProductViewController {
 
     private final ProductService productService;
+
+
+    @GetMapping("/{id}")
+    public String productDetails(@PathVariable("id") String id, Model model) {
+        model.addAttribute("contentPath", "product/productDetail");
+        model.addAttribute("product", productService.getProductDetailDto(new BigInteger(id)));
+        return "layout/base";
+    }
 
     // 카테고리 목록 (ex: /product/category/top)
     @GetMapping("/category/{category}")

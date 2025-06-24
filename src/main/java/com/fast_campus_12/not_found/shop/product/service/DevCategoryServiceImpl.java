@@ -31,7 +31,6 @@ public class DevCategoryServiceImpl implements CategoryService {
     @Transactional
     public List<CategoryMenuDto> getCategoryMenus() {
         List<Lv1Category> categories = categoryMapper.getLv1CategoriesWithLv2();
-
         List<CategoryMenuDto> dynamicMenus = toCategoryMenuDtoList(categories);
         List<CategoryMenuDto> fixedMenus = getPredefinedMenus();
 

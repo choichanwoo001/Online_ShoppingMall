@@ -34,11 +34,11 @@ public class PageController {
     }
 
     //url : localhost:8080/product/aa 로 테스트 각자 매핑 필요
-    @GetMapping("/product/{subCategory}")
-    public String renderCategoryPage(@PathVariable("subCategory") String subCategory, Model model) {
-        model.addAttribute("subCategory", subCategory);
-        model.addAttribute("contentPath", "product/productList");
-        return "layout/base";
-    }
+//    @GetMapping("/product/{subCategory}")
+//    public String renderCategoryPage(@PathVariable("subCategory") String subCategory, Model model) {
+//        model.addAttribute("subCategory", subCategory);
+//        model.addAttribute("contentPath", "product/productList");
+//        return "layout/base";
+//    }
 
 }
