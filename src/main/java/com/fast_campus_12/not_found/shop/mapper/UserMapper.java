@@ -28,16 +28,6 @@ public interface UserMapper {
             "DELETED_AT as deletedAt, ROLE as role, IS_DELETED as isDeleted " +
             "FROM USERS WHERE LOGIN_ID = #{loginId}")
     User findByLoginId(@Param("loginId") String loginId);
-
-    /**
-     * USER_ID(PK)로 사용자 조회
-     */
-    @Select("SELECT USER_ID as userId, LOGIN_ID as loginId, PASSWORD as password, " +
-            "IS_ACTIVATE as isActivate, CREATED_AT as createdAt, UPDATED_AT as updatedAt, " +
-            "DELETED_AT as deletedAt, ROLE as role, IS_DELETED as isDeleted " +
-            "FROM USERS WHERE USER_ID = #{userId}")
-    User findByUserId(@Param("userId") Long userId);
-
     /**
      * 비밀번호 업데이트
      */
@@ -68,16 +58,4 @@ public interface UserMapper {
             "IS_DELETED = #{isDeleted}, UPDATED_AT = CURRENT_TIMESTAMP " +
             "WHERE USER_ID = #{userId}")
     int updateUser(User user);
-
-    /**
-     * 사용자 삭제 (물리적 삭제)
-     */
-    @Delete("DELETE FROM USERS WHERE USER_ID = #{userId}")
-    int deleteUser(@Param("userId") Long userId);
-
-    /**
-     * 사용자 활성화 상태 변경
-     */
-    @Update("UPDATE USERS SET IS_ACTIVATE = #{isActive}, UPDATED_AT = CURRENT_TIMESTAMP WHERE USER_ID = #{userId}")
-    int updateUserStatus(@Param("userId") Long userId, @Param("isActive") Boolean isActive);
 }

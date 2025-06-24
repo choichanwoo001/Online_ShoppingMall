@@ -95,7 +95,7 @@ public class UserEditController {
                 return ResponseEntity.status(403).body(response);
             }
 
-            // 유효성 검사 (내부적으로 LOGIN_ID → PK 변환도 수행됨)
+            // 유효성 검사
             Map<String, String> errors = userService.validateUserUpdateRequest(request);
             if (!errors.isEmpty()) {
                 response.put("success", false);

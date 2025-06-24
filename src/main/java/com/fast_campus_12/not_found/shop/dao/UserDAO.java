@@ -37,13 +37,6 @@ public class UserDAO {
     }
 
     /**
-     * USER_ID(PK)로 사용자 조회
-     */
-    public User findByUserId(Long userId) {
-        return userMapper.findByUserId(userId);
-    }
-
-    /**
      * 이메일로 사용자 조회 (UserDetail 테이블에서)
      */
     public User selectByEmail(String email) {
@@ -55,20 +48,6 @@ public class UserDAO {
      */
     public int updateUser(User user) {
         return userMapper.updateUser(user);
-    }
-
-    /**
-     * 사용자 삭제
-     */
-    public int deleteUser(Long userId) {
-        return userMapper.deleteUser(userId);
-    }
-
-    /**
-     * 사용자 활성화 상태 변경
-     */
-    public int updateUserStatus(Long userId, Boolean isActive) {
-        return userMapper.updateUserStatus(userId, isActive);
     }
 
     /**
