@@ -243,6 +243,8 @@ public class UserService {
         try {
             // USERS 테이블에서 기본 정보 조회
             User user = userMapper.findByUserId(userId);
+            log.debug("DB에서 조회된 유저: {}", user); // ★ 로그 추가
+
             if (user == null) {
                 throw new RuntimeException("사용자를 찾을 수 없습니다.");
             }

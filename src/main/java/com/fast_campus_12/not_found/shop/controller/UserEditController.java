@@ -27,7 +27,7 @@ public class UserEditController {
     @GetMapping("/user/{pageName}")
     public String userEditPage(@PathVariable("pageName") String pageName, Model model) {
         model.addAttribute("title", "회원정보-수정");
-        model.addAttribute("contentPath", "signup/user-edit" + pageName); // signup/basic 등
+        model.addAttribute("contentPath", "signup/" + pageName); // signup/basic 등
         return "layout/base";
     }
 
@@ -40,13 +40,16 @@ public class UserEditController {
         Map<String, Object> response = new HashMap<>();
 
         try {
-            // 세션에서 사용자 ID 가져오기
-            String userId = (String) session.getAttribute("userId");
-            if (userId == null) {
-                response.put("success", false);
-                response.put("message", "로그인이 필요합니다.");
-                return ResponseEntity.status(401).body(response);
-            }
+            // 세션에서 사용자 ID 가져오기'
+            String userId = "Choi3495";
+            session.setAttribute("userId", userId); // ★ 이 줄 추가
+
+//            String userId = (String) session.getAttribute("userId");
+//            if (userId == null) {
+//                response.put("success", false);
+//                response.put("message", "로그인이 필요합니다.");
+//                return ResponseEntity.status(401).body(response);
+//            }
 
             // 사용자 정보 조회
             UserInfoResponse userInfo = userService.getUserInfo(userId);
@@ -76,13 +79,13 @@ public class UserEditController {
 
         try {
             // 세션에서 사용자 ID 가져오기
-            String sessionUserId = (String) session.getAttribute("userId");
-            if (sessionUserId == null) {
-                response.put("success", false);
-                response.put("message", "로그인이 필요합니다.");
-                return ResponseEntity.status(401).body(response);
-            }
-
+//            String sessionUserId = (String) session.getAttribute("userId");
+//            if (sessionUserId == null) {
+//                response.put("success", false);
+//                response.put("message", "로그인이 필요합니다.");
+//                return ResponseEntity.status(401).body(response);
+//            }
+            String sessionUserId = "Choi3495";
             // 요청된 사용자 ID와 세션 사용자 ID 일치 확인
             if (!sessionUserId.equals(request.getUserId())) {
                 response.put("success", false);
