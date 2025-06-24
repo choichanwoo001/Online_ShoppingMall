@@ -131,6 +131,32 @@
 	color: #007aff;
 }
 
+/* ---------- pagination -----------*/
+.pagination ul{
+	display:flex;
+	display:-webkit-flex;
+	gap:0.5rem;
+	justify-content: center;
+	align-items: center;
+}
+.pagination ul li.prevPageBtn {
+	margin-right:0.5rem;
+}
+.pagination ul li.nextPageBtn {
+	margin-left:0.5rem;
+}
+.pagination ul li a {
+	font-weight:400;
+	color:#acacac;
+	line-height:1.2;
+}
+.pagination ul li.active a,
+.pagination ul li a:hover
+{
+	color:#333;
+	font-weight:500;
+}
+
 /* --------- footer ------------ */
 footer {
 	background:#eee;

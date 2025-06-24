@@ -6,5 +6,11 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface ProductDynamicQueryMapper {
-    List<Product> findProductListByCategory(@Param("lv2Name") String lv2Name, @Param("lv3Name") String lv3Name);
+    List<Product> findProductListByCategory(@Param("lv2Name") String lv2Name,
+                                            @Param("lv3Name") String lv3Name,
+                                            @Param("offset") int offset,
+                                            @Param("limit") int limit);
+
+    int countProductListByCategory(@Param("lv2Name") String lv2Name,
+                                   @Param("lv3Name") String lv3Name);
 }
