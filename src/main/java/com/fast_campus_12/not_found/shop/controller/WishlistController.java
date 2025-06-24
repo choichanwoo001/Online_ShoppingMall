@@ -30,6 +30,7 @@ public class WishlistController {
         return "layout/base";
     }
 
+    // 사용자의 wishlish 불러오기
     @GetMapping("/api/wishlist")
     @ResponseBody
     public ResponseEntity<WishlistPageDto> getWishlist(
@@ -48,7 +49,7 @@ public class WishlistController {
         WishlistPageDto result = wishlistService.getWishlistByUserId(userId, page, size);
         return ResponseEntity.ok(result);
     }
-
+// 위시리스트 추가
     @GetMapping("/api/wishlist/add")
     @ResponseBody
     public ResponseEntity<ApiResponse<Void>> addToWishlist(
@@ -67,7 +68,7 @@ public class WishlistController {
             return ResponseEntity.ok(ApiResponse.error("이미 관심상품에 등록된 상품입니다."));
         }
     }
-
+// 위시리스트 삭제
     @GetMapping("/api/wishlist/remove")
     @ResponseBody
     public ResponseEntity<ApiResponse<Void>> removeFromWishlist(
@@ -86,7 +87,7 @@ public class WishlistController {
             return ResponseEntity.ok(ApiResponse.error("관심상품에서 제거하는데 실패했습니다."));
         }
     }
-
+    // 위시리스트 멀티 삭제
     @GetMapping("/api/wishlist/delete-multiple")
     @ResponseBody
     public ResponseEntity<ApiResponse<Void>> deleteMultiple(
@@ -106,6 +107,7 @@ public class WishlistController {
         }
     }
 
+    // 위시리스트 전체 삭제
     @GetMapping("/api/wishlist/clear")
     @ResponseBody
     public ResponseEntity<ApiResponse<Void>> clearWishlist(HttpSession session) {
@@ -121,7 +123,7 @@ public class WishlistController {
             return ResponseEntity.ok(ApiResponse.error("관심상품 삭제에 실패했습니다."));
         }
     }
-
+    // 위시리스트
     @GetMapping("/api/wishlist/check")
     @ResponseBody
     public ResponseEntity<ApiResponse<Boolean>> checkWishlist(
@@ -132,7 +134,7 @@ public class WishlistController {
         if (userId == null) {
             return ResponseEntity.ok(ApiResponse.success(false));
         }
-
+        ///  상품이 위시리스트에 있는지 화긴
         boolean isInWishlist = wishlistService.isInWishlist(userId, productId);
         return ResponseEntity.ok(ApiResponse.success(isInWishlist));
     }
