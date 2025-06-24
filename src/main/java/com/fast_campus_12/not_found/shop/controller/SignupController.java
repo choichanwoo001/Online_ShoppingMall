@@ -170,7 +170,7 @@ public class SignupController {
     public ResponseEntity<ApiResponse> signup(@RequestBody SignupRequest request) {
         try {
             // 서버 측 유효성 검사
-            Map<String, String> validationErrors = userService.validateSignupRequest(request);
+            Map<String, String> validationErrors = userService.validateUserRequest(request, true);
             if (!validationErrors.isEmpty()) {
                 return new ResponseEntity<ApiResponse>(
                         new ApiResponse(false, "입력 정보를 확인해주세요.", validationErrors),

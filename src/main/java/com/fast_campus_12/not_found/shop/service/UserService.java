@@ -52,47 +52,80 @@ public class UserService {
         return !exists; // 존재하지 않으면 사용 가능
     }
 
-    /**
-     * 회원가입 요청 유효성 검사
-     */
-    public Map<String, String> validateSignupRequest(SignupRequest request) {
-        log.debug("회원가입 요청 유효성 검사 시작: {}", request.getUserId());
-        Map<String, String> errors = new HashMap<String, String>();
+    public Map<String, String> validateUserRequest(Object request, boolean isSignup) {
+        Map<String, String> errors = new HashMap<>();
 
-        // LOGIN_ID 검증
-        if (request.getUserId() == null || request.getUserId().trim().isEmpty()) {
-            errors.put("userId", "아이디를 입력해주세요.");
-        } else if (!USER_ID_PATTERN.matcher(request.getUserId()).matches()) {
-            errors.put("userId", "영문+숫자 혼용 4~16자로 입력해주세요.");
-        } else if (userDAO.existsByLoginId(request.getUserId())) {
-            errors.put("userId", "이미 사용중인 아이디입니다.");
+        String loginId = null;
+        String name = null;
+        String email = null;
+        String password = null;
+        Long userId = null;
+
+        if (isSignup && request instanceof SignupRequest signupReq) {
+            loginId = signupReq.getUserId();
+            name = signupReq.getUserName();
+            email = signupReq.getEmail();
+            password = signupReq.getPassword();
+
+            // 아이디 검증
+            if (loginId == null || loginId.trim().isEmpty()) {
+                errors.put("userId", "아이디를 입력해주세요.");
+            } else if (!USER_ID_PATTERN.matcher(loginId).matches()) {
+                errors.put("userId", "영문+숫자 혼용 4~16자로 입력해주세요.");
+            } else if (userDAO.existsByLoginId(loginId)) {
+                errors.put("userId", "이미 사용중인 아이디입니다.");
+            }
+
+        } else if (!isSignup && request instanceof UserUpdateRequest updateReq) {
+            loginId = updateReq.getUserId();
+            name = updateReq.getUserName();
+            email = updateReq.getEmail();
+            password = updateReq.getPassword();
+
+            User user = userDAO.findByLoginId(loginId);
+            if (user == null) {
+                errors.put("userId", "존재하지 않는 사용자입니다.");
+                return errors;
+            }
+            userId = user.getUserId();
         }
 
-        // 비밀번호 검증
-        if (request.getPassword() == null || request.getPassword().trim().isEmpty()) {
-            errors.put("password", "비밀번호를 입력해주세요.");
-        } else if (!PASSWORD_PATTERN.matcher(request.getPassword()).matches()) {
-            errors.put("password", "영문 대소문자/숫자 조합 4~16자로 입력해주세요.");
-        }
+        // 공통 검증
+        validateName(name, errors);
+        validateEmail(email, userId, errors);
+        validatePassword(password, isSignup, errors);
 
-        // 이름 검증
-        if (request.getUserName() == null || request.getUserName().trim().isEmpty()) {
+        return errors;
+    }
+    private void validateName(String name, Map<String, String> errors) {
+        if (name == null || name.trim().isEmpty()) {
             errors.put("userName", "이름을 입력해주세요.");
-        } else if (!USER_NAME_PATTERN.matcher(request.getUserName()).matches()) {
+        } else if (!USER_NAME_PATTERN.matcher(name).matches()) {
             errors.put("userName", "한글 또는 영문 2~20자로 입력해주세요.");
         }
+    }
 
-        // 이메일 검증
-        if (request.getEmail() == null || request.getEmail().trim().isEmpty()) {
+    private void validateEmail(String email, Long currentUserId, Map<String, String> errors) {
+        if (email == null || email.trim().isEmpty()) {
             errors.put("email", "이메일을 입력해주세요.");
-        } else if (!EMAIL_PATTERN.matcher(request.getEmail()).matches()) {
+        } else if (!EMAIL_PATTERN.matcher(email).matches()) {
             errors.put("email", "올바른 이메일 형식이 아닙니다.");
-        } else if (userDetailMapper.existsByEmail(request.getEmail())) {
-            errors.put("email", "이미 사용중인 이메일입니다.");
+        } else {
+            boolean exists = (currentUserId == null)
+                    ? userDetailMapper.existsByEmail(email)  // 회원가입
+                    : userDetailMapper.existsByEmailExcludingUserId(email, currentUserId);  // 수정
+            if (exists) {
+                errors.put("email", "이미 사용중인 이메일입니다.");
+            }
         }
+    }
 
-        log.debug("유효성 검사 완료. 오류 개수: {}", errors.size());
-        return errors;
+    private void validatePassword(String password, boolean isRequired, Map<String, String> errors) {
+        if (password == null || password.trim().isEmpty()) {
+            if (isRequired) errors.put("password", "비밀번호를 입력해주세요.");
+        } else if (!PASSWORD_PATTERN.matcher(password).matches()) {
+            errors.put("password", "영문 대소문자/숫자 조합 4~16자로 입력해주세요.");
+        }
     }
 
     /**
@@ -214,48 +247,6 @@ public class UserService {
             log.error("사용자 정보 조회 실패: loginId={}, error={}", loginId, e.getMessage(), e);
             throw new RuntimeException("사용자 정보 조회에 실패했습니다.", e);
         }
-    }
-
-    /**
-     * 회원정보 수정 요청 유효성 검사
-     */
-    public Map<String, String> validateUserUpdateRequest(UserUpdateRequest request) {
-        Map<String, String> errors = new HashMap<>();
-
-        // LOGIN_ID로 사용자 존재 여부 확인
-        User existingUser = userDAO.findByLoginId(request.getUserId());
-        if (existingUser == null) {
-            errors.put("userId", "존재하지 않는 사용자입니다.");
-            return errors;
-        }
-
-        // 이름 검증
-        if (request.getUserName() == null || request.getUserName().trim().isEmpty()) {
-            errors.put("userName", "이름을 입력해주세요.");
-        } else if (!USER_NAME_PATTERN.matcher(request.getUserName()).matches()) {
-            errors.put("userName", "한글 또는 영문 2~20자로 입력해주세요.");
-        }
-
-        // 이메일 검증
-        if (request.getEmail() == null || request.getEmail().trim().isEmpty()) {
-            errors.put("email", "이메일을 입력해주세요.");
-        } else if (!EMAIL_PATTERN.matcher(request.getEmail()).matches()) {
-            errors.put("email", "올바른 이메일 형식이 아닙니다.");
-        } else {
-            // 다른 사용자가 사용 중인 이메일인지 확인
-            if (userDetailMapper.existsByEmailExcludingUserId(request.getEmail(), existingUser.getUserId())) {
-                errors.put("email", "이미 사용중인 이메일입니다.");
-            }
-        }
-
-        // 비밀번호 검증 (입력된 경우만)
-        if (request.getPassword() != null && !request.getPassword().trim().isEmpty()) {
-            if (!PASSWORD_PATTERN.matcher(request.getPassword()).matches()) {
-                errors.put("password", "영문 대소문자/숫자 조합 4~16자로 입력해주세요.");
-            }
-        }
-
-        return errors;
     }
 
     /**
@@ -386,59 +377,53 @@ public class UserService {
     }
 
     /**
-     * 비밀번호 변경
+     * 비밀번호 재설정 (임시 비밀번호로)
      */
     @Transactional
-    public boolean changePassword(String loginId, String currentPassword, String newPassword) {
+    public boolean resetPassword(String loginId, String newPassword) {
         try {
-            // 현재 비밀번호 확인
-            if (!authenticateUser(loginId, currentPassword)) {
-                throw new RuntimeException("현재 비밀번호가 일치하지 않습니다.");
-            }
-
-            // 새 비밀번호 유효성 검사
-            if (!PASSWORD_PATTERN.matcher(newPassword).matches()) {
-                throw new IllegalArgumentException("새 비밀번호 형식이 올바르지 않습니다.");
+            // 사용자 존재 여부 확인
+            User user = userDAO.findByLoginId(loginId);
+            if (user == null) {
+                throw new RuntimeException("사용자를 찾을 수 없습니다.");
             }
 
             // 새 비밀번호 암호화 및 업데이트
             String hashedNewPassword = hashPassword(newPassword);
             int result = userDAO.updatePassword(loginId, hashedNewPassword);
 
-            log.info("비밀번호 변경 완료: LOGIN_ID={}", loginId);
+            log.info("비밀번호 재설정 완료: LOGIN_ID={}", loginId);
             return result > 0;
 
         } catch (Exception e) {
-            log.error("비밀번호 변경 실패: LOGIN_ID={}, 에러={}", loginId, e.getMessage(), e);
-            throw new RuntimeException("비밀번호 변경 중 오류가 발생했습니다.", e);
-        }
-    } /**
-     * 로그인 인증
-     */
-    public boolean authenticateUser(String loginId, String plainPassword) {
-        try {
-            User user = userDAO.findByLoginId(loginId);
-
-            if (user == null || !user.getIsActivate() || user.getIsDeleted()) {
-                return false;
-            }
-
-            return verifyPassword(plainPassword, user.getPassword());
-
-        } catch (Exception e) {
-            log.error("로그인 처리 중 오류 발생", e);
-            return false;
+            log.error("비밀번호 재설정 실패: LOGIN_ID={}, 에러={}", loginId, e.getMessage(), e);
+            throw new RuntimeException("비밀번호 재설정 중 오류가 발생했습니다.", e);
         }
     }
-    private boolean verifyPassword(String plainPassword, String hashedPassword) {
-        if (plainPassword == null || hashedPassword == null) {
-            return false;
-        }
+
+    // 이메일로 로그인 아이디 찾기
+    public String findLoginIdByEmail(String email) {
         try {
-            return BCrypt.checkpw(plainPassword, hashedPassword);
+
+            // 이메일로 사용자 조회 (USER_DETAIL 테이블 기준)
+            User user = userDAO.selectByEmail(email);
+
+            if (user == null) {
+                log.debug("해당 이메일로 가입된 사용자가 없습니다: {}", email);
+                return null;
+            }
+            // 탈퇴하거나 비활성화된 사용자 체크
+            if (user.getIsDeleted() || !user.getIsActivate()) {
+                log.debug("탈퇴하거나 비활성화된 사용자입니다: email={}, isDeleted={}, isActivate={}",
+                        email, user.getIsDeleted(), user.getIsActivate());
+                return null;
+           }
+            log.debug("이메일로 LOGIN_ID 찾기 성공: email={}, loginId={}", email, user.getLoginId());
+            return user.getLoginId();
+
         } catch (Exception e) {
-            log.error("비밀번호 검증 중 오류 발생", e);
-            return false;
+            log.error("이메일로 LOGIN_ID 찾기 실패: email={}, 에러={}", email, e.getMessage(), e);
+            return null;
         }
     }
 }
