@@ -1,0 +1,122 @@
+package com.fast_campus_12.not_found.shop.controller;
+
+import com.fast_campus_12.not_found.shop.dto.UserUpdateRequest;
+import com.fast_campus_12.not_found.shop.dto.UserInfoResponse;
+import com.fast_campus_12.not_found.shop.service.UserService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import jakarta.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
+
+@Slf4j
+@Controller
+@RequiredArgsConstructor
+public class UserEditController {
+
+    private final UserService userService;
+
+    /**
+     * 회원정보 수정 페이지 표시
+     */
+    @GetMapping("/user/{pageName}")
+    public String userEditPage(@PathVariable("pageName") String pageName, Model model) {
+        model.addAttribute("title", "회원정보-수정");
+        model.addAttribute("contentPath", "signup/user-edit" + pageName); // signup/basic 등
+        return "layout/base";
+    }
+
+    /**
+     * 현재 로그인한 사용자 정보 조회
+     */
+    @GetMapping("/api/user/current")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> getCurrentUserInfo(HttpSession session) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            // 세션에서 사용자 ID 가져오기
+            String userId = (String) session.getAttribute("userId");
+            if (userId == null) {
+                response.put("success", false);
+                response.put("message", "로그인이 필요합니다.");
+                return ResponseEntity.status(401).body(response);
+            }
+
+            // 사용자 정보 조회
+            UserInfoResponse userInfo = userService.getUserInfo(userId);
+
+            response.put("success", true);
+            response.put("user", userInfo);
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            log.error("사용자 정보 조회 실패: {}", e.getMessage(), e);
+            response.put("success", false);
+            response.put("message", "사용자 정보 조회에 실패했습니다.");
+            return ResponseEntity.status(500).body(response);
+        }
+    }
+
+    /**
+     * 회원정보 수정
+     */
+    @PutMapping("/api/user/update")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> updateUserInfo(
+            @RequestBody UserUpdateRequest request,
+            HttpSession session) {
+
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            // 세션에서 사용자 ID 가져오기
+            String sessionUserId = (String) session.getAttribute("userId");
+            if (sessionUserId == null) {
+                response.put("success", false);
+                response.put("message", "로그인이 필요합니다.");
+                return ResponseEntity.status(401).body(response);
+            }
+
+            // 요청된 사용자 ID와 세션 사용자 ID 일치 확인
+            if (!sessionUserId.equals(request.getUserId())) {
+                response.put("success", false);
+                response.put("message", "권한이 없습니다.");
+                return ResponseEntity.status(403).body(response);
+            }
+
+            // 유효성 검사
+            Map<String, String> errors = userService.validateUserUpdateRequest(request);
+            if (!errors.isEmpty()) {
+                response.put("success", false);
+                response.put("message", "입력값 검증에 실패했습니다.");
+                response.put("errors", errors);
+                return ResponseEntity.badRequest().body(response);
+            }
+
+            // 회원정보 수정
+            boolean updateSuccess = userService.updateUserInfo(request);
+
+            if (updateSuccess) {
+                response.put("success", true);
+                response.put("message", "회원정보가 성공적으로 수정되었습니다.");
+                return ResponseEntity.ok(response);
+            } else {
+                response.put("success", false);
+                response.put("message", "회원정보 수정에 실패했습니다.");
+                return ResponseEntity.status(500).body(response);
+            }
+
+        } catch (Exception e) {
+            log.error("회원정보 수정 실패: 사용자ID={}, 에러={}", request.getUserId(), e.getMessage(), e);
+            response.put("success", false);
+            response.put("message", "회원정보 수정 중 오류가 발생했습니다.");
+            return ResponseEntity.status(500).body(response);
+        }
+    }
+}
