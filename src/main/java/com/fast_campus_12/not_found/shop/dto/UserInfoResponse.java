@@ -1,5 +1,6 @@
 package com.fast_campus_12.not_found.shop.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,14 +19,17 @@ public class UserInfoResponse {
     private Boolean isActivate;     // 활성화 상태
     private Boolean isDeleted;      // 삭제 상태
     private String role;            // 역할
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt; // 생성일시
-    private LocalDateTime updatedAt; // 수정일시
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime updatedAt; //
 
     // USER_DETAIL 테이블 상세 정보
     private String userName;        // 이름
     private String email;           // 이메일
     private String mobilePhone;     // 휴대폰번호
     private String gender;          // 성별
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDate;    // 생년월일
     private Integer jobCode;        // 직업코드
 

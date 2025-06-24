@@ -14,7 +14,7 @@ public class UserUpdateRequest {
     private String mobilePhone;     // 휴대폰번호
     private String gender;          // 성별
     private String birthDate;       // 생년월일
-    private Integer jobCode;        // 직업코드
+    private Integer jobCode = 1;  // 기본값 1로 설정
 
     // 주소 정보
     private String roadAddress1;    // 도로명주소1
