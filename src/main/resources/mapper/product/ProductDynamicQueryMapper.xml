@@ -6,39 +6,38 @@
 <mapper namespace="com.fast_campus_12.not_found.shop.mapper.ProductDynamicQueryMapper">
 
     <resultMap id="Product" type="com.fast_campus_12.not_found.shop.product.model.Product">
-        <result property="id" column="product_id"/>
-        <result property="title" column="title"/>
-        <result property="price" column="price"/>
-        <result property="thumbnail" column="thumbnail"/>
-        <result property="comment" column="comment"/>
-        <result property="lv3Category.lv3Id" column="lv3_id"/>
-        <result property="lv3Category.name" column="lv3_name"/>
-        <result property="lv3Category.lv2Id" column="lv2_id"/>
-        <!-- 추가적으로 lv3Category 내부 필드 매핑 -->
+        <result property="id" column="PRODUCT_ID"/>
+        <result property="title" column="PRODUCT_TITLE"/>
+        <result property="price" column="PRODUCT_PRICE"/>
+        <result property="thumbnail" column="PRODUCT_THUMBNAIL"/>
+        <result property="comment" column="PRODUCT_SUMMARY"/>
+        <result property="lv3Category.lv3Id" column="CATEGORY_LV3_ID"/>
+        <result property="lv3Category.name" column="LV3_NAME"/>
+        <result property="lv3Category.lv2Id" column="CATEGORY_LV2_ID"/>
     </resultMap>
 
     <select id="findProductListByCategory" resultMap="Product">
         SELECT
-        p.product_id,
-        p.title,
-        p.price,
-        p.thumbnail,
-        p.description AS comment,
-        lv3.lv3_id,
-        lv3.name AS lv3_name,
-        lv2.lv2_id,
-        lv2.name AS lv2_name
-        FROM product p
-        JOIN lv3 ON p.lv3_id = lv3.lv3_id
-        JOIN lv2 ON lv3.lv2_id = lv2.lv2_id
-        WHERE p.enabled = 1
+        p.PRODUCT_ID,
+        p.PRODUCT_TITLE,
+        p.PRODUCT_PRICE,
+        p.PRODUCT_THUMBNAIL,
+        p.PRODUCT_SUMMARY AS COMMENT,
+        lv3.CATEGORY_LV3_ID,
+        lv3.NAME AS LV3_NAME,
+        lv2.CATEGORY_LV2_ID,
+        lv2.NAME AS LV2_NAME
+        FROM PRODUCT p
+        JOIN CATEGORY_LV3 lv3 ON p.CATEGORY_LV3_ID = lv3.CATEGORY_LV3_ID
+        JOIN CATEGORY_LV2 lv2 ON lv3.CATEGORY_LV2_ID = lv2.CATEGORY_LV2_ID
+        WHERE p.IS_ENABLED = 1
         <if test="lv2Name != null and lv2Name != ''">
-            AND lv2.name = #{lv2Name}
+            AND lv2.NAME = #{lv2Name}
         </if>
         <if test="lv3Name != null and lv3Name != ''">
-            AND lv3.name = #{lv3Name}
+            AND lv3.NAME = #{lv3Name}
         </if>
-        ORDER BY p.created_at DESC
+        ORDER BY p.CREATED_AT DESC
         LIMIT 10
     </select>
 </mapper>
