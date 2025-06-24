@@ -96,7 +96,7 @@ public class UserEditController {
             }
 
             // 유효성 검사
-            Map<String, String> errors = userService.validateUserUpdateRequest(request);
+            Map<String, String> errors = userService.validateUserRequest(request, false);
             if (!errors.isEmpty()) {
                 response.put("success", false);
                 response.put("message", "입력값 검증에 실패했습니다.");
