@@ -1,74 +1,83 @@
-// UserMapper.java (어노테이션 방식 매퍼)
 package com.fast_campus_12.not_found.shop.mapper;
 
 import com.fast_campus_12.not_found.shop.entity.User;
-import com.fast_campus_12.not_found.shop.entity.UserAddress;
 import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface UserMapper {
 
-//    @Select("SELECT COUNT(*) FROM USERS WHERE user_id = #{userId}")
-//    int countByUserId(@Param("userId") String userId);
-//
-//    @Select("SELECT COUNT(*) FROM USERS WHERE email = #{email}")
-//    int countByEmail(@Param("email") String email);
+    /**
+     * LOGIN_ID 중복 확인 (사용자가 입력하는 아이디)
+     */
+    @Select("SELECT EXISTS(SELECT 1 FROM USERS WHERE LOGIN_ID = #{loginId})")
+    boolean existsByLoginId(@Param("loginId") String loginId);
 
-    // EXISTS 쿼리 사용 (더 효율적)
-    @Select("SELECT EXISTS(SELECT 1 FROM USERS WHERE user_id = #{userId})")
-    boolean existsByUserId(@Param("userId") String userId);
-
-    @Insert("INSERT INTO USERS (user_id, password, is_activate, created_at, updated_at, role, is_deleted, deleted_at) " +
-            "VALUES (#{userId}, #{password}, #{isActivate}, #{createdAt}, #{updatedAt}, #{role}, #{isDeleted}, #{deletedAt})")
+    /**
+     * 사용자 등록 (USER_ID는 AUTO_INCREMENT)
+     */
+    @Insert("INSERT INTO USERS (LOGIN_ID, PASSWORD, IS_ACTIVATE, ROLE, IS_DELETED) " +
+            "VALUES (#{loginId}, #{password}, #{isActivate}, #{role}, #{isDeleted})")
+    @Options(useGeneratedKeys = true, keyProperty = "userId")
     void insertUser(User user);
 
-    @Update("UPDATE USERS SET password = #{password}, updated_at = #{updatedAt} WHERE user_id = #{userId}")
+    /**
+     * LOGIN_ID로 사용자 조회
+     */
+    @Select("SELECT USER_ID as userId, LOGIN_ID as loginId, PASSWORD as password, " +
+            "IS_ACTIVATE as isActivate, CREATED_AT as createdAt, UPDATED_AT as updatedAt, " +
+            "DELETED_AT as deletedAt, ROLE as role, IS_DELETED as isDeleted " +
+            "FROM USERS WHERE LOGIN_ID = #{loginId}")
+    User findByLoginId(@Param("loginId") String loginId);
+
+    /**
+     * USER_ID(PK)로 사용자 조회
+     */
+    @Select("SELECT USER_ID as userId, LOGIN_ID as loginId, PASSWORD as password, " +
+            "IS_ACTIVATE as isActivate, CREATED_AT as createdAt, UPDATED_AT as updatedAt, " +
+            "DELETED_AT as deletedAt, ROLE as role, IS_DELETED as isDeleted " +
+            "FROM USERS WHERE USER_ID = #{userId}")
+    User findByUserId(@Param("userId") Long userId);
+
+    /**
+     * 비밀번호 업데이트
+     */
+    @Update("UPDATE USERS SET PASSWORD = #{password}, UPDATED_AT = CURRENT_TIMESTAMP WHERE USER_ID = #{userId}")
     void updateUserPassword(User user);
 
-    @Select("SELECT * FROM USERS WHERE user_id = #{userId}")
-    User findByUserId(@Param("userId") String userId);
+    /**
+     * LOGIN_ID로 비밀번호 업데이트
+     */
+    @Update("UPDATE USERS SET PASSWORD = #{hashedPassword}, UPDATED_AT = CURRENT_TIMESTAMP WHERE LOGIN_ID = #{loginId}")
+    int updatePassword(@Param("loginId") String loginId, @Param("hashedPassword") String hashedPassword);
 
-//    @Insert("INSERT INTO default_user_address " +
-//            "(user_id, road_address_1, road_address_2, jibun_address, detail_address, english_address, zip_code, address_name) " +
-//            "VALUES (#{userId}, #{roadAddress1}, #{roadAddress2}, #{jibunAddress}, #{detailAddress}, #{englishAddress}, #{zipCode}, #{addressName})")
-//    void insertUserAddress(UserAddress userAddress);
-//
-//    @Select("SELECT user_id, road_address_1 as roadAddress1, road_address_2 as roadAddress2, " +
-//            "jibun_address as jibunAddress, detail_address as detailAddress, " +
-//            "english_address as englishAddress, zip_code as zipCode, address_name as addressName " +
-//            "FROM default_user_address WHERE user_id = #{userId}")
-//    UserAddress findByUserId(@Param("userId") String userId);
-//
-//    @Update("UPDATE default_user_address SET " +
-//            "road_address_1 = #{roadAddress1}, road_address_2 = #{roadAddress2}, " +
-//            "jibun_address = #{jibunAddress}, detail_address = #{detailAddress}, " +
-//            "english_address = #{englishAddress}, zip_code = #{zipCode}, address_name = #{addressName} " +
-//            "WHERE user_id = #{userId}")
-//    int updateUserAddress(UserAddress userAddress);
-//
-//    @Delete("DELETE FROM default_user_address WHERE user_id = #{userId}")
-//    int deleteByUserId(@Param("userId") String userId);
-
-    @Select("SELECT u.user_id as id, u.user_id, u.password, u.name as userName, " +
-            "u.email, u.phone_number as mobilePhone, u.is_activate as isActive, " +
-            "u.created_at as createdAt, u.updated_at as updatedAt, u.role, u.is_deleted as isDeleted " +
-            "FROM USERS u WHERE u.user_id = #{userId}")
-    User selectByUserId(@Param("userId") String userId);
-
-    @Select("SELECT u.user_id as id, u.user_id, u.password, u.name as userName, " +
-            "u.email, u.phone_number as mobilePhone, u.is_activate as isActive, " +
-            "u.created_at as createdAt, u.updated_at as updatedAt, u.role, u.is_deleted as isDeleted " +
-            "FROM USERS u WHERE u.email = #{email}")
+    /**
+     * 이메일로 사용자 조회 (JOIN 필요 - UserDetail 테이블과)
+     */
+    @Select("SELECT u.USER_ID as userId, u.LOGIN_ID as loginId, u.PASSWORD as password, " +
+            "u.IS_ACTIVATE as isActivate, u.CREATED_AT as createdAt, u.UPDATED_AT as updatedAt, " +
+            "u.DELETED_AT as deletedAt, u.ROLE as role, u.IS_DELETED as isDeleted " +
+            "FROM USERS u " +
+            "JOIN USER_DETAIL ud ON u.USER_ID = ud.USER_ID " +
+            "WHERE ud.EMAIL = #{email}")
     User selectByEmail(@Param("email") String email);
 
-    @Update("UPDATE USERS SET password = #{password}, name = #{userName}, " +
-            "email = #{email}, phone_number = #{mobilePhone}, updated_at = #{updatedAt} " +
-            "WHERE user_id = #{id}")
+    /**
+     * 사용자 정보 수정
+     */
+    @Update("UPDATE USERS SET IS_ACTIVATE = #{isActivate}, ROLE = #{role}, " +
+            "IS_DELETED = #{isDeleted}, UPDATED_AT = CURRENT_TIMESTAMP " +
+            "WHERE USER_ID = #{userId}")
     int updateUser(User user);
 
-    @Delete("DELETE FROM USERS WHERE user_id = #{id}")
-    int deleteUser(@Param("id") Long id);
+    /**
+     * 사용자 삭제 (물리적 삭제)
+     */
+    @Delete("DELETE FROM USERS WHERE USER_ID = #{userId}")
+    int deleteUser(@Param("userId") Long userId);
 
-    @Update("UPDATE USERS SET is_activate = #{isActive} WHERE user_id = #{id}")
-    int updateUserStatus(@Param("id") Long id, @Param("isActive") Boolean isActive);
+    /**
+     * 사용자 활성화 상태 변경
+     */
+    @Update("UPDATE USERS SET IS_ACTIVATE = #{isActive}, UPDATED_AT = CURRENT_TIMESTAMP WHERE USER_ID = #{userId}")
+    int updateUserStatus(@Param("userId") Long userId, @Param("isActive") Boolean isActive);
 }

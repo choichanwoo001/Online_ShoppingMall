@@ -9,7 +9,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class User {
-    private String userId;          // user_id (실제로는 email)
+    private Long userId; // user_id (실제로는 email)
+    private String loginId;
     private String password;        // 암호화된 비밀번호
     private Boolean isActivate;     // 활성화 여부
     private LocalDateTime createdAt;

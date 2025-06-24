@@ -5,18 +5,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-// UserAddress.java (ERD에 맞춘 Entity)
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class UserAddress {
-    private String userId;          // FK (USERS.user_id 참조) - BIGINT
-    private String roadAddress1;    // 도로명 주소 1 - VARCHAR
-    private String roadAddress2;    // 도로명 주소 2 - VARCHAR(255)
-    private String jibunAddress;    // 지번 주소 - VARCHAR(255)
-    private String detailAddress;   // 상세 주소 - VARCHAR(255)
-    private String englishAddress;  // 영문 주소 - VARCHAR(255)
-    private Integer zipCode;        // 우편번호 - INT
-    private String addressName;     // 주소명 - VARCHAR
+    private Long userId;          // USER_ID (FK)
+    private String roadAddress1;  // ROAD_ADDRESS_1
+    private String roadAddress2;  // ROAD_ADDRESS_2
+    private String jibunAddress;  // JIBUN_ADDRESS
+    private String detailAddress; // DETAIL_ADDRESS
+    private String englishAddress; // ENGLISH_ADDRESS
+    private Integer zipCode;      // ZIP_CODE
+    private String addressName;   // ADDRESS_NAME
 }
