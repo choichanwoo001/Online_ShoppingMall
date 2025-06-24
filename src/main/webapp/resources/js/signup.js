@@ -369,10 +369,8 @@ function searchPostcode() {
             document.getElementById('roadAddress1').value = data.roadAddress;    // → roadAddress1
             document.getElementById('jibunAddress').value = data.jibunAddress;   // → jibunAddress
 
-            // 영문 주소 (있는 경우만)
-            if (data.roadAddressEnglish) {
-                document.getElementById('englishAddress').value = data.roadAddressEnglish; // → englishAddress
-            }
+            // 영문 주소
+            document.getElementById('englishAddress').value = data.roadAddressEnglish || '';
 
             // 사용자가 선택한 주소를 기본 주소로 표시 (화면용)
             let displayAddr = '';
@@ -408,8 +406,11 @@ function searchPostcode() {
             let addressName = '';
             if (data.sido && data.sigungu) {
                 addressName = data.sido + ' ' + data.sigungu;
-                document.getElementById('addressName').value = addressName;      // → addressName
+                if (data.bname) {
+                    addressName += ' ' + data.bname;
+                }
             }
+            document.getElementById('addressName').value = addressName;
 
             // 상세주소 입력 포커스 (사용자가 직접 입력 → detailAddress)
             document.getElementById('detailAddress').focus();
@@ -437,18 +438,51 @@ function setupFormSubmit() {
             submitBtn.disabled = true;
             submitBtn.textContent = '가입중...';
 
+            // 생년월일 조합 (선택사항)
+            let birthDate = null;
+            const birthYear = document.getElementById('birthYear').value;
+            const birthMonth = document.getElementById('birthMonth').value;
+            const birthDay = document.getElementById('birthDay').value;
+
+            if (birthYear && birthMonth && birthDay) {
+                const formattedMonth = birthMonth.padStart(2, '0');
+                const formattedDay = birthDay.padStart(2, '0');
+                birthDate = `${birthYear}-${formattedMonth}-${formattedDay}`;
+            }
+
+            // 성별 확인 (선택사항)
+            const genderInputs = document.querySelectorAll('input[name="gender"]');
+            let gender = null;
+            genderInputs.forEach(input => {
+                if (input.checked) {
+                    gender = input.value; // 'M' or 'F'
+                }
+            });
+
             const formData = {
+                // users
                 userId: document.getElementById('userId').value.trim(),
                 password: document.getElementById('password').value,
+
+                // user_detail
                 userName: document.getElementById('userName').value.trim(),
                 email: document.getElementById('email').value.trim(),
-                address: document.getElementById('address').value.trim(),
-                detailAddress: document.getElementById('detailAddress').value.trim(),
+                birthDate: birthDate,
+                gender: gender,
                 mobilePhone: [
                     document.getElementById('mobilePhone1').value,
                     document.getElementById('mobilePhone2').value,
                     document.getElementById('mobilePhone3').value
-                ].filter(part => part).join('-')
+                ].filter(part => part).join('-'),
+
+                // addrress
+                roadAddress1: document.getElementById('roadAddress1').value.trim(),
+                roadAddress2: document.getElementById('roadAddress2').value.trim(),
+                jibunAddress: document.getElementById('jibunAddress').value.trim(),
+                detailAddress: document.getElementById('detailAddress').value.trim(),
+                englishAddress: document.getElementById('englishAddress').value.trim(),
+                zipCode: parseInt(document.getElementById('zipCode').value),
+                addressName: document.getElementById('addressName').value.trim()
             };
 
             try {
