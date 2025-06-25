@@ -26,16 +26,17 @@ public class DevProductServiceImpl implements ProductService {
 
     @Override
     public ProductPageDto getSummaryByCategory(ProductSummaryRequestDto productSummaryRequestDto) {
-        List<Product> productList = productDynamicQueryMapper.findProductListByCategory(
-                productSummaryRequestDto.getCategory(),
-                productSummaryRequestDto.getSubCategory(),
-                productSummaryRequestDto.getOffset(),
-                productSummaryRequestDto.getLimit()
-        );
+//        List<Product> productList = productDynamicQueryMapper.findProductListByCategory(
+//                productSummaryRequestDto.getCategory(),
+//                productSummaryRequestDto.getSubCategory(),
+//                productSummaryRequestDto.getOffset(),
+//                productSummaryRequestDto.getLimit()
+//        );
+        List<Product> productList = productDynamicQueryMapper
+                .findProductListByCategory(productSummaryRequestDto);
 
-        int totalCount = productDynamicQueryMapper.countProductListByCategory(
-                productSummaryRequestDto.getCategory(),
-                productSummaryRequestDto.getSubCategory());
+        int totalCount = productDynamicQueryMapper
+                .countProductListByCategory(productSummaryRequestDto);
 
         return ProductPageDto.builder()
                 .totalCount(totalCount)

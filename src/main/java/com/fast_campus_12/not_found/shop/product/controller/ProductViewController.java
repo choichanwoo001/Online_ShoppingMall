@@ -5,6 +5,7 @@ import com.fast_campus_12.not_found.shop.global.dto.http.PageResponseDto;
 import com.fast_campus_12.not_found.shop.product.dto.ProductPageDto;
 import com.fast_campus_12.not_found.shop.product.dto.ProductSummaryDto;
 import com.fast_campus_12.not_found.shop.product.dto.ProductSummaryRequestDto;
+import com.fast_campus_12.not_found.shop.product.enums.ProductSortBy;
 import com.fast_campus_12.not_found.shop.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +28,7 @@ public class ProductViewController {
     @GetMapping("/category/{category}")
     public String productByCategory(@PathVariable("category") String category,
                                     @RequestParam(value = "page", defaultValue = "1") int page,
-                                    @RequestParam(value = "sortBy", required = false) String sortBy,
+                                    @RequestParam(value = "sortBy", required = false) ProductSortBy sortBy,
                                     @RequestParam(value = "sort", required = false) SortDirection sort,
                                     Model model) {
 
@@ -39,13 +40,13 @@ public class ProductViewController {
     public String productBySubCategory(@PathVariable("category") String category,
                                        @PathVariable("subCategory") String subCategory,
                                        @RequestParam(name = "page", defaultValue = "1") int page,
-                                       @RequestParam(value = "sortBy", required = false) String sortBy,
+                                       @RequestParam(value = "sortBy", required = false) ProductSortBy sortBy,
                                        @RequestParam(value = "sort", required = false) SortDirection sort,
                                        Model model) {
         return handleProductList(category, subCategory, page, model, sort, sortBy);
     }
 
-    private String handleProductList(String category, String subCategory, int page, Model model, SortDirection sort, String sortBy) {
+    private String handleProductList(String category, String subCategory, int page, Model model, SortDirection sort, ProductSortBy sortBy) {
         int offset = (page - 1) * pageSize;
 
         ProductSummaryRequestDto dto = ProductSummaryRequestDto.builder()

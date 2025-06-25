@@ -1,6 +1,7 @@
 package com.fast_campus_12.not_found.shop.product.dto;
 
 import com.fast_campus_12.not_found.shop.common.enums.SortDirection;
+import com.fast_campus_12.not_found.shop.product.enums.ProductSortBy;
 import lombok.Builder;
 import lombok.Data;
 
@@ -11,6 +12,6 @@ public class ProductSummaryRequestDto {
     private String subCategory;
     private int offset;
     private int limit;
-    private String sortBy;
+    private ProductSortBy sortBy;
     private SortDirection sortDirection;
 }
