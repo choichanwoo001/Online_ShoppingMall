@@ -11,6 +11,38 @@
         </ul>
     </div>
 
+    <!--정렬 기준-->
+    <div class="sort-options">
+        <a th:href="${subCategory != null} ?
+              @{/product/category/{category}/{subCategory}(category=${category}, subCategory=${subCategory}, sortBy='CREATED_AT', sort='DESC')} :
+              @{/product/category/{category}(category=${category}, sortBy='CREATED_AT', sort='ASC')}"
+           th:classappend="${sortBy == 'CREATED_AT' and sort == 'DESC'} ? ' active'"
+           class="sort-link">
+            신상품
+        </a>
+        <a th:href="${subCategory != null} ?
+              @{/product/category/{category}/{subCategory}(category=${category}, subCategory=${subCategory}, sortBy='NAME', sort='ASC')} :
+              @{/product/category/{category}(category=${category}, sortBy='NAME', sort='ASC')}"
+           th:classappend="${sortBy == 'NAME' and sort == 'ASC'} ? ' active'"
+           class="sort-link">
+            상품명
+        </a>
+        <a th:href="${subCategory != null} ?
+              @{/product/category/{category}/{subCategory}(category=${category}, subCategory=${subCategory}, sortBy='PRICE', sort='ASC')} :
+              @{/product/category/{category}(category=${category}, sortBy='PRICE', sort='ASC')}"
+           th:classappend="${sortBy == 'PRICE' and sort == 'ASC'} ? ' active'"
+           class="sort-link">
+            낮은가격
+        </a>
+        <a th:href="${subCategory != null} ?
+              @{/product/category/{category}/{subCategory}(category=${category}, subCategory=${subCategory}, sortBy='PRICE', sort='DESC')} :
+              @{/product/category/{category}(category=${category}, sortBy='PRICE', sort='DESC')}"
+           th:classappend="${sortBy == 'PRICE' and sort == 'DESC'} ? ' active'"
+           class="sort-link">
+            높은가격
+        </a>
+    </div>
+
     <!-- 상품 리스트 -->
     <div class="product_list_area">
         <ul class="product_list">
@@ -34,19 +66,30 @@
     <div class="pagination" th:if="${pageResponseDto.totalPages > 1}">
         <ul>
             <!-- 이전 페이지 -->
-            <li class="prevPageBtn" th:if="${pageResponseDto.hasPrev}">
-                <a th:href="@{|?page=${pageResponseDto.page - 1}|}">« 이전</a>
+            <li th:if="${pageResponseDto.hasPrev}">
+                <a th:href="${subCategory != null} ?
+                @{/product/category/{category}/{subCategory}(category=${category}, subCategory=${subCategory}, page=${pageResponseDto.page - 1}, sortBy=${sortBy}, sort=${sort})} :
+                @{/product/category/{category}(category=${category}, page=${pageResponseDto.page - 1}, sortBy=${sortBy}, sort=${sort})}">
+                    « 이전
+                </a>
             </li>
 
-            <!-- 페이지 번호 (1부터 totalPages까지) -->
-            <li class="active" th:each="i : ${#numbers.sequence(1, pageResponseDto.totalPages)}"
+            <!-- 페이지 번호 -->
+            <li th:each="i : ${#numbers.sequence(1, pageResponseDto.totalPages)}"
                 th:classappend="${i == pageResponseDto.page} ? 'active'">
-                <a th:href="@{|?page=${i}|}" th:text="${i}">1</a>
+                <a th:href="${subCategory != null} ?
+                @{/product/category/{category}/{subCategory}(category=${category}, subCategory=${subCategory}, page=${i}, sortBy=${sortBy}, sort=${sort})} :
+                @{/product/category/{category}(category=${category}, page=${i}, sortBy=${sortBy}, sort=${sort})}"
+                   th:text="${i}">1</a>
             </li>
 
             <!-- 다음 페이지 -->
-            <li class="nextPageBtn" th:if="${pageResponseDto.hasNext}">
-                <a th:href="@{|?page=${pageResponseDto.page + 1}|}">다음 »</a>
+            <li th:if="${pageResponseDto.hasNext}">
+                <a th:href="${subCategory != null} ?
+                @{/product/category/{category}/{subCategory}(category=${category}, subCategory=${subCategory}, page=${pageResponseDto.page + 1}, sortBy=${sortBy}, sort=${sort})} :
+                @{/product/category/{category}(category=${category}, page=${pageResponseDto.page + 1}, sortBy=${sortBy}, sort=${sort})}">
+                    다음 »
+                </a>
             </li>
         </ul>
     </div>

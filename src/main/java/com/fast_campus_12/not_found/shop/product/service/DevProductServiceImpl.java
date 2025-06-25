@@ -3,6 +3,7 @@ package com.fast_campus_12.not_found.shop.product.service;
 import com.fast_campus_12.not_found.shop.mapper.ProductDynamicQueryMapper;
 import com.fast_campus_12.not_found.shop.product.dto.ProductSummaryDto;
 import com.fast_campus_12.not_found.shop.product.dto.ProductPageDto;
+import com.fast_campus_12.not_found.shop.product.dto.ProductSummaryRequestDto;
 import com.fast_campus_12.not_found.shop.product.model.Product;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,10 +23,21 @@ public class DevProductServiceImpl implements ProductService {
 
     private final ProductDynamicQueryMapper productDynamicQueryMapper;
 
+
     @Override
-    public ProductPageDto getSummaryByCategory(String lv2CategoryName, String lv3CategoryName, int offset, int limit) {
-        List<Product> productList = productDynamicQueryMapper.findProductListByCategory(lv2CategoryName, lv3CategoryName, offset, limit);
-        int totalCount = productDynamicQueryMapper.countProductListByCategory(lv2CategoryName, lv3CategoryName);
+    public ProductPageDto getSummaryByCategory(ProductSummaryRequestDto productSummaryRequestDto) {
+//        List<Product> productList = productDynamicQueryMapper.findProductListByCategory(
+//                productSummaryRequestDto.getCategory(),
+//                productSummaryRequestDto.getSubCategory(),
+//                productSummaryRequestDto.getOffset(),
+//                productSummaryRequestDto.getLimit()
+//        );
+        List<Product> productList = productDynamicQueryMapper
+                .findProductListByCategory(productSummaryRequestDto);
+
+        int totalCount = productDynamicQueryMapper
+                .countProductListByCategory(productSummaryRequestDto);
+
         return ProductPageDto.builder()
                 .totalCount(totalCount)
                 .items(toSummaryDtoList(productList))

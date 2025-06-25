@@ -157,6 +157,28 @@
 	font-weight:500;
 }
 
+/* ---------- product list sort options -----------*/
+.sort-options {
+	display: flex;
+	justify-content: flex-end;
+	gap: 1rem;
+	margin-bottom: 1rem;
+	font-size: 0.95rem;
+}
+
+.sort-link {
+	color: #333;
+	text-decoration: none;
+	position: relative;
+	padding-bottom: 0.15rem; /* 3px ÷ 20 */
+}
+
+.sort-link:hover,
+.sort-link.active {
+	font-weight: bold;
+	border-bottom: 0.1rem solid #000; /* 2px ÷ 20 */
+}
+
 /* --------- footer ------------ */
 footer {
 	background:#eee;
