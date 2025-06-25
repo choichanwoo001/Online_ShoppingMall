@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -23,7 +24,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public Cart getOrCreateCart(Long userId) {
         Cart cart = cartMapper.findByUserId(userId);
-        if (cart == null) {
+        if (Objects.isNull(cart)) {
             cart = new Cart();
 //            cart.setId(UUID.randomUUID().toString());
             cart.setUserId(userId);
@@ -41,7 +42,7 @@ public class CartServiceImpl implements CartService {
         // 이미 있는 상품인지 확인
         CartItem existingItem = cartItemMapper.findByCartIdAndProductId(cart.getId(), productId);
 
-        if (existingItem != null) {
+        if (!Objects.isNull(existingItem)) {
             // 기존 상품이면 수량 업데이트
             existingItem.setQuantity(existingItem.getQuantity() + quantity);
             cartItemMapper.updateQuantity(existingItem);
@@ -63,7 +64,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public void updateItemQuantity(Long userId, String cartItemId, int quantity) {
         Cart cart = cartMapper.findByUserId(userId);
-        if (cart == null) {
+        if (Objects.isNull(cart)) {
             throw new IllegalArgumentException("장바구니를 찾을 수 없습니다.");
         }
 
@@ -83,7 +84,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public void removeItemFromCart(Long userId, String cartItemId) {
         Cart cart = cartMapper.findByUserId(userId);
-        if (cart == null) {
+        if (Objects.isNull(cart)) {
             throw new IllegalArgumentException("장바구니를 찾을 수 없습니다.");
         }
 
@@ -99,7 +100,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public void clearCart(Long userId) {
         Cart cart = cartMapper.findByUserId(userId);
-        if (cart != null) {
+        if (!Objects.isNull(cart)) {
             cartItemMapper.deleteAllByCartId(cart.getId());
             cartMapper.updateCart(cart.getId());
         }
@@ -108,7 +109,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public int getCartItemCount(Long userId) {
         Cart cart = cartMapper.findByUserId(userId);
-        if (cart == null) {
+        if (Objects.isNull(cart)) {
             return 0;
         }
         return cartItemMapper.countByCartId(cart.getId());
