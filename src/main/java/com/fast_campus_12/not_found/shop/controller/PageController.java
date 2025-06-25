@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Controller
 public class PageController {
     @GetMapping("/")
-    public String renderIndex(Model model) {
+    public String renderPage( Model model) {
         model.addAttribute("contentPath", "home");
         return "layout/base";
     }

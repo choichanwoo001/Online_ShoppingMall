@@ -9,6 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -51,89 +53,123 @@ public class WishlistController {
 
     @GetMapping("/api/wishlist/add")
     @ResponseBody
-    public ResponseEntity<ApiResponse<Void>> addToWishlist(
+    public ResponseEntity<Map<String, Object>> addToWishlist(
             @RequestParam Long productId,
             HttpSession session) {
+        Map<String, Object> response = new HashMap<>();
 
         String userId = (String) session.getAttribute("userId");
         if (userId == null) {
-            return ResponseEntity.ok(ApiResponse.error("로그인이 필요합니다."));
+            response.put("success", false);
+            response.put("message", "로그인이 필요합니다.");
+            return ResponseEntity.ok(response);
         }
 
         boolean success = wishlistService.addToWishlist(userId, productId);
         if (success) {
-            return ResponseEntity.ok(ApiResponse.success("관심상품에 추가되었습니다."));
+            response.put("success", true);
+            response.put("message", "관심상품에 추가되었습니다.");
+            return ResponseEntity.ok(response);
         } else {
-            return ResponseEntity.ok(ApiResponse.error("이미 관심상품에 등록된 상품입니다."));
+            response.put("success", false);
+            response.put("message", "이미 관심상품에 등록된 상품입니다.");
+            return ResponseEntity.ok(response);
         }
     }
 
     @GetMapping("/api/wishlist/remove")
     @ResponseBody
-    public ResponseEntity<ApiResponse<Void>> removeFromWishlist(
+    public ResponseEntity<Map<String, Object>> removeFromWishlist(
             @RequestParam Long productId,
             HttpSession session) {
+        Map<String, Object> response = new HashMap<>();
 
         String userId = (String) session.getAttribute("userId");
         if (userId == null) {
-            return ResponseEntity.ok(ApiResponse.error("로그인이 필요합니다."));
+            response.put("success", false);
+            response.put("message", "로그인이 필요합니다.");
+            return ResponseEntity.ok(response);
         }
 
         boolean success = wishlistService.removeFromWishlist(userId, productId);
         if (success) {
-            return ResponseEntity.ok(ApiResponse.success("관심상품에서 제거되었습니다."));
+            response.put("success", true);
+            response.put("message", "관심상품에서 제거되었습니다.");
+            return ResponseEntity.ok(response);
         } else {
-            return ResponseEntity.ok(ApiResponse.error("관심상품에서 제거하는데 실패했습니다."));
+            response.put("success", false);
+            response.put("message", "관심상품에서 제거하는데 실패했습니다.");
+            return ResponseEntity.ok(response);
         }
     }
 
     @GetMapping("/api/wishlist/delete-multiple")
     @ResponseBody
-    public ResponseEntity<ApiResponse<Void>> deleteMultiple(
+    public ResponseEntity<Map<String, Object>> deleteMultiple(
             @RequestBody WishlistRequestDto request,
             HttpSession session) {
+        Map<String, Object> response = new HashMap<>();
 
         String userId = (String) session.getAttribute("userId");
         if (userId == null) {
-            return ResponseEntity.ok(ApiResponse.error("로그인이 필요합니다."));
+            response.put("success", false);
+            response.put("message", "로그인이 필요합니다.");
+            return ResponseEntity.ok(response);
         }
 
         boolean success = wishlistService.removeMultipleFromWishlist(request.getWishIds());
         if (success) {
-            return ResponseEntity.ok(ApiResponse.success("선택한 상품들이 삭제되었습니다."));
+            response.put("success", true);
+            response.put("message", "선택한 상품들이 삭제되었습니다.");
+            return ResponseEntity.ok(response);
         } else {
-            return ResponseEntity.ok(ApiResponse.error("상품 삭제에 실패했습니다."));
+            response.put("success", false);
+            response.put("message", "상품 삭제에 실패했습니다.");
+            return ResponseEntity.ok(response);
         }
     }
 
     @GetMapping("/api/wishlist/clear")
     @ResponseBody
-    public ResponseEntity<ApiResponse<Void>> clearWishlist(HttpSession session) {
+    public ResponseEntity<Map<String, Object>> clearWishlist(HttpSession session) {
+        Map<String, Object> response = new HashMap<>();
+
         String userId = (String) session.getAttribute("userId");
         if (userId == null) {
-            return ResponseEntity.ok(ApiResponse.error("로그인이 필요합니다."));
+            response.put("success", false);
+            response.put("message", "로그인이 필요합니다.");
+            return ResponseEntity.ok(response);
         }
 
         boolean success = wishlistService.clearWishlist(userId);
         if (success) {
-            return ResponseEntity.ok(ApiResponse.success("모든 관심상품이 삭제되었습니다."));
+            response.put("success", true);
+            response.put("message", "모든 관심상품이 삭제되었습니다.");
+            return ResponseEntity.ok(response);
         } else {
-            return ResponseEntity.ok(ApiResponse.error("관심상품 삭제에 실패했습니다."));
+            response.put("success", false);
+            response.put("message", "관심상품 삭제에 실패했습니다.");
+            return ResponseEntity.ok(response);
         }
     }
 
     @GetMapping("/api/wishlist/check")
     @ResponseBody
-    public ResponseEntity<ApiResponse<Boolean>> checkWishlist(
+    public ResponseEntity<Map<String, Object>> checkWishlist(
             @RequestParam Long productId,
             HttpSession session) {
+        Map<String, Object> response = new HashMap<>();
 
         String userId = (String) session.getAttribute("userId");
         if (userId == null) {
-            return ResponseEntity.ok(ApiResponse.success(false));
+            response.put("success", true);
+            response.put("data", false);
+            return ResponseEntity.ok(response);
         }
 
         boolean isInWishlist = wishlistService.isInWishlist(userId, productId);
-        return ResponseEntity.ok(ApiResponse.success(isInWishlist));
+        response.put("success", true);
+        response.put("data", isInWishlist);
+        return ResponseEntity.ok(response);
     }
 }
