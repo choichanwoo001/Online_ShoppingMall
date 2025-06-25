@@ -97,10 +97,114 @@
     margin-right: 5px;
 }
 
+/* 주문 상품 섹션 스타일링 */
+.order-form-container .order-item {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.order-form-container .order-item h3 {
+    margin: 0 0 15px 0;
+    color: #333;
+}
+
+.order-form-container .item-header {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 15px;
+    padding: 12px 0;
+    border-bottom: 2px solid #007bff;
+    font-weight: bold;
+    color: #007bff;
+}
+
+.order-form-container .item-header span:nth-child(2){
+    text-align: right;
+}
+
+.order-form-container .item-header span:nth-child(3){
+    text-align: right;
+}
+
+.order-form-container .item-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 15px;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.order-form-container .item-row:last-child {
+    border-bottom: none;
+}
+
+.order-form-container .item-name {
+    font-weight: 500;
+    color: #333;
+}
+
+.order-form-container .item-quantity {
+    text-align: center;
+    color: #666;
+}
+
+.order-form-container .item-quantity:nth-child(2){
+    text-align: right;
+}
+
+.order-form-container .item-price {
+    text-align: right;
+    font-weight: bold;
+    color: #007bff;
+}
+
+/* 쿠폰 섹션 스타일링 */
+.order-form-container .coupon-box {
+    background: #f0f8ff;
+    padding: 15px;
+    border-radius: 4px;
+    border: 1px solid #007bff;
+    margin-bottom: 20px;
+}
+
+.order-form-container .coupon-select {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.order-form-container .coupon-select select {
+    flex: 1;
+}
+
+.order-form-container .coupon-select button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.order-form-container .coupon-select button:hover {
+    background: #0056b3;
+}
+
+.order-form-container .coupon-info {
+    margin: 10px 0 0 0;
+    color: #007bff;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* 적립금 섹션 스타일링 */
 .order-form-container .mileage-box {
     background: #f8f9fa;
     padding: 15px;
     border-radius: 4px;
+    border: 1px solid #28a745;
 }
 
 .order-form-container .mileage-use {
@@ -128,30 +232,9 @@
 
 .order-form-container .mileage-info {
     margin: 10px 0 0 0;
-    color: #666;
+    color: #28a745;
     font-size: 14px;
-}
-
-.order-form-container .order-item {
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-.order-form-container .order-item h3 {
-    margin: 0 0 15px 0;
-    color: #333;
-}
-
-.order-form-container .item-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid #eee;
-}
-
-.order-form-container .item-row:last-child {
-    border-bottom: none;
+    font-weight: 500;
 }
 
 .order-form-container .price-summary {
@@ -159,12 +242,14 @@
     padding: 15px;
     border-radius: 4px;
     margin: 20px 0;
+    border: 1px solid #ddd;
 }
 
 .order-form-container .price-row {
     display: flex;
     justify-content: space-between;
     margin-bottom: 10px;
+    font-size: 14px;
 }
 
 .order-form-container .price-row.total {

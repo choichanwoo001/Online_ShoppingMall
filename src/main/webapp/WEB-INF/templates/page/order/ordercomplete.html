@@ -1,0 +1,176 @@
+<div th:fragment="content">
+        <meta charset="UTF-8"/>
+        <div class="container">
+                <!-- 성공/에러 메시지 -->
+                <div th:if="${message}" class="alert alert-success">
+                        <strong>✓</strong> [[${message}]]
+                </div>
+
+                <div th:if="${error}" class="alert alert-error">
+                        <strong>✗</strong> [[${error}]]
+                </div>
+
+                <!-- 주문 완료 헤더 -->
+                <div class="complete-header">
+                        <div class="icon">🎉</div>
+                        <h1>주문이 완료되었습니다!</h1>
+                        <p>소중한 주문 감사합니다.</p>
+                </div>
+
+                <!-- 주문 정보 -->
+                <div class="order-info-card" th:if="${orderInfo}">
+                        <div class="card-header">
+                                <h2>📋 주문 정보</h2>
+                        </div>
+                        <div class="card-content">
+                                <div class="info-row">
+                                        <span class="info-label">주문번호</span>
+                                        <span class="info-value highlight" th:text="${orderInfo.orderId}">ORD20241225001</span>
+                                </div>
+                                <div class="info-row">
+                                        <span class="info-label">주문일시</span>
+                                        <span class="info-value" th:text="${orderInfo.formattedOrderDate}">2024-12-25 14:30:25</span>
+                                </div>
+                                <div class="info-row">
+                                        <span class="info-label">주문상태</span>
+                                        <span class="info-value" th:text="${orderInfo.orderStatus}">주문완료</span>
+                                </div>
+                                <div class="info-row">
+                                        <span class="info-label">결제방법</span>
+                                        <span class="info-value" th:text="${orderInfo.paymentMethodName}">카드결제</span>
+                                </div>
+                        </div>
+                </div>
+
+                <!-- 주문자 정보 -->
+                <div class="order-info-card" th:if="${orderInfo}">
+                        <div class="card-header">
+                                <h2>👤 주문자 정보</h2>
+                        </div>
+                        <div class="card-content">
+                                <div class="info-row">
+                                        <span class="info-label">이름</span>
+                                        <span class="info-value" th:text="${orderInfo.ordererName}">홍길동</span>
+                                </div>
+                                <div class="info-row">
+                                        <span class="info-label">이메일</span>
+                                        <span class="info-value" th:text="${orderInfo.ordererEmail}">hong@example.com</span>
+                                </div>
+                                <div class="info-row">
+                                        <span class="info-label">연락처</span>
+                                        <span class="info-value" th:text="${orderInfo.ordererPhone}">010-1234-5678</span>
+                                </div>
+                        </div>
+                </div>
+
+                <!-- 배송 정보 -->
+                <div class="order-info-card" th:if="${orderInfo}">
+                        <div class="card-header">
+                                <h2>🚚 배송 정보</h2>
+                        </div>
+                        <div class="card-content">
+                                <div class="info-row">
+                                        <span class="info-label">수령자</span>
+                                        <span class="info-value" th:text="${orderInfo.receiverName}">홍길동</span>
+                                </div>
+                                <div class="info-row">
+                                        <span class="info-label">연락처</span>
+                                        <span class="info-value" th:text="${orderInfo.receiverPhone}">010-1234-5678</span>
+                                </div>
+                                <div class="info-row">
+                                        <span class="info-label">배송주소</span>
+                                        <span class="info-value" th:text="${orderInfo.receiverAddress}">서울시 강남구 테헤란로 123</span>
+                                </div>
+                        </div>
+                </div>
+
+                <!-- 주문 상품 -->
+                <div class="order-info-card" th:if="${orderInfo}">
+                        <div class="card-header">
+                                <h2>📦 주문 상품</h2>
+                        </div>
+                        <div class="card-content">
+                                <div class="order-items">
+                                        <div class="item-header">
+                                                <span>상품명</span>
+                                                <span>수량</span>
+                                                <span>금액</span>
+                                        </div>
+                                        <div class="item-row" th:each="item : ${orderInfo.orderItems}">
+                                                <span th:text="${item.productName}">상품명</span>
+                                                <span th:text="${item.quantity} + '개'">1개</span>
+                                                <span th:text="${#numbers.formatInteger(item.totalPrice, 0, 'COMMA')} + '원'">10,000원</span>
+                                        </div>
+                                </div>
+                        </div>
+                </div>
+
+                <!-- 결제 정보 -->
+                <div class="order-info-card" th:if="${orderInfo}">
+                        <div class="card-header">
+                                <h2>💳 결제 정보</h2>
+                        </div>
+                        <div class="card-content">
+                                <div class="price-summary">
+                                        <div class="price-row">
+                                                <span>상품 총액</span>
+                                                <span th:text="${#numbers.formatInteger(orderInfo.totalItemPrice, 0, 'COMMA')} + '원'">50,000원</span>
+                                        </div>
+                                        <div class="price-row">
+                                                <span>배송비</span>
+                                                <span th:text="${#numbers.formatInteger(orderInfo.shippingFee, 0, 'COMMA')} + '원'">3,000원</span>
+                                        </div>
+                                        <div class="price-row discount" th:if="${orderInfo.couponDiscount > 0}">
+                                                <span>쿠폰 할인 <span th:if="${orderInfo.couponName}" th:text="'(' + ${orderInfo.couponName} + ')'"></span></span>
+                                                <span th:text="'-' + ${#numbers.formatInteger(orderInfo.couponDiscount, 0, 'COMMA')} + '원'">-5,000원</span>
+                                        </div>
+                                        <div class="price-row discount" th:if="${orderInfo.mileageUsed > 0}">
+                                                <span>적립금 사용</span>
+                                                <span th:text="'-' + ${#numbers.formatInteger(orderInfo.mileageUsed, 0, 'COMMA')} + '원'">-2,000원</span>
+                                        </div>
+                                        <div class="price-row total">
+                                                <span>최종 결제 금액</span>
+                                                <span th:text="${#numbers.formatInteger(orderInfo.finalAmount, 0, 'COMMA')} + '원'">46,000원</span>
+                                        </div>
+                                </div>
+
+                                <div class="info-row" th:if="${orderInfo.earnedMileage > 0}" style="margin-top: 20px; background: #e8f5e8; padding: 15px; border-radius: 8px;">
+                                        <span class="info-label">적립 예정 마일리지</span>
+                                        <span class="info-value" style="color: #4CAF50; font-weight: 600;" th:text="${#numbers.formatInteger(orderInfo.earnedMileage, 0, 'COMMA')} + '원'">460원</span>
+                                </div>
+                        </div>
+                </div>
+
+                <!-- 액션 버튼들 -->
+                <div class="action-buttons">
+                        <a href="/" class="btn btn-primary">
+                                🏠 홈으로 가기
+                        </a>
+                        <a href="/order/list" class="btn btn-outline">
+                                📋 주문 내역 보기
+                        </a>
+                        <a th:if="${orderInfo}" th:href="@{'/order/detail/' + ${orderInfo.orderId}}" class="btn btn-secondary">
+                                📄 주문 상세 보기
+                        </a>
+                </div>
+        </div>
+        <script>
+                // 페이지 로드 시 스크롤을 맨 위로
+                window.scrollTo(0, 0);
+
+                // 주문 완료 애니메이션
+                document.addEventListener('DOMContentLoaded', function() {
+                        const cards = document.querySelectorAll('.order-info-card');
+                        cards.forEach((card, index) => {
+                                card.style.opacity = '0';
+                                card.style.transform = 'translateY(20px)';
+                                card.style.transition = 'all 0.5s ease';
+
+                                setTimeout(() => {
+                                        card.style.opacity = '1';
+                                        card.style.transform = 'translateY(0)';
+                                }, 200 * (index + 1));
+                        });
+                });
+        </script>
+</div>
