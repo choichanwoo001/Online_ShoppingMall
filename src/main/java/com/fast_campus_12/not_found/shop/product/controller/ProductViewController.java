@@ -62,9 +62,11 @@ public class ProductViewController {
         model.addAttribute("pageResponseDto", pageResponseDto);
 //        model.addAttribute("category", category);
 //        model.addAttribute("subCategory", subCategory); // null 가능
+        model.addAttribute("baseUrl", "/product/special/" + special.name());
         model.addAttribute("sortBy", sortBy.name());
         model.addAttribute("sort", sort); // ASC, DESC
-        model.addAttribute("contentPath", "product/specialProductList");
+        model.addAttribute("contentPath", "product/productList");
+
 
         return "layout/base";
     }
