@@ -1,0 +1,54 @@
+<div th:fragment="content">
+
+    <!-- Q&A 제목 영역 (중앙 정렬) -->
+    <div style="text-align: center; margin: 40px 0;">
+        <h2 style="font-size: 24px; font-weight: bold;">상품 Q&A</h2>
+    </div>
+
+    <!-- Q&A 리스트 전체 감싸는 영역 (양끝까지 확장) -->
+    <div class="qna-wrapper" style="width: 100%; box-sizing: border-box; padding: 0 10vw;">
+
+        <!-- Q&A 항목 리스트 -->
+        <div class="qna-list"
+             style="display: flex; flex-direction: column; gap: 20px; width: 100%;">
+
+            <!-- 각 질문 -->
+            <div th:each="q : ${questions}"
+                 style="border: 1px solid #ddd; padding: 16px 20px; background: #fff;
+                        border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); width: 100%;">
+
+                <!-- 작성자 / 날짜 -->
+                <div style="font-size: 14px; color: #666; margin-bottom: 8px;">
+                    <strong th:text="${q.nickname}">닉네임</strong>
+                    <span th:text="${#temporals.format(q.createdAt, 'yyyy-MM-dd HH:mm')}">날짜</span>
+                </div>
+
+                <!-- 질문 내용 -->
+                <div style="font-size: 16px; color: #333;">
+                    <p th:if="${q.isSecret}">🔒 비밀글입니다.</p>
+                    <p th:unless="${q.isSecret}" th:text="${q.content}">질문 내용</p>
+                </div>
+
+                <!-- 답변 -->
+                <div th:if="${q.answer != null}"
+                     style="margin-top: 12px; padding: 12px; background-color: #f9f9f9;
+                            border-left: 4px solid #555;">
+                    <strong style="display: block; margin-bottom: 4px;">📢 답변</strong>
+                    <p th:text="${q.answer}" style="margin: 0;">답변 내용</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 페이지네이션 -->
+    <div style="margin-top: 30px; text-align: center;">
+    <span th:each="i : ${#numbers.sequence(1, totalPages)}">
+        <a th:href="@{'/qna/' + ${i}}"
+           th:text="${i}"
+           th:classappend="${i == currentPage} ? 'selected' : ''"
+           style="margin: 0 5px; text-decoration: none; color: #333; font-weight: bold;"></a>
+    </span>
+    </div>
+
+
+</div>
+
