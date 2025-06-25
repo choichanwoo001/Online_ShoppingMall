@@ -72,12 +72,29 @@
     <section id="product-review" style="padding: 60px 0;">
         <div style="width: 800px; margin: auto;">
             <h2>리뷰</h2>
+
             <div th:each="review : ${product.reviews}" style="border-top: 1px solid #ddd; padding: 20px 0;">
+                <!-- 사용자 정보 -->
                 <strong th:text="${review.username}">사용자</strong>
                 <span th:text="${review.createdDate}" style="margin-left: 8px;">날짜</span>
+
+                <!-- 별점 -->
+                <div style="margin: 6px 0;">
+                <span th:each="i : ${#numbers.sequence(1, 5)}"
+                      th:classappend="${i <= review.rating} ? 'filled-star' : 'empty-star'">★</span>
+                </div>
+
+                <!-- 리뷰 텍스트 -->
                 <p th:text="${review.content}" style="margin-top: 10px;"></p>
+
+                <!-- 리뷰 이미지 -->
+                <div style="display: flex; gap: 8px; margin-top: 10px;">
+                    <img th:each="img : ${review.images}" th:src="@{${img}}"
+                         alt="리뷰 이미지" style="width: 100px; height: 100px; object-fit: cover; border: 1px solid #ccc;" />
+                </div>
             </div>
         </div>
     </section>
+
 
 </div>

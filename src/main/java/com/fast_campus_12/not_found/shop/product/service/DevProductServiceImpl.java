@@ -58,9 +58,31 @@ public class DevProductServiceImpl implements ProductService {
                 ColorDto.builder().colorId(2).name("파랑").build(),
                 ColorDto.builder().colorId(3).name("초록").build()
         );
+//        List<ReviewDto> reviews = List.of(
+//                ReviewDto.builder().username("jake23").createdDate("2024-05-10\"").content("옷이 정말 시원하고 핏도 좋아요! 추천합니다.").build(),
+//                ReviewDto.builder().username("minseo87").createdDate("2024-06-01\"").content("배송도 빠르고 사이즈도 잘 맞아요").build()
+//        );
         List<ReviewDto> reviews = List.of(
-                ReviewDto.builder().username("jake23").createdDate("2024-05-10\"").content("옷이 정말 시원하고 핏도 좋아요! 추천합니다.").build(),
-                ReviewDto.builder().username("minseo87").createdDate("2024-06-01\"").content("배송도 빠르고 사이즈도 잘 맞아요").build()
+                ReviewDto.builder()
+                        .username("jake23")
+                        .createdDate("2024-05-10")
+                        .content("좋네요 도구매하고싶어요ㅎㅎ")
+                        .rating(5)
+                        .images(List.of(
+                                "https://picsum.photos/id/1011/200/200",
+                                "https://picsum.photos/id/1012/200/200"
+                        ))
+                        .build(),
+
+                ReviewDto.builder()
+                        .username("minseo87")
+                        .createdDate("2024-06-01")
+                        .content("잘 맞고 예뻐요")
+                        .rating(4)
+                        .images(List.of(
+                                "https://picsum.photos/id/1013/200/200"
+                        ))
+                        .build()
         );
 
 
