@@ -42,7 +42,7 @@ public class CartServiceImpl implements CartService {
         // 이미 있는 상품인지 확인
         CartItem existingItem = cartItemMapper.findByCartIdAndProductId(cart.getId(), productId);
 
-        if (!Objects.isNull(existingItem)) {
+        if (Objects.nonNull(existingItem)) {
             // 기존 상품이면 수량 업데이트
             existingItem.setQuantity(existingItem.getQuantity() + quantity);
             cartItemMapper.updateQuantity(existingItem);
@@ -100,7 +100,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public void clearCart(Long userId) {
         Cart cart = cartMapper.findByUserId(userId);
-        if (!Objects.isNull(cart)) {
+        if (Objects.nonNull(cart)) {
             cartItemMapper.deleteAllByCartId(cart.getId());
             cartMapper.updateCart(cart.getId());
         }
