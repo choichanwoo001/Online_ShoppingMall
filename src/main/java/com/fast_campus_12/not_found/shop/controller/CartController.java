@@ -35,7 +35,7 @@ import java.util.*;
 public class CartController {
 
     @Autowired
-    private CartService cartServiceImpl;
+    private final CartService cartServiceImpl;
 
     //cart url 매핑 임시 + 팝업
     @GetMapping
@@ -52,7 +52,7 @@ public class CartController {
 
 
         // getCartWithItems가 null을 반환하면 빈 장바구니 사용
-        if (cartWithItems == null) {
+        if (Objects.isNull(cartWithItems)) {
             cartWithItems = cart; // 방금 생성하거나 조회한 장바구니 사용
         }
         model.addAttribute("cart", cartWithItems);
