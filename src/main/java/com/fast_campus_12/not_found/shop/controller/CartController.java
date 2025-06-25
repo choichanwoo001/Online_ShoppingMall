@@ -6,11 +6,11 @@ import com.fast_campus_12.not_found.shop.product.dto.CartItemViewDto;
 import com.fast_campus_12.not_found.shop.product.model.Cart;
 import com.fast_campus_12.not_found.shop.product.model.CartItem;
 import com.fast_campus_12.not_found.shop.product.service.CartService;
-import groovy.util.logging.Slf4j;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.logging.Log;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
@@ -26,10 +26,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.sql.DataSource;
-import java.util.Collections;
-import java.util.Date;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 @Controller
@@ -38,23 +35,20 @@ import java.util.List;
 public class CartController {
 
     @Autowired
-    private CartService cartService;
-    @Autowired
-    private CartItemMapper cartItemMapper;
+    private CartService cartServiceImpl;
 
-    private static final Logger log = LoggerFactory.getLogger(CartController.class);
     //cart url 매핑 임시 + 팝업
     @GetMapping
     public String showPopup(HttpServletRequest request, Model model) {
         // 1. 사용자 ID 가져오기 (세션 또는 인증에서)
         //Long userId = getUserIdFromSession(request);
         Long userId = 5L;
-        Cart cart = cartService.getOrCreateCart(userId);
+        Cart cart = cartServiceImpl.getOrCreateCart(userId);
         // 장바구니와 장바구니 아이템들을 함께 조회
-        Cart cartWithItems = cartService.getCartWithItems(userId);
+        Cart cartWithItems = cartServiceImpl.getCartWithItems(userId);
 
         // 장바구니 아이템 조회 (Thymeleaf에서 사용)
-        List<CartItemViewDto> cartItems = cartService.getCartItemViews(userId);
+        List<CartItemViewDto> cartItems = cartServiceImpl.getCartItemViews(userId);
 
 
         // getCartWithItems가 null을 반환하면 빈 장바구니 사용
@@ -79,12 +73,12 @@ public class CartController {
             Long userId = 4L; // 실제로는 세션에서 가져와야 함
 
             // 먼저 장바구니 존재 확인 및 생성
-            Cart cart = cartService.getOrCreateCart(userId);
+            Cart cart = cartServiceImpl.getOrCreateCart(userId);
 
             // CartItemMapper를 사용해서 장바구니 아이템 뷰 정보 직접 조회
-            List<CartItemViewDto> cartItemViewDtos = cartItemMapper.findCartItemViewsByCartId(cart.getId());
+            List<CartItemViewDto> cartItemViewDtos = cartServiceImpl.getCartItemViews(userId);
 
-            if (cartItemViewDtos == null || cartItemViewDtos.isEmpty()) {
+            if (Objects.isNull(cartItemViewDtos) || cartItemViewDtos.isEmpty()) {
                 return ResponseEntity.ok().body(Collections.emptyList());
             }
 

@@ -1,5 +1,6 @@
 package com.fast_campus_12.not_found.shop.mapper;
 
+import com.fast_campus_12.not_found.shop.product.dto.CartItemViewDto;
 import com.fast_campus_12.not_found.shop.product.model.Cart;
 import com.fast_campus_12.not_found.shop.product.model.CartItem;
 import org.apache.ibatis.annotations.*;
@@ -59,10 +60,36 @@ public interface CartMapper {
     })
     Cart findCartWithItemsByUserId(Long userId);
 
-    // 장바구니 ID로 아이템들과 함께 조회
-    @Select("SELECT * FROM cart WHERE cart_id = #{cartId} AND deleted_at IS NULL")
-    @ResultMap("cartWithItemsMap")
-    Cart findCartWithItemsById(String cartId);
 
+    @Select("SELECT * FROM cart_item WHERE cart_id = #{cartId}")
+    @Results(id = "cartItemMap", value = {
+            @Result(column = "card_item_id", property = "id"),
+            @Result(column = "cart_id", property = "cartId"),
+            @Result(column = "product_id", property = "productId"),
+            @Result(column = "product_v_id", property = "productVariantId"),
+            @Result(column = "quantity", property = "quantity"),
+            @Result(column = "updated_at", property = "updatedAt")
+    })
+    List<CartItem> findItemsByCartId(Long cartId);
+
+    //CartItemViewDto로 조회
+    @Select("""
+        SELECT 
+            ci.cart_item_id,
+            ci.product_variant_id AS productVariantId,
+            p.product_title AS productName,
+            pv.product_variant_color_id AS color,
+            pv.product_variant_size_id AS size,
+            p.product_thumbnail AS image_url,
+            ci.quantity,
+            pop.original_price As price,
+            pop.sale_price AS discountPrice
+        FROM cart_item ci
+        JOIN product_variant pv ON ci.product_variant_id = pv.product_variant_id
+        JOIN product_option_price pop ON ci.product_variant_id = pop.product_variant_id
+        JOIN product p ON pv.product_id = p.product_id
+        WHERE ci.cart_id = #{cartId}
+    """)
+    List<CartItemViewDto> findCartItemViewsByCartId(String cartId);
     
 }

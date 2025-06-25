@@ -5,23 +5,20 @@ import com.fast_campus_12.not_found.shop.mapper.CartMapper;
 import com.fast_campus_12.not_found.shop.product.dto.CartItemViewDto;
 import com.fast_campus_12.not_found.shop.product.model.Cart;
 import com.fast_campus_12.not_found.shop.product.model.CartItem;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Slf4j
 @Service
-@Transactional
+@RequiredArgsConstructor
 public class CartServiceImpl implements CartService {
 
     private final CartMapper cartMapper;
     private final CartItemMapper cartItemMapper;
 
-    // 생성자 주입 (더 안전한 방식)
-    public CartServiceImpl(CartMapper cartMapper, CartItemMapper cartItemMapper) {
-        this.cartMapper = cartMapper;
-        this.cartItemMapper = cartItemMapper;
-    }
 
     @Override
     public Cart getOrCreateCart(Long userId) {
@@ -31,13 +28,13 @@ public class CartServiceImpl implements CartService {
 //            cart.setId(UUID.randomUUID().toString());
             cart.setUserId(userId);
             cartMapper.insertCart(cart);
-            System.out.println("장바구니 없음");
+            log.debug("장바구니 없음");
         }
         return cart;
     }
 
     @Override
-    public void addItemToCart(Long userId, Long productId, Long productVId, int quantity) {
+    public void addItemToCart(Long userId, Long productId, Long productVariantId, int quantity) {
         // 장바구니 조회/생성
         Cart cart = getOrCreateCart(userId);
 
@@ -49,12 +46,12 @@ public class CartServiceImpl implements CartService {
             existingItem.setQuantity(existingItem.getQuantity() + quantity);
             cartItemMapper.updateQuantity(existingItem);
 
-            System.out.println("장바구니에 이미 담겨져있습니다.");
+            log.debug("장바구니에 이미 담겨져있습니다.");
         } else {
             // 새 상품이면 추가
             CartItem newItem = new CartItem();
             newItem.setCartId(cart.getId());
-            newItem.setProductVId(productVId);
+            newItem.setProductVariantId(productVariantId);
             newItem.setQuantity(quantity);
             cartItemMapper.insertCartItem(newItem);
         }
@@ -94,8 +91,6 @@ public class CartServiceImpl implements CartService {
         cartMapper.updateCart(cart.getId());
     }
 
-    //장바구니 전체 조회
-    @Transactional(readOnly = true)
     @Override
     public Cart getCartWithItems(Long userId) {
         return cartMapper.findCartWithItemsByUserId(userId);
@@ -110,7 +105,6 @@ public class CartServiceImpl implements CartService {
         }
     }
 
-    @Transactional(readOnly = true)
     @Override
     public int getCartItemCount(Long userId) {
         Cart cart = cartMapper.findByUserId(userId);

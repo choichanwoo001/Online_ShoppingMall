@@ -8,6 +8,7 @@ import java.util.List;
 
 @Mapper
 public interface CartItemMapper {
+
     //CartItemViewDto로 조회
     @Select("""
         SELECT 
@@ -28,12 +29,13 @@ public interface CartItemMapper {
     """)
     List<CartItemViewDto> findCartItemViewsByCartId(String cartId);
 
+
     @Select("SELECT * FROM cart_item WHERE cart_id = #{cartId}")
     @Results(id = "cartItemMap", value = {
             @Result(column = "card_item_id", property = "id"),
             @Result(column = "cart_id", property = "cartId"),
             @Result(column = "product_id", property = "productId"),
-            @Result(column = "product_v_id", property = "productVId"),
+            @Result(column = "product_v_id", property = "productVariantId"),
             @Result(column = "quantity", property = "quantity"),
             @Result(column = "updated_at", property = "updatedAt")
     })
@@ -41,7 +43,7 @@ public interface CartItemMapper {
 
     // 추가
     @Insert("INSERT INTO cart_item (cart_id, product_id, product_v_id, quantity, updated_at) " +
-            "VALUES (#{cartId}, #{productId}, #{productVId}, #{quantity}, NOW())")
+            "VALUES (#{cartId}, #{productId}, #{productVariantId}, #{quantity}, NOW())")
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "cart_item_id")
     void insertCartItem(CartItem cartItem);
 
