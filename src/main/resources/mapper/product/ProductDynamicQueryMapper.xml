@@ -133,6 +133,7 @@
         <if test="request.sortBy == null">
             ORDER BY p.CREATED_AT DESC
         </if>
+        LIMIT #{request.limit} OFFSET #{request.offset}
     </select>
 
 
