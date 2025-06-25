@@ -1,4 +1,3 @@
-<!-- productDetail.html -->
 <div th:fragment="content">
 
     <!-- 상품 기본 정보 -->
@@ -12,7 +11,7 @@
             </div>
             <div class="thumbnails" style="display: flex; gap: 8px; flex-wrap: wrap;">
                 <img th:each="img : ${product.images}" th:src="${img}" alt="썸네일"
-                     style="width: 60px; height: 60px; object-fit: cover; border: 1px solid #ccc;" />
+                     style="width: 60px; height: 60px; object-fit: cover; border: 1px solid #ccc; cursor: pointer;" />
             </div>
         </div>
 
@@ -26,13 +25,20 @@
                 <div class="size-info"><h3>SIZE</h3><div th:text="${product.size}">사이즈</div></div>
             </div>
 
+            <!-- 가격 -->
             <div class="price" style="font-weight: bold; font-size: 18px; margin: 12px 0;"
-                 th:text="${#numbers.formatInteger(product.productVariant.price, 0, 'COMMA')} + '원'">가격</div>
+                 id="unit-price"
+                 th:attr="data-price=${product.productVariant.price}"
+                 th:text="${#numbers.formatInteger(product.productVariant.price, 0, 'COMMA')} + '원'">
+                가격
+            </div>
 
+            <!-- 기타 정보 -->
             <div style="font-size: 14px;">SAVE POINT: <span th:text="${product.savePoint}"></span>원 (1%)</div>
             <div style="font-size: 14px;">CODE: <span th:text="${product.code}"></span></div>
             <div style="font-size: 14px; margin-bottom: 20px;">COMMENT: <span th:text="${product.comment}"></span></div>
 
+            <!-- 옵션 -->
             <div class="options">
                 <label>색상</label>
                 <select><option th:each="color : ${product.colors}" th:value="${color.colorId}" th:text="${color.name}"></option></select>
@@ -42,11 +48,17 @@
                 <select><option th:each="size : ${product.sizes}" th:value="${size.sizeId}" th:text="${size.name}"></option></select>
             </div>
 
-            <div style="font-weight: bold;">총 상품금액(수량):
-                <span th:text="${#numbers.formatInteger(product.productVariant.price * product.quantity, 0, 'COMMA')}">0</span>원
-                (<span th:text="${product.quantity}">0</span>개)
+            <!-- 수량 & 총 금액 -->
+            <div style="margin: 12px 0;">
+                <label for="quantity">수량: </label>
+                <input type="number" id="quantity" name="quantity" min="1" value="1" style="width: 60px;" />
+            </div>
+            <div style="font-weight: bold;">
+                총 상품금액(수량): <span id="total-amount">0</span>원
+                (<span id="quantity-display">1</span>개)
             </div>
 
+            <!-- 버튼 -->
             <div style="display: flex; gap: 12px; margin-top: 20px;">
                 <button style="flex: 1;">🛒 장바구니</button>
                 <button style="width: 48px;">❤️</button>
@@ -57,7 +69,7 @@
         <div style="flex: 1;"></div>
     </section>
 
-    <!-- 상세 이미지 영역 -->
+    <!-- 상세 이미지 -->
     <section id="product-detail-info" style="padding: 60px 0; background: #fafafa;">
         <div style="width: 800px; margin: auto;">
             <h2>상품 상세 정보</h2>
@@ -68,26 +80,25 @@
         </div>
     </section>
 
-    <!-- 리뷰 영역 -->
+    <!-- 리뷰 -->
     <section id="product-review" style="padding: 60px 0;">
         <div style="width: 800px; margin: auto;">
             <h2>리뷰</h2>
 
             <div th:each="review : ${product.reviews}" style="border-top: 1px solid #ddd; padding: 20px 0;">
-                <!-- 사용자 정보 -->
                 <strong th:text="${review.username}">사용자</strong>
                 <span th:text="${review.createdDate}" style="margin-left: 8px;">날짜</span>
 
                 <!-- 별점 -->
                 <div style="margin: 6px 0;">
-                <span th:each="i : ${#numbers.sequence(1, 5)}"
-                      th:classappend="${i <= review.rating} ? 'filled-star' : 'empty-star'">★</span>
+                    <span th:each="i : ${#numbers.sequence(1, 5)}"
+                          th:classappend="${i <= review.rating} ? 'filled-star' : 'empty-star'">★</span>
                 </div>
 
-                <!-- 리뷰 텍스트 -->
+                <!-- 내용 -->
                 <p th:text="${review.content}" style="margin-top: 10px;"></p>
 
-                <!-- 리뷰 이미지 -->
+                <!-- 이미지 -->
                 <div style="display: flex; gap: 8px; margin-top: 10px;">
                     <img th:each="img : ${review.images}" th:src="@{${img}}"
                          alt="리뷰 이미지" style="width: 100px; height: 100px; object-fit: cover; border: 1px solid #ccc;" />
@@ -95,6 +106,7 @@
             </div>
         </div>
     </section>
-
-
 </div>
+
+<!-- 외부 JS -->
+<script type="text/javascript" th:src="@{/js/productDetail.js}"></script>
