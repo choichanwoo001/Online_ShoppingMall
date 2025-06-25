@@ -1,29 +1,107 @@
 package com.fast_campus_12.not_found.shop.controller;
 
-import com.fast_campus_12.not_found.shop.service.UserService;
-import com.fast_campus_12.not_found.shop.service.EmailService;
+import com.fast_campus_12.not_found.shop.dto.coupon.*;
+import com.fast_campus_12.not_found.shop.service.MyPageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import jakarta.servlet.http.HttpSession;
 
-@Slf4j
+import java.util.List;
+import java.util.Map;
+
 @Controller
-@RequiredArgsConstructor
 @RequestMapping("/mypage")
+@RequiredArgsConstructor
+@Slf4j
 public class MyPageController {
 
-    // 쿠폰 페이지 이동
-    @GetMapping("/coupon/{pageName}")
-    public String findIdPage(@PathVariable("pageName") String pageName, Model model) {
-        model.addAttribute("title", "쿠폰");
+    private final MyPageService myPageService;
+
+    @GetMapping("/page/{pageName}")
+    public String mypageDynamicPage(@PathVariable("pageName") String pageName,
+                                    Model model,
+                                    HttpSession session) {
+        // 세션에서 사용자 ID 가져오기
+        Long userId = (Long) session.getAttribute("userId");
+//        Long userId = 1L;
+        if (userId == null) {
+            // 로그인되지 않은 경우 로그인 페이지로 리다이렉트
+            return "redirect:/login";
+        }
+
+        switch (pageName) {
+//            case "mileage":
+//                MyPageMileageDto mileageData = myPageService.getUserMileageData(userId);
+//                List<MyPageMileageHistoryDto> mileageHistory = myPageService.getMileageHistory(userId);
+//
+//                model.addAttribute("mileageData", mileageData);
+//                model.addAttribute("mileageHistory", mileageHistory);
+//                model.addAttribute("pageTitle", "적립금");
+//                model.addAttribute("pageSubtitle", "적립금 현황을 확인하실 수 있습니다.");
+//                break;
+
+            case "coupon":
+                List<MyPageUserCouponDto> userCoupons = myPageService.getUserCoupons(userId);
+                MyPageCouponStatsDto couponStats = myPageService.getCouponStats(userId);
+
+                model.addAttribute("userCoupons", userCoupons);
+                model.addAttribute("couponStats", couponStats);
+                model.addAttribute("pageTitle", "쿠폰내역");
+                model.addAttribute("pageSubtitle", "보유한 쿠폰을 확인하실 수 있습니다.");
+                break;
+
+            default:
+                model.addAttribute("pageTitle", "마이페이지");
+                model.addAttribute("pageSubtitle", "잘못된 접근입니다.");
+                break;
+        }
+
+        model.addAttribute("currentPage", pageName);
         model.addAttribute("contentPath", "myshop/" + pageName);
         return "layout/base";
+    }
+
+    // 쿠폰 등록
+    @PostMapping("/coupons/register")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> registerCoupon(@RequestBody MyPageCouponRegisterRequest request,
+                                                              HttpSession session) {
+        try {
+            // 세션에서 사용자 ID 가져오기
+            Long userId = (long) session.getAttribute("userId");
+//            Long userId = 1L;
+            if (userId == null) {
+                return ResponseEntity.status(401).body(Map.of(
+                        "success", false,
+                        "message", "로그인이 필요합니다."
+                ));
+            }
+
+            MyPageCouponRegisterDto result = myPageService.registerCoupon(userId, request.getCouponCode());
+
+            return ResponseEntity.ok(Map.of(
+                    "success", true,
+                    "message", "쿠폰이 성공적으로 등록되었습니다.",
+                    "coupon", result
+            ));
+        } catch (IllegalArgumentException e) {
+            log.warn("쿠폰 등록 실패: {}", e.getMessage());
+            return ResponseEntity.badRequest().body(Map.of(
+                    "success", false,
+                    "message", e.getMessage()
+            ));
+        } catch (Exception e) {
+            log.error("쿠폰 등록 중 오류 발생", e);
+            return ResponseEntity.internalServerError().body(Map.of(
+                    "success", false,
+                    "message", "쿠폰 등록 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요."
+            ));
+        }
     }
 }

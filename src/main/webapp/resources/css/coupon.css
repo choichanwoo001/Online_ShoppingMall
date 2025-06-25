@@ -1,53 +1,48 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
-    background-color: #f5f5f5;
-    color: #333;
-    font-size: 14px;
-    line-height: 1.6;
-}
-
+/* 마이페이지 레이아웃 */
 .mypage-container {
     display: flex;
     max-width: 1200px;
-    margin: 40px auto;
+    margin: 0 auto;
+    padding: 20px;
     gap: 30px;
 }
 
 /* 사이드바 스타일 */
 .mypage-sidebar {
     width: 200px;
-    background: white;
-    height: fit-content;
+    flex-shrink: 0;
 }
 
 .mypage-sidebar h2 {
-    font-size: 18px;
-    font-weight: 500;
-    padding: 20px;
-    border-bottom: 1px solid #e5e5e5;
+    font-size: 20px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #333;
 }
 
 .mypage-sidebar nav ul {
     list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 .mypage-sidebar nav li {
-    position: relative;
+    margin-bottom: 10px;
+}
+
+.mypage-sidebar nav li.divider {
+    height: 1px;
+    background: #e0e0e0;
+    margin: 15px 0;
 }
 
 .mypage-sidebar nav a {
     display: block;
-    padding: 12px 20px;
-    text-decoration: none;
+    padding: 8px 0;
     color: #666;
+    text-decoration: none;
     font-size: 14px;
-    transition: all 0.2s;
+    transition: color 0.3s;
 }
 
 .mypage-sidebar nav a:hover {
@@ -56,183 +51,128 @@ body {
 
 .mypage-sidebar nav a.active {
     color: #333;
-    font-weight: 500;
-}
-
-/* 구분선 */
-.mypage-sidebar .divider {
-    height: 1px;
-    background: #e5e5e5;
-    margin: 8px 0;
+    font-weight: bold;
 }
 
 /* 메인 컨텐츠 */
 .main-content {
     flex: 1;
-    background: white;
-    min-height: 500px;
+    min-width: 0;
 }
 
 .page-title {
-    font-size: 18px;
-    font-weight: 500;
-    padding: 20px 30px;
+    font-size: 24px;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
     border-bottom: 2px solid #333;
 }
 
 .content-area {
-    padding: 30px;
+    background: #fff;
 }
 
 /* 쿠폰 등록 섹션 */
 .coupon-register-section {
-    margin-bottom: 50px;
-}
-
-.register-box {
-    border: 1px solid #e5e5e5;
-    border-radius: 0;
-    padding: 40px;
-    text-align: center;
-}
-
-.register-description {
-    color: #666;
-    margin-bottom: 20px;
-    font-size: 13px;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
 }
 
 .register-form {
     display: flex;
-    justify-content: center;
     gap: 10px;
-    max-width: 500px;
-    margin: 0 auto;
+    align-items: center;
 }
 
-.register-form input {
+.register-form input[type="text"] {
     flex: 1;
-    padding: 10px 15px;
+    padding: 10px;
     border: 1px solid #ddd;
-    border-radius: 0;
+    border-radius: 4px;
     font-size: 14px;
 }
 
 .register-form button {
-    padding: 10px 30px;
+    padding: 10px 20px;
     background: #333;
     color: white;
     border: none;
-    border-radius: 0;
-    font-size: 14px;
+    border-radius: 4px;
     cursor: pointer;
-    font-weight: 500;
+    font-size: 14px;
+    white-space: nowrap;
 }
 
 .register-form button:hover {
-    background: #000;
+    background: #555;
 }
 
-/* 쿠폰 목록 테이블 */
+/* 쿠폰 테이블 */
 .coupon-table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 30px;
 }
 
-.coupon-table th,
-.coupon-table td {
-    padding: 15px;
-    text-align: center;
-    border-bottom: 1px solid #e5e5e5;
+.coupon-table thead {
+    background: #f8f9fa;
+    border-top: 2px solid #333;
+    border-bottom: 1px solid #ddd;
 }
 
 .coupon-table th {
-    background: #f8f8f8;
-    font-weight: 500;
-    color: #333;
-    border-top: 1px solid #333;
-    border-bottom: 1px solid #333;
+    padding: 15px;
+    text-align: center;
+    font-weight: normal;
+    font-size: 14px;
 }
 
 .coupon-table td {
-    color: #666;
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
 }
 
-.coupon-table .no-data {
-    padding: 60px;
+.coupon-table tbody tr:hover {
+    background: #f8f9fa;
+}
+
+.no-data {
+    padding: 50px !important;
     color: #999;
-}
-
-/* 페이징 */
-.pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0;
-    margin-top: 30px;
-}
-
-.pagination a,
-.pagination span {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    text-decoration: none;
-    color: #666;
-    border: 1px solid #ddd;
-    margin-left: -1px;
-    font-size: 13px;
-}
-
-.pagination a:hover {
-    background: #f8f8f8;
-}
-
-.pagination .active {
-    background: #333;
-    color: white;
-    border-color: #333;
-}
-
-.pagination .first,
-.pagination .last,
-.pagination .prev,
-.pagination .next {
-    width: auto;
-    padding: 0 12px;
 }
 
 /* 쿠폰 이용 안내 */
 .coupon-guide {
-    margin-top: 50px;
+    margin-top: 40px;
     padding-top: 30px;
-    border-top: 1px solid #e5e5e5;
+    border-top: 1px solid #ddd;
 }
 
 .coupon-guide h3 {
-    font-size: 14px;
-    font-weight: 500;
-    margin-bottom: 15px;
+    font-size: 16px;
+    margin-bottom: 20px;
 }
 
 .coupon-guide ul {
     list-style: none;
-    color: #666;
-    font-size: 13px;
+    padding: 0;
 }
 
 .coupon-guide li {
     position: relative;
     padding-left: 15px;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    color: #666;
     line-height: 1.6;
 }
 
 .coupon-guide li:before {
-    content: "·";
+    content: "•";
     position: absolute;
-    left: 5px;
+    left: 0;
+    color: #999;
 }

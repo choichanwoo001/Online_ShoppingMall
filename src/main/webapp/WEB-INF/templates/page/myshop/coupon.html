@@ -5,14 +5,17 @@
             <h2>마이페이지</h2>
             <nav>
                 <ul>
-                    <li><a href="/mypage/orders">주문내역 조회</a></li>
-                    <li><a href="/mypage/mileage">적립금</a></li>
-                    <li><a href="/mypage/coupons" class="active">쿠폰</a></li>
+                    <li><a href="/mypage/page/orders">주문내역 조회</a></li>
+                    <li><a href="/mypage/page/mileage">적립금</a></li>
+                    <li><a href="/mypage/page/coupon" class="active">쿠폰</a></li>
                     <li class="divider"></li>
-                    <li><a href="/mypage/wishlist">관심상품</a></li>
-                    <li><a href="/mypage/posts">나의 게시글</a></li>
+                    <li><a href="/mypage/page/wishlist">배송 추적 관리</a></li>
                     <li class="divider"></li>
-                    <li><a href="/mypage/info">회원 정보 수정</a></li>
+                    <li><a href="/mypage/page/posts">취근 본 상품</a></li>
+                    <li><a href="/mypage/page/info">관심상품</a></li>
+                    <li><a href="/mypage/page/info">나의 게시글</a></li>
+                    <li class="divider"></li>
+                    <li><a href="/mypage/page/info">회원 정보 수정</a></li>
                     <li><a href="/logout">로그아웃</a></li>
                 </ul>
             </nav>
@@ -27,7 +30,7 @@
                 <div class="coupon-register-section">
                     <div class="register-box">
                         <div class="register-form">
-                            <input type="text" id="couponNumber" placeholder="판드시 쇼핑몰에서 발행한 쿠폰번호만 입력해주세요." maxlength="35">
+                            <input type="text" id="couponCode" placeholder="판드시 쇼핑몰에서 발행한 쿠폰번호만 입력해주세요. (10~35자 영어번호 '-' 제외)" maxlength="35">
                             <button type="button" onclick="registerCoupon()">쿠폰번호인증</button>
                         </div>
                     </div>
@@ -45,13 +48,13 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:if="${coupons == null || coupons.content.isEmpty()}">
+                    <tr th:if="${userCoupons == null || userCoupons.isEmpty()}">
                         <td colspan="5" class="no-data">보유한 쿠폰이 없습니다.</td>
                     </tr>
-                    <tr th:each="coupon, stat : ${coupons.content}" th:if="${coupons != null && !coupons.content.isEmpty()}">
+                    <tr th:each="coupon, stat : ${userCoupons}" th:if="${userCoupons != null && !userCoupons.isEmpty()}">
                         <td th:text="${stat.count}">1</td>
-                        <td th:text="${coupon.coupon.couponName}">신규가입 쿠폰 2,000원</td>
-                        <td th:text="${coupon.coupon.couponType == 'FIXED' ? #numbers.formatInteger(coupon.coupon.discountValue, 0, 'COMMA') + '원' : coupon.coupon.discountValue + '%'}">2,000원</td>
+                        <td th:text="${coupon.couponName}">신규가입 쿠폰 2,000원</td>
+                        <td th:text="${coupon.discountText}">2,000원</td>
                         <td>-</td>
                         <td>
                             <a href="#" style="color: #666; text-decoration: none;">▼</a>
@@ -59,21 +62,6 @@
                     </tr>
                     </tbody>
                 </table>
-
-                <!-- 페이징 -->
-                <div class="pagination" th:if="${coupons != null && coupons.totalPages > 1}">
-                    <a href="#" class="first">|&lt;</a>
-                    <a href="#" class="prev">&lt;</a>
-
-                    <span th:each="pageNum : ${#numbers.sequence(1, coupons.totalPages)}">
-                            <a th:href="@{/mypage/coupons(page=${pageNum})}"
-                               th:text="${pageNum}"
-                               th:class="${pageNum == coupons.currentPage} ? 'active' : ''"></a>
-                        </span>
-
-                    <a href="#" class="next">&gt;</a>
-                    <a href="#" class="last">&gt;|</a>
-                </div>
 
                 <!-- 쿠폰 이용 안내 -->
                 <div class="coupon-guide">
@@ -90,6 +78,7 @@
             </div>
         </div>
     </div>
-    <!--        <link rel="stylesheet" th:href="@{/resources/css/coupon.css}" />-->
+
+    <link rel="stylesheet" th:href="@{/resources/css/coupon.css}" />
     <script th:src="@{/resources/js/coupon.js}"></script>
 </div>
