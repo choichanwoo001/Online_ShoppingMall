@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
-
 @Controller
 @RequestMapping("/product")
 @RequiredArgsConstructor
@@ -27,46 +25,31 @@ import java.util.List;
 public class ProductViewController {
 
     private final ProductService productService;
-    private final int pageSize = 6;
+    private static final int PAGE_SIZE = 6;
 
     @GetMapping("/special/{special}")
     public String specialProduct(@PathVariable("special") SpecialProductCategory special,
-                                    @RequestParam(value = "page", defaultValue = "1") int page,
-                                    @RequestParam(value = "sortBy", required = false, defaultValue = "PRICE") ProductSortBy sortBy,
-                                    @RequestParam(value = "sort", required = false, defaultValue = "ASC") SortDirection sort,
-                                    Model model) {
+                                 @RequestParam(value = "page", defaultValue = "1") int page,
+                                 @RequestParam(value = "sortBy", defaultValue = "PRICE") ProductSortBy sortBy,
+                                 @RequestParam(value = "sort", defaultValue = "ASC") SortDirection sort,
+                                 Model model) {
 
-        int offset = (page - 1) * pageSize;
-
-        ProductSpecialSummaryRequestDto specialSummaryRequestDto = ProductSpecialSummaryRequestDto.builder()
+        ProductSpecialSummaryRequestDto requestDto = ProductSpecialSummaryRequestDto.builder()
                 .specialProductCategory(special)
-                .limit(pageSize)
-                .offset(offset)
-                .sortDirection(sort)
+                .limit(PAGE_SIZE)
+                .offset(getOffset(page))
                 .sortBy(sortBy)
+                .sortDirection(sort)
                 .build();
 
-        ProductPageDto productPageDto =
-                productService.getSummaryBySpecialCategory(specialSummaryRequestDto);
+        ProductPageDto result = productService.getSummaryBySpecialCategory(requestDto);
+        PageResponseDto<ProductSummaryDto> pageResponse = buildPageResponse(result, page);
 
-        PageResponseDto<ProductSummaryDto> pageResponseDto = PageResponseDto.<ProductSummaryDto>builder()
-                .items(productPageDto.getItems())
-                .totalCount(productPageDto.getTotalCount())
-                .page(page)
-                .size(pageSize)
-                .hasNext(productPageDto.getTotalCount() > page * pageSize)
-                .hasPrev(page > 1)
-                .build();
-
-        log.error("{}", pageResponseDto.getItems());
-        model.addAttribute("pageResponseDto", pageResponseDto);
-//        model.addAttribute("category", category);
-//        model.addAttribute("subCategory", subCategory); // null 가능
+        model.addAttribute("pageResponseDto", pageResponse);
         model.addAttribute("baseUrl", "/product/special/" + special.name());
         model.addAttribute("sortBy", sortBy.name());
-        model.addAttribute("sort", sort); // ASC, DESC
+        model.addAttribute("sort", sort);
         model.addAttribute("contentPath", "product/productList");
-
 
         return "layout/base";
     }
@@ -74,57 +57,68 @@ public class ProductViewController {
     @GetMapping("/category/{category}")
     public String productByCategory(@PathVariable("category") String category,
                                     @RequestParam(value = "page", defaultValue = "1") int page,
-                                    @RequestParam(value = "sortBy", required = false, defaultValue = "PRICE") ProductSortBy sortBy,
-                                    @RequestParam(value = "sort", required = false, defaultValue = "ASC") SortDirection sort,
+                                    @RequestParam(value = "sortBy", defaultValue = "PRICE") ProductSortBy sortBy,
+                                    @RequestParam(value = "sort", defaultValue = "ASC") SortDirection sort,
                                     Model model) {
 
-        log.error("{}, {}",sortBy, sort);
-        model.addAttribute("baseUrl", "/product/category/" + category);
-        return handleProductList(category, null, page, model, sort, sortBy);
+        return renderCategoryList(category, null, page, sortBy, sort, model);
     }
 
     @GetMapping("/category/{category}/{subCategory}")
     public String productBySubCategory(@PathVariable("category") String category,
                                        @PathVariable("subCategory") String subCategory,
-                                       @RequestParam(name = "page", defaultValue = "1") int page,
-                                       @RequestParam(value = "sortBy", required = false, defaultValue = "PRICE") ProductSortBy sortBy,
-                                       @RequestParam(value = "sort", required = false, defaultValue = "ASC") SortDirection sort,
+                                       @RequestParam(value = "page", defaultValue = "1") int page,
+                                       @RequestParam(value = "sortBy", defaultValue = "PRICE") ProductSortBy sortBy,
+                                       @RequestParam(value = "sort", defaultValue = "ASC") SortDirection sort,
                                        Model model) {
-        model.addAttribute("baseUrl", "/product/category/" + category + "/" + subCategory);
-        return handleProductList(category, subCategory, page, model, sort, sortBy);
+
+        return renderCategoryList(category, subCategory, page, sortBy, sort, model);
     }
 
-    private String handleProductList(String category, String subCategory, int page, Model model, SortDirection sort, ProductSortBy sortBy) {
-        int offset = (page - 1) * pageSize;
+    private String renderCategoryList(String category, String subCategory, int page,
+                                      ProductSortBy sortBy, SortDirection sort, Model model) {
 
         ProductSummaryRequestDto dto = ProductSummaryRequestDto.builder()
                 .category(category)
                 .subCategory(subCategory)
-                .limit(pageSize)
-                .offset(offset)
-                .sortDirection(sort)
+                .limit(PAGE_SIZE)
+                .offset(getOffset(page))
                 .sortBy(sortBy)
+                .sortDirection(sort)
                 .build();
 
-        ProductPageDto productPageDto =
-                productService.getSummaryByCategory(dto);
+        ProductPageDto result = productService.getSummaryByCategory(dto);
+        PageResponseDto<ProductSummaryDto> pageResponse = buildPageResponse(result, page);
 
-        PageResponseDto<ProductSummaryDto> pageResponseDto = PageResponseDto.<ProductSummaryDto>builder()
-                .items(productPageDto.getItems())
-                .totalCount(productPageDto.getTotalCount())
-                .page(page)
-                .size(pageSize)
-                .hasNext(productPageDto.getTotalCount() > page * pageSize)
-                .hasPrev(page > 1)
-                .build();
+        String baseUrl = (subCategory == null)
+                ? "/product/category/" + category
+                : "/product/category/" + category + "/" + subCategory;
 
-        model.addAttribute("pageResponseDto", pageResponseDto);
+        model.addAttribute("pageResponseDto", pageResponse);
         model.addAttribute("category", category);
-        model.addAttribute("subCategory", subCategory); // null 가능
-        model.addAttribute("sortBy", dto.getSortBy().name()); // enum일 경우 .name() 붙이기
-        model.addAttribute("sort", dto.getSortDirection()); // ASC, DESC
+        model.addAttribute("subCategory", subCategory);
+        model.addAttribute("baseUrl", baseUrl);
+        model.addAttribute("sortBy", sortBy.name());
+        model.addAttribute("sort", sort);
         model.addAttribute("contentPath", "product/productList");
 
         return "layout/base";
     }
+
+    private int getOffset(int page) {
+        return (page - 1) * PAGE_SIZE;
+    }
+
+    private PageResponseDto<ProductSummaryDto> buildPageResponse(ProductPageDto dto, int page) {
+        int total = dto.getTotalCount();
+        return PageResponseDto.<ProductSummaryDto>builder()
+                .items(dto.getItems())
+                .totalCount(total)
+                .page(page)
+                .size(PAGE_SIZE)
+                .hasNext(total > page * PAGE_SIZE)
+                .hasPrev(page > 1)
+                .build();
+    }
 }
+
