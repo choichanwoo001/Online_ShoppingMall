@@ -202,12 +202,11 @@ footer {
 }
 
 .footer-column img {
-	/*margin: 1rem 0;*/
 	width: 5rem;
 }
 
 .footer-divider {
-	width: 1px;
+	width: 0.05rem;
 	background-color: #ddd;
 	align-self: stretch;
 }
