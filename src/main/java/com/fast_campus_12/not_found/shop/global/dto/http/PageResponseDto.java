@@ -23,4 +23,15 @@ public class PageResponseDto<T> {
         if (size == 0) return 0;
         return (int) Math.ceil((double) totalCount / size);
     }
+
+    public static <T> PageResponseDto<T> of(List<T> items, int totalCount, int page, int size) {
+        return PageResponseDto.<T>builder()
+                .items(items)
+                .totalCount(totalCount)
+                .page(page)
+                .size(size)
+                .hasNext(totalCount > page * size)
+                .hasPrev(page > 1)
+                .build();
+    }
 }
