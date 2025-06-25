@@ -1,10 +1,12 @@
 package com.fast_campus_12.not_found.shop.product.controller;
 
+import com.fast_campus_12.not_found.shop.common.enums.SortDirection;
 import com.fast_campus_12.not_found.shop.global.dto.http.PageResponseDto;
 import com.fast_campus_12.not_found.shop.product.dto.ProductPageDto;
 import com.fast_campus_12.not_found.shop.product.dto.ProductSummaryDto;
 import com.fast_campus_12.not_found.shop.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,9 +14,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import static com.fast_campus_12.not_found.shop.common.enums.SortDirection.ASC;
+
 @Controller
 @RequestMapping("/product")
 @RequiredArgsConstructor
+@Slf4j
 public class ProductViewController {
 
     private final ProductService productService;
@@ -22,8 +27,12 @@ public class ProductViewController {
 
     @GetMapping("/category/{category}")
     public String productByCategory(@PathVariable("category") String category,
-                                    @RequestParam(name = "page", defaultValue = "1") int page,
+                                    @RequestParam(value = "page", defaultValue = "1") int page,
+                                    @RequestParam(value = "sortBy", required = false) String sortBy,
+                                    @RequestParam(value = "sort", defaultValue = "ASC") SortDirection sort,
                                     Model model) {
+
+        log.error("{}, {}",sortBy, sort);
         return handleProductList(category, null, page, model);
     }
 
