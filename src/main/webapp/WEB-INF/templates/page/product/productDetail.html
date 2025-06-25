@@ -1,80 +1,83 @@
+<!-- productDetail.html -->
 <div th:fragment="content">
-    <div class="product-detail-container" style="display: flex; gap: 40px; padding: 40px 0;">
+
+    <!-- 상품 기본 정보 -->
+    <section id="product-basic-info" class="page-wrapper" style="display: flex; width: 100%; padding: 40px 0;">
+        <div style="flex: 1;"></div>
 
         <!-- 이미지 영역 -->
-        <div class="image-area" style="display: flex; flex-direction: column; gap: 12px;">
-            <!-- 메인 이미지 -->
+        <div style="flex: 4; display: flex; flex-direction: column; gap: 12px;">
             <div class="main-image">
-                <img th:src="${product.thumbnail}"
-                     alt="상품 이미지"
-                     style="width: 100%; max-width: 400px;" />
+                <img th:src="${product.thumbnail}" alt="상품 이미지" style="width: 100%; max-width: 100%;" />
             </div>
-
-            <!-- 썸네일 이미지 리스트 -->
-            <div class="thumbnails" style="display: flex; gap: 8px;">
-                <img th:each="img : ${product.images}"
-                     th:src="${img}"
-                     alt="썸네일"
+            <div class="thumbnails" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <img th:each="img : ${product.images}" th:src="${img}" alt="썸네일"
                      style="width: 60px; height: 60px; object-fit: cover; border: 1px solid #ccc;" />
             </div>
         </div>
 
-        <!-- 상품 정보 영역 -->
-        <div class="info-area" style="flex: 1;">
+        <!-- 상품 정보 -->
+        <div style="flex: 4; padding-left: 40px;">
             <h1 th:text="${product.title}" style="font-size: 24px; font-weight: bold;">상품명</h1>
 
-            <!-- 상품 설명 -->
-            <div class="description" style="margin-top: 30px; font-size: 14px; color: #444; line-height: 1.6;">
-                <div class="summary" style="margin-bottom: 20px;">
-                    <h3>SUMMARY</h3>
-                    <div th:text="${product.summary}">상품 요약 내용</div>
-                </div>
-                <div class="model" style="margin-bottom: 20px;">
-                    <h3>MODEL</h3>
-                    <div th:text="${product.model}">모델 정보</div>
-                </div>
-                <div class="size-info" style="margin-bottom: 20px;">
-                    <h3>SIZE</h3>
-                    <div th:text="${product.size}">사이즈 설명</div>
-                </div>
+            <div class="description" style="margin-top: 30px; font-size: 15px; line-height: 1.7; color: #333; white-space: pre-line;">
+                <div class="summary"><h3>SUMMARY</h3><div th:text="${product.summary}">설명</div></div>
+                <div class="model"><h3>MODEL</h3><div th:text="${product.model}">모델</div></div>
+                <div class="size-info"><h3>SIZE</h3><div th:text="${product.size}">사이즈</div></div>
             </div>
 
-            <!-- 가격 -->
-            <div class="price"
-                 th:text="${#numbers.formatInteger(product.productVariant.price, 0, 'COMMA')} + '원'"
-                 style="margin-top: 15px; font-size: 18px; font-weight: bold;">
-                가격
+            <div class="price" style="font-weight: bold; font-size: 18px; margin: 12px 0;"
+                 th:text="${#numbers.formatInteger(product.productVariant.price, 0, 'COMMA')} + '원'">가격</div>
+
+            <div style="font-size: 14px;">SAVE POINT: <span th:text="${product.savePoint}"></span>원 (1%)</div>
+            <div style="font-size: 14px;">CODE: <span th:text="${product.code}"></span></div>
+            <div style="font-size: 14px; margin-bottom: 20px;">COMMENT: <span th:text="${product.comment}"></span></div>
+
+            <div class="options">
+                <label>색상</label>
+                <select><option th:each="color : ${product.colors}" th:value="${color.colorId}" th:text="${color.name}"></option></select>
+            </div>
+            <div class="options">
+                <label>사이즈</label>
+                <select><option th:each="size : ${product.sizes}" th:value="${size.sizeId}" th:text="${size.name}"></option></select>
             </div>
 
-            <!-- 색상 선택 -->
-            <div class="options" style="margin: 15px 0;">
-                <label for="color-select" style="display: block; margin-bottom: 4px;">색상</label>
-                <select id="color-select" name="colorId" style="width: 160px;">
-                    <option th:each="color : ${product.colors}"
-                            th:value="${color.colorId}"
-                            th:text="${color.name}">
-                        색상
-                    </option>
-                </select>
+            <div style="font-weight: bold;">총 상품금액(수량):
+                <span th:text="${#numbers.formatInteger(product.productVariant.price * product.quantity, 0, 'COMMA')}">0</span>원
+                (<span th:text="${product.quantity}">0</span>개)
             </div>
 
-            <!-- 사이즈 선택 -->
-            <div class="options" style="margin-bottom: 20px;">
-                <label for="size-select" style="display: block; margin-bottom: 4px;">사이즈</label>
-                <select id="size-select" name="sizeId" style="width: 160px;">
-                    <option th:each="size : ${product.sizes}"
-                            th:value="${size.sizeId}"
-                            th:text="${size.name}">
-                        사이즈
-                    </option>
-                </select>
+            <div style="display: flex; gap: 12px; margin-top: 20px;">
+                <button style="flex: 1;">🛒 장바구니</button>
+                <button style="width: 48px;">❤️</button>
+                <button style="flex: 1; background: #000; color: #fff;">🛍 구매하기</button>
             </div>
-
-            <!-- 장바구니 버튼 -->
-            <button type="button" disabled
-                    style="padding: 10px 20px; background-color: #ccc; color: #fff; border: none; cursor: not-allowed;">
-                장바구니 담기 (준비 중)
-            </button>
         </div>
-    </div>
+
+        <div style="flex: 1;"></div>
+    </section>
+
+    <!-- 상세 이미지 영역 -->
+    <section id="product-detail-info" style="padding: 60px 0; background: #fafafa;">
+        <div style="width: 800px; margin: auto;">
+            <h2>상품 상세 정보</h2>
+            <div th:text="${product.detailDescription}" style="margin-bottom: 30px; white-space: pre-line;"></div>
+            <div>
+                <img th:each="img : ${product.detailImages}" th:src="@{${img}}" alt="상세 이미지" style="width: 100%; margin-bottom: 24px;" />
+            </div>
+        </div>
+    </section>
+
+    <!-- 리뷰 영역 -->
+    <section id="product-review" style="padding: 60px 0;">
+        <div style="width: 800px; margin: auto;">
+            <h2>리뷰</h2>
+            <div th:each="review : ${product.reviews}" style="border-top: 1px solid #ddd; padding: 20px 0;">
+                <strong th:text="${review.username}">사용자</strong>
+                <span th:text="${review.createdDate}" style="margin-left: 8px;">날짜</span>
+                <p th:text="${review.content}" style="margin-top: 10px;"></p>
+            </div>
+        </div>
+    </section>
+
 </div>

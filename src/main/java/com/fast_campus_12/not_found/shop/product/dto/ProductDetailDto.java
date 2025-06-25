@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -21,8 +22,13 @@ public class ProductDetailDto {
     private String model;
     private String size;
     private ProductVariantDto productVariant;
+    private int savePoint;
+    private int quantity;
     private List<String> images;
     private List<ColorDto> colors;
     private List<SizeDto> sizes;
+    private List<String> detailImages;
+    private String detailDescription;
+    private List<ReviewDto> reviews;
 }
 

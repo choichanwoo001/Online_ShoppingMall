@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.awt.*;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,7 +47,6 @@ public class DevProductServiceImpl implements ProductService {
     public ProductDetailDto getDummyProductDetailDto(BigInteger productId) {
         ProductVariantDto variantDto = getDummyProductVariantDto(productId);
 
-
         List<SizeDto> sizeOptions = List.of(
                 SizeDto.builder().sizeId(BigInteger.valueOf(1)).name("S").build(),
                 SizeDto.builder().sizeId(BigInteger.valueOf(2)).name("M").build(),
@@ -58,7 +58,25 @@ public class DevProductServiceImpl implements ProductService {
                 ColorDto.builder().colorId(2).name("파랑").build(),
                 ColorDto.builder().colorId(3).name("초록").build()
         );
+        List<ReviewDto> reviews = List.of(
+                ReviewDto.builder().username("jake23").createdDate("2024-05-10\"").content("옷이 정말 시원하고 핏도 좋아요! 추천합니다.").build(),
+                ReviewDto.builder().username("minseo87").createdDate("2024-06-01\"").content("배송도 빠르고 사이즈도 잘 맞아요").build()
+        );
+
+
         List<String> image = List.of(
+                "https://picsum.photos/300/200",
+                "https://picsum.photos/300/200",
+                "https://picsum.photos/300/200",
+                "https://picsum.photos/300/200",
+                "https://picsum.photos/300/200"
+        );
+        List<String> detailImages = List.of(
+                "https://picsum.photos/300/200",
+                "https://picsum.photos/300/200",
+                "https://picsum.photos/300/200",
+                "https://picsum.photos/300/200",
+                "https://picsum.photos/300/200",
                 "https://picsum.photos/300/200",
                 "https://picsum.photos/300/200",
                 "https://picsum.photos/300/200",
@@ -67,12 +85,16 @@ public class DevProductServiceImpl implements ProductService {
         );
 
 
+
+
         return ProductDetailDto.builder().
                         productId(productId).
                         title("더미 셔츠").
                         sizes(sizeOptions).
                         colors(colorOptions).
                         thumbnail("https://picsum.photos/300/200").
+                        detailImages(detailImages).
+                        reviews(reviews).
                         productVariant(variantDto).
                         images(image).
                         summary("""
@@ -97,6 +119,10 @@ public class DevProductServiceImpl implements ProductService {
                                 M - 어깨 51cm / 가슴 57cm / 팔길이 22cm / 총길이 70cm
                                 L - 어깨 53cm / 가슴 59cm / 팔길이 23cm / 총길이 71cm
                                 XL - 어깨 55cm / 가슴 61cm / 팔길이 24cm / 총길이 72cm""").
+                        code("P0000KCN").
+                        comment("세트로 입으면 아주 이쁜 것 같아요^^").
+                        savePoint(600). // 또는 price의 1%
+                        quantity(1).
                         build();
     }
     public ProductVariantDto getProductVariantDto(BigInteger productId) {
