@@ -4,7 +4,9 @@ package com.fast_campus_12.not_found.shop.controller;
 import com.fast_campus_12.not_found.shop.entity.OrderCompleteInfo;
 import com.fast_campus_12.not_found.shop.entity.OrderItem;
 import com.fast_campus_12.not_found.shop.order.dto.*;
-import com.fast_campus_12.not_found.shop.mapper.OrderMapper;
+import com.fast_campus_12.not_found.shop.service.OrderService;
+import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,56 +18,42 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-    public class OrderController {
+@RequiredArgsConstructor
+public class OrderController {
 
-    @Autowired
-    OrderMapper orderMapper;
-    UserDetailDto userDetail;
-    UserAddressDto userAddress;
-    Long userId = 3L;
+    private final OrderService orderService;
     private OrderCompleteInfo orderInfo;
 
+
     @GetMapping("/order/{pageName}")
-    public String orderRenderPage(@PathVariable("pageName") String pageName, Model model) {
+    public String orderRenderPage(@PathVariable("pageName") String pageName, HttpSession session, Model model) {
         model.addAttribute("contentPath", "order/" + pageName);
 
+        session.setAttribute("userId", "3");
+        String sessionId = (String) session.getAttribute("userId");
+        OrderUserDetailServiceDto orderDetailServiceDto =  orderService.UserDetailSplit(sessionId);
 
-        userDetail = orderMapper.finUserDetailByUserId(userId);
-        model.addAttribute("userDetail", userDetail);
+        // 유저 상세 주소 조회
+        UserAddressDto userAddressDto = orderService.getUserAddress(sessionId);
 
-        // 2. 이메일 분리
-        String[] emailParts = userDetail.getEmail().split("@");
-        String emailId = emailParts[0];
-        String emailDomain = emailParts.length > 1 ? emailParts[1] : "";
+        // 유저 주문 상품 조회 장바구니 기준
+        List<ProductOrderInfoDto> productOrderInfoDto = orderService.getOrdersInfo(sessionId);
 
-        // 3. 휴대전화 분리
-        String[] phoneParts = userDetail.getPhoneNumber().split("-");
-        String midPhoneNum = phoneParts.length > 1 ? phoneParts[1] : "";
-        String lastPhoneNum = phoneParts.length > 2 ? phoneParts[2] : "";
+        // 유저 쿠폰 조회
+        List<CouponDto> couponDto = orderService.getOrdersCouponInfo(sessionId);
 
-        // 4. 주소 객체 (null 허용 가능하도록)
-        userAddress = orderMapper.findUserAddressByUserId(userId);
+        // 유저 마일리지 조회
+        MileageDto mileageDto = orderService.getAvailableMileage(sessionId);
 
 
-        // 5. 주문 상품 리스트
-        List<ProductOrderInfoDto> orderItems = orderMapper.findCartItemsForOrderByUserId(userId);
-
-        // 6. 쿠폰
-        List<CouponDto> couponList  = orderMapper.findUserCouponsByUserId(userId);
-
-        // 7. 마일리지
-        MileageDto availableMileage = orderMapper.findAvailableMileageByUserId(userId);
-
-        // 8. 기타 값
-        int shippingFee = 2500;
 
         // 7. Model에 담기
-        model.addAttribute("userDetail", userDetail);
-        model.addAttribute("address", userAddress);
-        model.addAttribute("orderItems", orderItems);
-        model.addAttribute("couponList", couponList);
-        model.addAttribute("availableMileage", availableMileage.getAvailableMileage());
-        model.addAttribute("shippingFee", shippingFee);
+        model.addAttribute("userDetail", orderDetailServiceDto);
+        model.addAttribute("address", userAddressDto);
+        model.addAttribute("orderItems", productOrderInfoDto);
+        model.addAttribute("couponList", couponDto);
+        model.addAttribute("availableMileage", mileageDto.getAvailableMileage());
+        model.addAttribute("shippingFee", orderService.shippingFee());
 
         return "layout/base";
     }
