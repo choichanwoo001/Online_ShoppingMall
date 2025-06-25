@@ -1,6 +1,6 @@
 package com.fast_campus_12.not_found.shop.dependency;
 
-import com.fast_campus_12.not_found.shop.config.MyBatisConfig;
+import com.fast_campus_12.not_found.shop.config.DataSourceConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -14,7 +14,7 @@ public class DataSourceTest {
     @Test
     void testDataSourceConnection() throws Exception {
         AnnotationConfigApplicationContext context =
-                new AnnotationConfigApplicationContext(MyBatisConfig.class);
+                new AnnotationConfigApplicationContext(DataSourceConfig.class);
 
         DataSource dataSource = context.getBean(DataSource.class);
 
