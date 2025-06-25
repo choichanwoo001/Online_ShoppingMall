@@ -7,6 +7,7 @@ import com.fast_campus_12.not_found.shop.product.dto.ProductSpecialSummaryReques
 import com.fast_campus_12.not_found.shop.product.dto.ProductSummaryDto;
 import com.fast_campus_12.not_found.shop.product.dto.ProductSummaryRequestDto;
 import com.fast_campus_12.not_found.shop.product.dto.request.ProductPageRequest;
+import com.fast_campus_12.not_found.shop.product.dto.response.ProductPageResponse;
 import com.fast_campus_12.not_found.shop.product.enums.ProductSortBy;
 import com.fast_campus_12.not_found.shop.product.enums.SpecialProductCategory;
 import com.fast_campus_12.not_found.shop.product.service.ProductService;
@@ -15,6 +16,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/product")
@@ -47,12 +50,18 @@ public class ProductViewController {
                 PAGE_SIZE
         );
 
-        model.addAttribute("pageResponseDto", pageResponse);
-        model.addAttribute("baseUrl", "/product/special/" + special.name());
-        model.addAttribute("sortBy", pageRequest.getSortBy().name());
-        model.addAttribute("sort", pageRequest.getSort());
-        model.addAttribute("contentPath", "product/productList");
+        ProductPageResponse response = ProductPageResponse.builder()
+                .pageResponseDto(pageResponse)
+                .category(null)
+                .subCategory(null)
+                .baseUrl("/product/special/" + special.name())
+                .sortBy(Optional.ofNullable(pageRequest.getSortBy()).orElse(ProductSortBy.PRICE).name())
+                .sort(Optional.ofNullable(pageRequest.getSort()).orElse(SortDirection.ASC).name())
+                .contentPath("product/productList")
+                .build();
 
+        model.addAttribute("productPage", response);
+        model.addAttribute("contentPath", response.getContentPath());
         return "layout/base";
     }
 
@@ -96,15 +105,18 @@ public class ProductViewController {
                 ? "/product/category/" + category
                 : "/product/category/" + category + "/" + subCategory;
 
-        model.addAttribute("pageResponseDto", pageResponse);
-        model.addAttribute("category", category);
-        model.addAttribute("subCategory", subCategory);
-        model.addAttribute("baseUrl", baseUrl);
-        model.addAttribute("sortBy", pageRequest.getSortBy().name());
-        model.addAttribute("sort", pageRequest.getSort());
-        model.addAttribute("contentPath", "product/productList");
+        ProductPageResponse response = ProductPageResponse.builder()
+                .pageResponseDto(pageResponse)
+                .category(category)
+                .subCategory(subCategory)
+                .baseUrl(baseUrl)
+                .sortBy(Optional.ofNullable(pageRequest.getSortBy()).orElse(ProductSortBy.PRICE).name())
+                .sort(Optional.ofNullable(pageRequest.getSort()).orElse(SortDirection.ASC).name())
+                .contentPath("product/productList")
+                .build();
 
+        model.addAttribute("productPage", response);
+        model.addAttribute("contentPath", response.getContentPath());
         return "layout/base";
     }
 }
-

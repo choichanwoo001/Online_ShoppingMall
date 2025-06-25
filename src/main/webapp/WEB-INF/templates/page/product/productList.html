@@ -1,6 +1,6 @@
 <div th:fragment="content">
     <!-- 상단 카테고리 제목 -->
-    <h1 class="category_tit" th:text="${subCategory}">KNIT</h1>
+    <h1 class="category_tit" th:text="${productPage.subCategory}">KNIT</h1>
 
     <!-- 중분류 카테고리 리스트 -->
     <div class="subCategory">
@@ -12,43 +12,33 @@
     </div>
 
     <!-- 정렬 기준 -->
-    <div class="sort-options" th:if="${baseUrl != null}">
-        <a th:href="@{${baseUrl}(sortBy='CREATED_AT', sort='DESC')}"
-           th:classappend="${sortBy == 'CREATED_AT' and sort == 'DESC'} ? ' active'"
-           class="sort-link">
-            신상품
-        </a>
+    <div class="sort-options" th:if="${productPage.baseUrl != null}">
+        <a th:href="@{${productPage.baseUrl}(sortBy='CREATED_AT', sort='DESC')}"
+           th:classappend="${productPage.sortBy == 'CREATED_AT' and productPage.sort == 'DESC'} ? ' active'"
+           class="sort-link">신상품</a>
 
-        <a th:href="@{${baseUrl}(sortBy='NAME', sort='ASC')}"
-           th:classappend="${sortBy == 'NAME' and sort == 'ASC'} ? ' active'"
-           class="sort-link">
-            상품명
-        </a>
+        <a th:href="@{${productPage.baseUrl}(sortBy='NAME', sort='ASC')}"
+           th:classappend="${productPage.sortBy == 'NAME' and productPage.sort == 'ASC'} ? ' active'"
+           class="sort-link">상품명</a>
 
-        <a th:href="@{${baseUrl}(sortBy='PRICE', sort='ASC')}"
-           th:classappend="${sortBy == 'PRICE' and sort == 'ASC'} ? ' active'"
-           class="sort-link">
-            낮은가격
-        </a>
+        <a th:href="@{${productPage.baseUrl}(sortBy='PRICE', sort='ASC')}"
+           th:classappend="${productPage.sortBy == 'PRICE' and productPage.sort == 'ASC'} ? ' active'"
+           class="sort-link">낮은가격</a>
 
-        <a th:href="@{${baseUrl}(sortBy='PRICE', sort='DESC')}"
-           th:classappend="${sortBy == 'PRICE' and sort == 'DESC'} ? ' active'"
-           class="sort-link">
-            높은가격
-        </a>
+        <a th:href="@{${productPage.baseUrl}(sortBy='PRICE', sort='DESC')}"
+           th:classappend="${productPage.sortBy == 'PRICE' and productPage.sort == 'DESC'} ? ' active'"
+           class="sort-link">높은가격</a>
     </div>
 
     <!-- 상품 리스트 -->
     <div class="product_list_area">
         <ul class="product_list">
-            <li th:each="product : ${pageResponseDto.items}">
+            <li th:each="product : ${productPage.pageResponseDto.items}">
                 <a th:href="@{'/product/' + ${product.id}}">
                     <img th:src="${product.thumbnail}" alt="" />
                     <h5 th:text="${product.title}"></h5>
-                    <p>
-                        <span th:text="${product.price}">상품 가격</span>원
-                    </p>
-                    <p class="p_comment" th:text="${product.comment}">상품 코멘트 들어감</p>
+                    <p><span th:text="${product.price}">상품 가격</span>원</p>
+                    <p class="p_comment" th:text="${product.comment}">상품 코멘트</p>
                     <p class="p_review">
                         REVIEW : <span th:text="${product.reviewCount}">리뷰 개수</span>
                     </p>
@@ -58,24 +48,21 @@
     </div>
 
     <!-- 페이징 영역 -->
-    <div class="pagination" th:if="${baseUrl != null and pageResponseDto.totalPages > 1}">
+    <div class="pagination" th:if="${productPage.baseUrl != null and productPage.pageResponseDto.totalPages > 1}">
         <ul>
-            <!-- 이전 페이지 -->
-            <li th:if="${pageResponseDto.hasPrev}">
-                <a th:href="@{${baseUrl}(page=${pageResponseDto.page - 1}, sortBy=${sortBy}, sort=${sort})}">
+            <li th:if="${productPage.pageResponseDto.hasPrev}">
+                <a th:href="@{${productPage.baseUrl}(page=${productPage.pageResponseDto.page - 1}, sortBy=${productPage.sortBy}, sort=${productPage.sort})}">
                     « 이전
                 </a>
             </li>
 
-            <!-- 페이지 번호 -->
-            <li th:each="i : ${#numbers.sequence(1, pageResponseDto.totalPages)}"
-                th:classappend="${i == pageResponseDto.page} ? 'active'">
-                <a th:href="@{${baseUrl}(page=${i}, sortBy=${sortBy}, sort=${sort})}" th:text="${i}">1</a>
+            <li th:each="i : ${#numbers.sequence(1, productPage.pageResponseDto.totalPages)}"
+                th:classappend="${i == productPage.pageResponseDto.page} ? 'active'">
+                <a th:href="@{${productPage.baseUrl}(page=${i}, sortBy=${productPage.sortBy}, sort=${productPage.sort})}" th:text="${i}">1</a>
             </li>
 
-            <!-- 다음 페이지 -->
-            <li th:if="${pageResponseDto.hasNext}">
-                <a th:href="@{${baseUrl}(page=${pageResponseDto.page + 1}, sortBy=${sortBy}, sort=${sort})}">
+            <li th:if="${productPage.pageResponseDto.hasNext}">
+                <a th:href="@{${productPage.baseUrl}(page=${productPage.pageResponseDto.page + 1}, sortBy=${productPage.sortBy}, sort=${productPage.sort})}">
                     다음 »
                 </a>
             </li>
