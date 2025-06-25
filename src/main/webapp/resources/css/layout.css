@@ -129,55 +129,115 @@
 .sub-menu li a:hover {
 	color: #007aff;
 }
-
-/* ---------- pagination -----------*/
-.pagination ul{
-	display:flex;
-	display:-webkit-flex;
-	gap:0.5rem;
-	justify-content: center;
-	align-items: center;
-}
-.pagination ul li.prevPageBtn {
-	margin-right:0.5rem;
-}
-.pagination ul li.nextPageBtn {
-	margin-left:0.5rem;
-}
-.pagination ul li a {
-	font-weight:400;
-	color:#acacac;
-	line-height:1.2;
-}
-.pagination ul li.active a,
-.pagination ul li a:hover
-{
-	color:#333;
-	font-weight:500;
+/* 전체 상품 리스트 영역 */
+.product_list_area {
+	padding: 1.6rem 0.8rem;
+	background-color: #fff;
 }
 
-/* ---------- product list sort options -----------*/
+/* 상품 리스트 그리드 */
+.product_list {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+	gap: 1.6rem;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+/* 카드 하나 */
+.product_list li {
+	border: 0.05rem solid #eee;
+	border-radius: 0.4rem;
+	background: white;
+	transition: all 0.2s ease;
+	overflow: hidden;
+}
+
+.product_list li:hover {
+	box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.06);
+	transform: translateY(-0.1rem);
+}
+
+/* 이미지 */
+.product_list img {
+	width: 100%;
+	height: 12rem;
+	object-fit: cover;
+	display: block;
+}
+
+/* 상품명 */
+.product_list h5 {
+	font-size: 0.75rem;
+	font-weight: 500;
+	color: #222;
+	margin: 0.6rem 0.8rem 0.2rem;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+/* 가격 */
+.product_list p {
+	margin: 0.2rem 0.8rem;
+	font-size: 0.7rem;
+	color: #444;
+	line-height: 1.4;
+}
+
+/* 리뷰 */
+.p_review {
+	font-size: 0.65rem;
+	color: #aaa;
+	margin: 0.2rem 0.8rem 0.8rem;
+}
+
+/* 정렬 옵션 */
 .sort-options {
 	display: flex;
 	justify-content: flex-end;
-	gap: 1rem;
-	margin-bottom: 1rem;
-	font-size: 0.95rem;
+	gap: 1.2rem;
+	margin: 1rem 1rem 1.6rem;
+	font-size: 0.7rem;
+	font-weight: 400;
+	color: #555;
 }
 
 .sort-link {
-	color: #333;
+	color: #555;
 	text-decoration: none;
 	position: relative;
-	padding-bottom: 0.15rem; /* 3px ÷ 20 */
+	padding-bottom: 0.1rem;
 }
 
-.sort-link:hover,
 .sort-link.active {
 	font-weight: bold;
-	border-bottom: 0.1rem solid #000; /* 2px ÷ 20 */
+	color: #000;
+	border-bottom: 0.05rem solid #000;
 }
 
+/* 페이지네이션 */
+.pagination ul {
+	display: flex;
+	justify-content: center;
+	gap: 0.4rem;
+	padding: 1.6rem 0;
+	list-style: none;
+}
+
+.pagination li a {
+	padding: 0.4rem 0.6rem;
+	border-radius: 0.2rem;
+	text-decoration: none;
+	font-size: 0.7rem;
+	color: #555;
+}
+
+.pagination li.active a {
+	font-weight: bold;
+	color: #000;
+}
 /* --------- footer ------------ */
 footer {
 	background:#f7f7f7;
