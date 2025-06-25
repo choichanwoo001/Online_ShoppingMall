@@ -7,7 +7,6 @@ import com.fast_campus_12.not_found.shop.order.dto.*;
 import com.fast_campus_12.not_found.shop.service.OrderService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -31,17 +30,19 @@ public class OrderController {
 
         session.setAttribute("userId", "3");
         String sessionId = (String) session.getAttribute("userId");
-        OrderUserDetailServiceDto orderDetailServiceDto =  orderService.UserDetailSplit(sessionId);
 
+//        if (sessionId != null) {
+//            model.addAttribute("error", "로그인이 필요합니다.");
+//            return "redirect:/login";
+//        }
+
+        OrderUserDetailServiceDto orderDetailServiceDto =  orderService.UserDetailSplit(sessionId);
         // 유저 상세 주소 조회
         UserAddressDto userAddressDto = orderService.getUserAddress(sessionId);
-
         // 유저 주문 상품 조회 장바구니 기준
         List<ProductOrderInfoDto> productOrderInfoDto = orderService.getOrdersInfo(sessionId);
-
         // 유저 쿠폰 조회
         List<CouponDto> couponDto = orderService.getOrdersCouponInfo(sessionId);
-
         // 유저 마일리지 조회
         MileageDto mileageDto = orderService.getAvailableMileage(sessionId);
 
@@ -52,7 +53,7 @@ public class OrderController {
         model.addAttribute("address", userAddressDto);
         model.addAttribute("orderItems", productOrderInfoDto);
         model.addAttribute("couponList", couponDto);
-        model.addAttribute("availableMileage", mileageDto.getAvailableMileage());
+        model.addAttribute("availableMileage", mileageDto);
         model.addAttribute("shippingFee", orderService.shippingFee());
 
         return "layout/base";

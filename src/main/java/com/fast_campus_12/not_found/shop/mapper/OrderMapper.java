@@ -9,7 +9,7 @@ import java.util.List;
 public interface OrderMapper {
 
     @Select("""
-    SELECT 
+    SELECT
       user_id AS userId,
       email,
       name,
@@ -20,7 +20,7 @@ public interface OrderMapper {
     FROM USER_DETAIL 
     WHERE user_id = #{userId}
 """)
-    UserDetailDto finUserDetailByUserId(Long userId); // 유저 상세정보 조회
+    UserDetailDto finUserDetailByUserId(String userId); // 유저 상세정보 조회
 
     @Select("""
     SELECT
@@ -35,7 +35,7 @@ public interface OrderMapper {
     FROM default_user_address
     WHERE user_id = #{loginId}
 """)
-    UserAddressDto findUserAddressByUserId(Long userId); // 유저 상세주소 조회
+    UserAddressDto findUserAddressByUserId(String userId); // 유저 상세주소 조회
 
     @Select("""
         SELECT
@@ -51,7 +51,7 @@ public interface OrderMapper {
         WHERE
             c.USER_ID = #{userId} -- 매개변수 userId를 SQL에 바인딩
     """)
-    List<ProductOrderInfoDto> findCartItemsForOrderByUserId(Long userId); // 장바구니에서 주문상품 조회
+    List<ProductOrderInfoDto> findCartItemsForOrderByUserId(String userId); // 장바구니에서 주문상품 조회
 
     @Select("""
         SELECT
@@ -77,7 +77,7 @@ public interface OrderMapper {
         WHERE
             uc.USER_ID = #{userId}
     """)
-    List<CouponDto> findUserCouponsByUserId(Long userId); // user_id로 보유 쿠폰 조회
+    List<CouponDto> findUserCouponsByUserId(String userId); // user_id로 보유 쿠폰 조회
 
     @Select("""
         SELECT
@@ -88,7 +88,7 @@ public interface OrderMapper {
         WHERE
             m.USER_ID = #{userId}
     """)
-    MileageDto findAvailableMileageByUserId(@Param("userId") Long userId); // user_id로 마일리지 조회
+    MileageDto findAvailableMileageByUserId( String userId); // user_id로 마일리지 조회
 }
 
 

@@ -15,6 +15,12 @@ public class OrderService {
     public OrderUserDetailServiceDto UserDetailSplit(String userId){
 
         UserDetailDto userDetail = orderMapper.finUserDetailByUserId(userId);
+
+        // 유저 null검사
+        if (userDetail == null) {
+            throw new IllegalArgumentException("해당 유저의 정보가 존재하지 않습니다: " + userId);
+        }
+
         // 이메일 분리
         String[] emailParts = userDetail.getEmail().split("@");
         String emailId = emailParts[0];
