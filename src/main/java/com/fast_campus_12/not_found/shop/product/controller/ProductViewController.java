@@ -3,6 +3,7 @@ package com.fast_campus_12.not_found.shop.product.controller;
 import com.fast_campus_12.not_found.shop.common.enums.SortDirection;
 import com.fast_campus_12.not_found.shop.global.dto.http.PageResponseDto;
 import com.fast_campus_12.not_found.shop.product.dto.ProductPageDto;
+import com.fast_campus_12.not_found.shop.product.dto.ProductSpecialSummaryRequestDto;
 import com.fast_campus_12.not_found.shop.product.dto.ProductSummaryDto;
 import com.fast_campus_12.not_found.shop.product.dto.ProductSummaryRequestDto;
 import com.fast_campus_12.not_found.shop.product.enums.ProductSortBy;
@@ -35,20 +36,34 @@ public class ProductViewController {
                                     @RequestParam(value = "sort", required = false, defaultValue = "ASC") SortDirection sort,
                                     Model model) {
 
-        ProductSummaryDto dto = ProductSummaryDto.builder().build();
-        PageResponseDto<ProductSummaryDto> pageResponseDto =
-                PageResponseDto.<ProductSummaryDto>builder()
-                .items(List.of(dto))
-                .build();
-        model.addAttribute("pageResponseDto", pageResponseDto);
+        int offset = (page - 1) * pageSize;
 
-//        log.error("{}, {}", sortBy, sort);
-//        model.addAttribute("pageResponseDto", pageResponseDto);
-//        model.addAttribute("title", category.toUpperCase());
+        ProductSpecialSummaryRequestDto specialSummaryRequestDto = ProductSpecialSummaryRequestDto.builder()
+                .specialProductCategory(special)
+                .limit(pageSize)
+                .offset(offset)
+                .sortDirection(sort)
+                .sortBy(sortBy)
+                .build();
+
+        ProductPageDto productPageDto =
+                productService.getSummaryBySpecialCategory(specialSummaryRequestDto);
+
+        PageResponseDto<ProductSummaryDto> pageResponseDto = PageResponseDto.<ProductSummaryDto>builder()
+                .items(productPageDto.getItems())
+                .totalCount(productPageDto.getTotalCount())
+                .page(page)
+                .size(pageSize)
+                .hasNext(productPageDto.getTotalCount() > page * pageSize)
+                .hasPrev(page > 1)
+                .build();
+
+        log.error("{}", pageResponseDto.getItems());
+        model.addAttribute("pageResponseDto", pageResponseDto);
 //        model.addAttribute("category", category);
 //        model.addAttribute("subCategory", subCategory); // null 가능
-//        model.addAttribute("sortBy", dto.getSortBy().name()); // enum일 경우 .name() 붙이기
-//        model.addAttribute("sort", dto.getSortDirection()); // ASC, DESC
+        model.addAttribute("sortBy", sortBy.name());
+        model.addAttribute("sort", sort); // ASC, DESC
         model.addAttribute("contentPath", "product/specialProductList");
 
         return "layout/base";
@@ -89,7 +104,6 @@ public class ProductViewController {
                 .sortBy(sortBy)
                 .build();
 
-
         ProductPageDto productPageDto =
                 productService.getSummaryByCategory(dto);
 
@@ -103,7 +117,6 @@ public class ProductViewController {
                 .build();
 
         model.addAttribute("pageResponseDto", pageResponseDto);
-        model.addAttribute("title", category.toUpperCase());
         model.addAttribute("category", category);
         model.addAttribute("subCategory", subCategory); // null 가능
         model.addAttribute("sortBy", dto.getSortBy().name()); // enum일 경우 .name() 붙이기

@@ -1,6 +1,7 @@
 package com.fast_campus_12.not_found.shop.product.service;
 
 import com.fast_campus_12.not_found.shop.mapper.ProductDynamicQueryMapper;
+import com.fast_campus_12.not_found.shop.product.dto.ProductSpecialSummaryRequestDto;
 import com.fast_campus_12.not_found.shop.product.dto.ProductSummaryDto;
 import com.fast_campus_12.not_found.shop.product.dto.ProductPageDto;
 import com.fast_campus_12.not_found.shop.product.dto.ProductSummaryRequestDto;
@@ -26,18 +27,25 @@ public class DevProductServiceImpl implements ProductService {
 
     @Override
     public ProductPageDto getSummaryByCategory(ProductSummaryRequestDto productSummaryRequestDto) {
-//        List<Product> productList = productDynamicQueryMapper.findProductListByCategory(
-//                productSummaryRequestDto.getCategory(),
-//                productSummaryRequestDto.getSubCategory(),
-//                productSummaryRequestDto.getOffset(),
-//                productSummaryRequestDto.getLimit()
-//        );
         List<Product> productList = productDynamicQueryMapper
                 .findProductListByCategory(productSummaryRequestDto);
 
         int totalCount = productDynamicQueryMapper
                 .countProductListByCategory(productSummaryRequestDto);
 
+        return ProductPageDto.builder()
+                .totalCount(totalCount)
+                .items(toSummaryDtoList(productList))
+                .build();
+    }
+
+    @Override
+    public ProductPageDto getSummaryBySpecialCategory(ProductSpecialSummaryRequestDto ProductSpecialSummaryRequestDto) {
+        List<Product> productList = productDynamicQueryMapper
+                .findProductListBySpecialTag(ProductSpecialSummaryRequestDto);
+
+        int totalCount = productDynamicQueryMapper
+                .countProductListBySpecialTag(ProductSpecialSummaryRequestDto);
         return ProductPageDto.builder()
                 .totalCount(totalCount)
                 .items(toSummaryDtoList(productList))
