@@ -1,22 +1,32 @@
 package com.fast_campus_12.not_found.shop.controller;
 
+import com.fast_campus_12.not_found.shop.dto.WishlistPageDto;
 import com.fast_campus_12.not_found.shop.mapper.CartItemMapper;
 import com.fast_campus_12.not_found.shop.product.dto.CartItemViewDto;
 import com.fast_campus_12.not_found.shop.product.model.Cart;
 import com.fast_campus_12.not_found.shop.product.model.CartItem;
 import com.fast_campus_12.not_found.shop.product.service.CartService;
 import groovy.util.logging.Slf4j;
+import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.logging.Log;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.mybatis.spring.SqlSessionFactoryBean;
+import org.mybatis.spring.SqlSessionTemplate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.sql.DataSource;
+import java.util.Collections;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,69 +39,61 @@ public class CartController {
 
     @Autowired
     private CartService cartService;
-
     @Autowired
     private CartItemMapper cartItemMapper;
 
+    private static final Logger log = LoggerFactory.getLogger(CartController.class);
     //cart url 매핑 임시 + 팝업
     @GetMapping
-    public String showPopup(Model model) {
-        model.addAttribute("contentPath", "order/cart");
+    public String showPopup(HttpServletRequest request, Model model) {
+        // 1. 사용자 ID 가져오기 (세션 또는 인증에서)
+        //Long userId = getUserIdFromSession(request);
+        Long userId = 5L;
+        Cart cart = cartService.getOrCreateCart(userId);
+        // 장바구니와 장바구니 아이템들을 함께 조회
+        Cart cartWithItems = cartService.getCartWithItems(userId);
 
-        // 예시: 동적으로 팝업 데이터 생성 또는 DB에서 조회
-        String dynamicTitle = "새로운 소식!";
-        String dynamicMessage = "<p>오늘의 <b>특별 할인</b> 이벤트를 놓치지 마세요!</p>";
-        boolean showPopupCloseButton = true;
-
-        // Model에 팝업 데이터를 담아서 Thymeleaf로 전달
-        // (이 방식은 팝업 내용을 페이지 컨트롤러에서 직접 제어할 때 사용)
-        model.addAttribute("popupTitle", dynamicTitle);
-        model.addAttribute("popupMessage", dynamicMessage);
-        model.addAttribute("showCloseButton", showPopupCloseButton);
+        // 장바구니 아이템 조회 (Thymeleaf에서 사용)
+        List<CartItemViewDto> cartItems = cartService.getCartItemViews(userId);
 
 
-        return "layout/base";
-    }
-
-
-    /**
-     * 장바구니 조회  테스트
-     */
-    @GetMapping("/test")
-    public String CartTest(Model model) {
-        model.addAttribute("contentPath", "order/cart");
-// CartItem 1 생성
-        // 더미 CartItem 1
-        CartItemViewDto item1 = new CartItemViewDto();
-        item1.setCartItemId("CI001");
-        item1.setProductVariantId(1001L);
-        item1.setProductName("Farben 바스락 싱글자켓");
-        item1.setColor("블랙");
-        item1.setSize("FREE");
-        item1.setImageUrl("https://via.placeholder.com/100x120");
-        item1.setQuantity(2);
-        item1.setPrice(93000);
-
-        // 더미 CartItem 2
-        CartItemViewDto item2 = new CartItemViewDto();
-        item2.setCartItemId("CI002");
-        item2.setProductVariantId(1002L);
-        item2.setProductName("마일드 니트 가디건");
-        item2.setColor("아이보리");
-        item2.setSize("M");
-        item2.setImageUrl("https://via.placeholder.com/100x120");
-        item2.setQuantity(1);
-        item2.setPrice(67000);
-
-        List<CartItemViewDto> cartItems = new ArrayList<>();
-        cartItems.add(item1);
-        cartItems.add(item2);
-
+        // getCartWithItems가 null을 반환하면 빈 장바구니 사용
+        if (cartWithItems == null) {
+            cartWithItems = cart; // 방금 생성하거나 조회한 장바구니 사용
+        }
+        model.addAttribute("cart", cartWithItems);
+        model.addAttribute("cartId", cartWithItems.getId());
         model.addAttribute("cartItems", cartItems);
+        model.addAttribute("contentPath", "order/cart");
+
+        log.info("장바구니 조회 완료 - userId: {}, cartId: {}", userId, cartWithItems.getId());
+
         return "layout/base";
     }
 
+    // 장바구니 아이템 리스트만 조회하는 API (AJAX용)
+    @GetMapping("/items")
+    @ResponseBody
+    public ResponseEntity<?> getCartItems(HttpServletRequest request) {
+        try {
+            Long userId = 4L; // 실제로는 세션에서 가져와야 함
+
+            // 먼저 장바구니 존재 확인 및 생성
+            Cart cart = cartService.getOrCreateCart(userId);
+
+            // CartItemMapper를 사용해서 장바구니 아이템 뷰 정보 직접 조회
+            List<CartItemViewDto> cartItemViewDtos = cartItemMapper.findCartItemViewsByCartId(cart.getId());
+
+            if (cartItemViewDtos == null || cartItemViewDtos.isEmpty()) {
+                return ResponseEntity.ok().body(Collections.emptyList());
+            }
+
+            return ResponseEntity.ok(cartItemViewDtos);
+
+        } catch (Exception e) {
+            log.error("장바구니 아이템 조회 중 오류 발생", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("장바구니 조회 중 오류가 발생했습니다.");
+        }
+    }
 }
-
-
-

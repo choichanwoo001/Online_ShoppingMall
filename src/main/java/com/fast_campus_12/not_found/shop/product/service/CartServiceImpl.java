@@ -2,10 +2,13 @@ package com.fast_campus_12.not_found.shop.product.service;
 
 import com.fast_campus_12.not_found.shop.mapper.CartItemMapper;
 import com.fast_campus_12.not_found.shop.mapper.CartMapper;
+import com.fast_campus_12.not_found.shop.product.dto.CartItemViewDto;
 import com.fast_campus_12.not_found.shop.product.model.Cart;
 import com.fast_campus_12.not_found.shop.product.model.CartItem;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -24,10 +27,10 @@ public class CartServiceImpl implements CartService {
     public Cart getOrCreateCart(Long userId) {
         Cart cart = cartMapper.findByUserId(userId);
         if (cart == null) {
-//            cart = new Cart();
+            cart = new Cart();
 //            cart.setId(UUID.randomUUID().toString());
-//            cart.setUserId(userId);
-//            cartMapper.insertCart(cart);
+            cart.setUserId(userId);
+            cartMapper.insertCart(cart);
             System.out.println("장바구니 없음");
         }
         return cart;
@@ -92,8 +95,8 @@ public class CartServiceImpl implements CartService {
     }
 
     //장바구니 전체 조회
-    @Override
     @Transactional(readOnly = true)
+    @Override
     public Cart getCartWithItems(Long userId) {
         return cartMapper.findCartWithItemsByUserId(userId);
     }
@@ -107,8 +110,8 @@ public class CartServiceImpl implements CartService {
         }
     }
 
-    @Override
     @Transactional(readOnly = true)
+    @Override
     public int getCartItemCount(Long userId) {
         Cart cart = cartMapper.findByUserId(userId);
         if (cart == null) {
@@ -117,4 +120,11 @@ public class CartServiceImpl implements CartService {
         return cartItemMapper.countByCartId(cart.getId());
     }
 
+    @Override
+    public List<CartItemViewDto> getCartItemViews(Long userId) {
+        // 먼저 장바구니가 있는지 확인하고 없으면 생성
+        Cart cart = getOrCreateCart(userId);
+        // 장바구니 아이템 뷰 조회
+        return cartItemMapper.findCartItemViewsByCartId(cart.getId());
+    }
 }

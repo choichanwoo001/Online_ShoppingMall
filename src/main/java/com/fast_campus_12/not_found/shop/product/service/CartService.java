@@ -1,6 +1,10 @@
 package com.fast_campus_12.not_found.shop.product.service;
 
+import com.fast_campus_12.not_found.shop.product.dto.CartItemViewDto;
 import com.fast_campus_12.not_found.shop.product.model.Cart;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 public interface CartService {
     //사용자 장바구니 조회
@@ -23,4 +27,7 @@ public interface CartService {
 
     //장바구니 아이템 개수 조회
     int getCartItemCount(Long userId);
+
+    List<CartItemViewDto> getCartItemViews(Long userId);
+
 }
