@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Controller
@@ -50,18 +51,13 @@ public class ProductViewController {
                 PAGE_SIZE
         );
 
-        ProductPageResponse response = ProductPageResponse.builder()
-                .pageResponseDto(pageResponse)
-                .category(null)
-                .subCategory(null)
-                .baseUrl("/product/special/" + special.name())
-                .sortBy(Optional.ofNullable(pageRequest.getSortBy()).orElse(ProductSortBy.PRICE).name())
-                .sort(Optional.ofNullable(pageRequest.getSort()).orElse(SortDirection.ASC).name())
-                .contentPath("product/productList")
-                .build();
+        String baseUrl = "/product/special/" + special.name();
 
-        model.addAttribute("productPage", response);
-        model.addAttribute("contentPath", response.getContentPath());
+        ProductPageResponse response = buildProductPageResponse(
+                pageResponse, null, null, baseUrl, pageRequest
+        );
+
+        setModel(model, response);
         return "layout/base";
     }
 
@@ -101,22 +97,50 @@ public class ProductViewController {
                 PAGE_SIZE
         );
 
-        String baseUrl = (subCategory == null)
+        String baseUrl = subCategory == null
                 ? "/product/category/" + category
                 : "/product/category/" + category + "/" + subCategory;
 
-        ProductPageResponse response = ProductPageResponse.builder()
+        ProductPageResponse response = buildProductPageResponse(
+                pageResponse, category, subCategory, baseUrl, pageRequest
+        );
+
+        setModel(model, response);
+        return "layout/base";
+    }
+
+    private ProductPageResponse buildProductPageResponse(
+            PageResponseDto<ProductSummaryDto> pageResponse,
+            String category,
+            String subCategory,
+            String baseUrl,
+            ProductPageRequest pageRequest
+    ) {
+        return ProductPageResponse.builder()
                 .pageResponseDto(pageResponse)
                 .category(category)
                 .subCategory(subCategory)
                 .baseUrl(baseUrl)
-                .sortBy(Optional.ofNullable(pageRequest.getSortBy()).orElse(ProductSortBy.PRICE).name())
-                .sort(Optional.ofNullable(pageRequest.getSort()).orElse(SortDirection.ASC).name())
+                .sortBy(resolveSortBy(pageRequest))
+                .sort(resolveSort(pageRequest))
                 .contentPath("product/productList")
                 .build();
+    }
 
+    private String resolveSortBy(ProductPageRequest pageRequest) {
+        return Optional.ofNullable(pageRequest.getSortBy())
+                .orElse(ProductSortBy.PRICE)
+                .name();
+    }
+
+    private String resolveSort(ProductPageRequest pageRequest) {
+        return Optional.ofNullable(pageRequest.getSort())
+                .orElse(SortDirection.ASC)
+                .name();
+    }
+
+    private void setModel(Model model, ProductPageResponse response) {
         model.addAttribute("productPage", response);
         model.addAttribute("contentPath", response.getContentPath());
-        return "layout/base";
     }
 }
