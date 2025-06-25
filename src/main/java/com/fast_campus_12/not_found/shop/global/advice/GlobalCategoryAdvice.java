@@ -33,7 +33,7 @@ public class GlobalCategoryAdvice {
         log.error("{}", subCategoryMenus);
         log.error("{}, {}", request.getRequestURI(), request.getMethod());
         String categoryName = categoryParser(request.getRequestURI());
-
+        String uri = request.getRequestURI();
         if(Objects.isNull(categoryName)) return null;
 
         if(!subCategoryMenus.containsKey(categoryName)) return null;
