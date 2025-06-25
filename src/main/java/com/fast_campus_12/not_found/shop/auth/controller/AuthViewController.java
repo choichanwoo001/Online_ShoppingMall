@@ -40,7 +40,7 @@ public class AuthViewController {
 
         // 2. 사용자 존재 여부 확인
         Auth auth = authRepository.findById(id);
-        if (auth == null) {
+        if (Objects.isNull(auth)) {
             model.addAttribute("error", "존재하지 않는 계정입니다.");
             model.addAttribute("contentPath", "login");
             return "layout/base";
@@ -56,7 +56,7 @@ public class AuthViewController {
         // 4. 로그인 시도
         Auth updatedAuth = authService.login(id, pw);
 
-        if (updatedAuth != null) {
+        if (Objects.nonNull(updatedAuth)) {
             session.setAttribute("loginId", updatedAuth.getId());
             authService.uploadLoginHistory(updatedAuth.getId());
             return "redirect:/home";
@@ -65,7 +65,7 @@ public class AuthViewController {
             // 로그인 실패 → DB에 저장된 failCount 기반으로 사용
             auth = authRepository.findById(id);
             model.addAttribute("error", "아이디 또는 비밀번호가 올바르지 않습니다.");
-            model.addAttribute("failCount", auth != null ? auth.getFailCount() : 0);
+            model.addAttribute("failCount", Objects.nonNull(auth) ? auth.getFailCount() : 0);
             model.addAttribute("contentPath", "login");
             return "layout/base";
         }
