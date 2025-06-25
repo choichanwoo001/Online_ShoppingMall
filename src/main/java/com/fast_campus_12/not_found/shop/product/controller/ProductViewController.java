@@ -28,8 +28,8 @@ public class ProductViewController {
     @GetMapping("/category/{category}")
     public String productByCategory(@PathVariable("category") String category,
                                     @RequestParam(value = "page", defaultValue = "1") int page,
-                                    @RequestParam(value = "sortBy", required = false) ProductSortBy sortBy,
-                                    @RequestParam(value = "sort", required = false) SortDirection sort,
+                                    @RequestParam(value = "sortBy", required = false, defaultValue = "PRICE") ProductSortBy sortBy,
+                                    @RequestParam(value = "sort", required = false, defaultValue = "ASC") SortDirection sort,
                                     Model model) {
 
         log.error("{}, {}",sortBy, sort);
@@ -40,8 +40,8 @@ public class ProductViewController {
     public String productBySubCategory(@PathVariable("category") String category,
                                        @PathVariable("subCategory") String subCategory,
                                        @RequestParam(name = "page", defaultValue = "1") int page,
-                                       @RequestParam(value = "sortBy", required = false) ProductSortBy sortBy,
-                                       @RequestParam(value = "sort", required = false) SortDirection sort,
+                                       @RequestParam(value = "sortBy", required = false, defaultValue = "PRICE") ProductSortBy sortBy,
+                                       @RequestParam(value = "sort", required = false, defaultValue = "ASC") SortDirection sort,
                                        Model model) {
         return handleProductList(category, subCategory, page, model, sort, sortBy);
     }
@@ -75,6 +75,8 @@ public class ProductViewController {
         model.addAttribute("title", category.toUpperCase());
         model.addAttribute("category", category);
         model.addAttribute("subCategory", subCategory); // null 가능
+        model.addAttribute("sortBy", dto.getSortBy().name()); // enum일 경우 .name() 붙이기
+        model.addAttribute("sort", dto.getSortDirection()); // ASC, DESC
         model.addAttribute("contentPath", "product/productList");
 
         return "layout/base";
