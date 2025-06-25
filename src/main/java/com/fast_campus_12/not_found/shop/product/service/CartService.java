@@ -11,7 +11,7 @@ public interface CartService {
     Cart getOrCreateCart(Long userId);
 
     //장바구니에 상품 추가
-    void addItemToCart(Long userId, Long productId, Long productVariantId, int quantity);
+    void addItemToCart(Long userId, Long productVariantId, int quantity);
 
     //장바구니 아이템 수량 변경
     void updateItemQuantity(Long userId, String cartItemId, int quantity);

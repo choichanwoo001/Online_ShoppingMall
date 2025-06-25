@@ -12,7 +12,7 @@ public interface CartItemMapper {
     //CartItemViewDto로 조회
     @Select("""
         SELECT 
-            ci.cart_item_id,
+            ci.cart_item_id AS cartItemId,
             ci.product_variant_id AS productVariantId,
             p.product_title AS productName,
             pv.product_variant_color_id AS color,
