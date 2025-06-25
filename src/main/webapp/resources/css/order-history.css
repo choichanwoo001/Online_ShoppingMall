@@ -1,0 +1,262 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: white;
+    min-height: 100vh;
+    display: flex;
+}
+
+.sidebar {
+    width: 200px;
+    background-color: #fff;
+    border-right: 1px solid #e0e0e0;
+    padding: 20px 0;
+}
+
+.sidebar h2 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    padding: 0 20px;
+}
+
+.sidebar ul {
+    list-style: none;
+}
+
+.sidebar li {
+    margin-bottom: 5px;
+}
+
+.sidebar a {
+    display: block;
+    padding: 12px 20px;
+    text-decoration: none;
+    color: #666;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+.sidebar a:hover {
+    background-color: #f0f0f0;
+}
+
+.sidebar a.active {
+    background-color: #f0f0f0;
+    color: #333;
+    font-weight: 500;
+}
+
+.main-content {
+    flex: 1;
+    padding: 20px 30px;
+}
+
+.page-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    text-align: right;
+}
+
+.order-tabs {
+    display: flex;
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 30px;
+}
+
+.tab {
+    padding: 15px 20px;
+    background-color: #f8f8f8;
+    border: 1px solid #e0e0e0;
+    border-bottom: none;
+    cursor: pointer;
+    font-size: 14px;
+    color: #666;
+    margin-right: 5px;
+}
+
+.tab.active {
+    background-color: white;
+    color: #333;
+    font-weight: 500;
+}
+
+.search-section {
+    background-color: #f8f8f8;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #e0e0e0;
+}
+
+.search-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.search-row:last-child {
+    margin-bottom: 0;
+}
+
+.period-buttons {
+    display: flex;
+    gap: 10px;
+    margin-right: 20px;
+}
+
+.period-btn {
+    padding: 8px 16px;
+    border: 1px solid #ddd;
+    background-color: white;
+    cursor: pointer;
+    font-size: 13px;
+    color: #666;
+}
+
+.period-btn.active {
+    background-color: #333;
+    color: white;
+    border-color: #333;
+}
+
+.date-inputs {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.date-input {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    font-size: 13px;
+    width: 150px;
+}
+
+.search-btn {
+    padding: 8px 20px;
+    background-color: #333;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+    margin-left: 20px;
+}
+
+.search-info {
+    font-size: 12px;
+    color: #666;
+    line-height: 1.5;
+}
+
+.order-list {
+    background-color: white;
+    border: 1px solid #e0e0e0;
+}
+
+.no-orders {
+    text-align: center;
+    padding: 80px 20px;
+    color: #999;
+    font-size: 14px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+    gap: 10px;
+}
+
+.pagination button {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    background-color: white;
+    cursor: pointer;
+    font-size: 13px;
+    color: #666;
+}
+
+.pagination button:hover {
+    background-color: #f0f0f0;
+}
+
+.pagination button.active {
+    background-color: #333;
+    color: white;
+    border-color: #333;
+}
+
+.order-item {
+    border-bottom: 1px solid #e0e0e0;
+    padding: 20px;
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.order-date {
+    font-size: 14px;
+    color: #666;
+}
+
+.order-number {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.order-status {
+    padding: 4px 8px;
+    font-size: 12px;
+    border-radius: 3px;
+    font-weight: 500;
+}
+
+.status-confirmed {
+    background-color: #e3f2fd;
+    color: #1976d2;
+}
+
+.status-shipped {
+    background-color: #f3e5f5;
+    color: #7b1fa2;
+}
+
+.status-delivered {
+    background-color: #e8f5e8;
+    color: #388e3c;
+}
+
+.order-details {
+    display: flex;
+    gap: 20px;
+}
+
+.order-amount {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+.order-comment {
+    font-size: 13px;
+    color: #666;
+    margin-top: 5px;
+}
