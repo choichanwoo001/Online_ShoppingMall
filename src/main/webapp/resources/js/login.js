@@ -37,7 +37,7 @@ function isValidUsername(id) {
 }
 
 function isValidPassword(pw) {
-    const pwRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*]).{8,20}$/;
+    const pwRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{4,16}$/;
     return pwRegex.test(pw);
 }
 
