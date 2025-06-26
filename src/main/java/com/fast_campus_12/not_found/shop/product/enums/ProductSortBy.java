@@ -6,6 +6,7 @@
     public enum ProductSortBy {
         PRICE("PRODUCT_PRICE"),
         NAME("PRODUCT_TITLE"),
+        SALE_COUNT("PRODUCT_SALE_COUNT"),
         CREATED_AT("CREATED_AT");
 
         private final String column;

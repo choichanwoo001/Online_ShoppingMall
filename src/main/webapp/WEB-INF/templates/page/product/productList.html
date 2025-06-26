@@ -13,9 +13,13 @@
 
     <!-- 정렬 기준 -->
     <div class="sort-options" th:if="${pageView.baseUrl != null}">
+        <a th:href="@{${pageView.baseUrl}(sortBy='SALE_COUNT', sort='DESC')}"
+           th:classappend="${pageView.sortBy == 'SALE_COUNT' and pageView.sort == 'DESC'} ? ' active'"
+           class="sort-link">판매순</a>
+
         <a th:href="@{${pageView.baseUrl}(sortBy='CREATED_AT', sort='DESC')}"
            th:classappend="${pageView.sortBy == 'CREATED_AT' and pageView.sort == 'DESC'} ? ' active'"
-           class="sort-link">신상품</a>
+           class="sort-link">최신순</a>
 
         <a th:href="@{${pageView.baseUrl}(sortBy='NAME', sort='ASC')}"
            th:classappend="${pageView.sortBy == 'NAME' and pageView.sort == 'ASC'} ? ' active'"
