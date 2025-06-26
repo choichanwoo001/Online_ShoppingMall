@@ -64,7 +64,7 @@ $(document).ready(function(){
 });
 // 필수 유틸리티 함수들
 function loadCartSummary() {
-    $.get('/order/cart/summary')
+    $.get('/order/cart/api/summary')
         .done(function(data) {
             updateCartSummary(data.totalItemCount, data.totalAmount,
                 data.originalTotalAmount, data.totalDiscountAmount);
@@ -87,7 +87,7 @@ function addTestcartItem() {
     console.log("테스트 데이터:", testData);
 
     $.ajax({
-        url: '/order/cart/add',
+        url: '/order/cart/api/add',
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(testData)
@@ -134,7 +134,7 @@ function deleteCartItems(cartItemIds) {
     }
 
     $.ajax({
-        url: '/order/cart/items',
+        url: '/order/cart/api/items',
         type: 'DELETE',
         contentType: 'application/json',
         data: JSON.stringify(cartItemIds)
@@ -201,7 +201,7 @@ function updateQuantity($cartItem, newQuantity) {
     $minusBtn.prop('disabled', true);
 
     $.ajax({
-        url: `/order/cart/items/${cartItemId}/quantity`,
+        url: `/order/cart/api/items/${cartItemId}/quantity`,
         type: 'PATCH',
         contentType: 'application/json',
         data: JSON.stringify({ quantity: newQuantity })
