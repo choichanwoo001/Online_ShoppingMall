@@ -337,7 +337,7 @@ body {
 }
 
 /* 반응형 */
-@media (max-width: 768px) {
+@media (max-width: 38.4rem) {
     .container {
         padding: 0.5rem;
     }

@@ -30,8 +30,14 @@
                 <div class="coupon-register-section">
                     <div class="register-box">
                         <div class="register-form">
-                            <input type="text" id="couponCode" placeholder="판드시 쇼핑몰에서 발행한 쿠폰번호만 입력해주세요. (10~35자 영어번호 '-' 제외)" maxlength="35">
-                            <button type="button" onclick="registerCoupon()">쿠폰번호인증</button>
+                            <input
+                                    type="text"
+                                    id="couponCode"
+                                    class="coupon-input"
+                                    placeholder="판드시 쇼핑몰에서 발행한 쿠폰번호만 입력해주세요. (10~35자 영어번호 '-' 제외)"
+                                    maxlength="35"
+                            >
+                            <button type="button" class="btn-register">쿠폰번호인증</button>
                         </div>
                     </div>
                 </div>
@@ -40,25 +46,26 @@
                 <table class="coupon-table">
                     <thead>
                     <tr>
-                        <th style="width: 100px;">번호</th>
+                        <th class="col-number">번호</th>
                         <th>쿠폰명</th>
-                        <th style="width: 100px;">할인</th>
-                        <th style="width: 100px;">적립</th>
-                        <th style="width: 100px;">상세</th>
+                        <th class="col-discount">할인</th>
+                        <th class="col-earning">적립</th>
+                        <th class="col-detail">상세</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:if="${userCoupons == null || userCoupons.isEmpty()}">
                         <td colspan="5" class="no-data">보유한 쿠폰이 없습니다.</td>
                     </tr>
-                    <tr th:each="coupon, stat : ${userCoupons}" th:if="${userCoupons != null && !userCoupons.isEmpty()}">
+                    <tr
+                            th:each="coupon, stat : ${userCoupons}"
+                            th:if="${userCoupons != null && !userCoupons.isEmpty()}"
+                    >
                         <td th:text="${stat.count}">1</td>
                         <td th:text="${coupon.couponName}">신규가입 쿠폰 2,000원</td>
                         <td th:text="${coupon.discountText}">2,000원</td>
                         <td>-</td>
-                        <td>
-                            <a href="#" style="color: #666; text-decoration: none;">▼</a>
-                        </td>
+                        <td><a href="#" class="btn-detail">▼</a></td>
                     </tr>
                     </tbody>
                 </table>

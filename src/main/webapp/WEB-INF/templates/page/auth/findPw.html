@@ -21,7 +21,6 @@
       </div>
     </form>
 
-    <!-- 인증번호 입력 섹션 -->
     <div id="verificationSection" class="verification-section">
       <div class="form-group">
         <label for="verificationCode" class="form-label">인증번호</label>
@@ -37,7 +36,6 @@
       </div>
     </div>
 
-    <!-- 결과 표시 섹션 -->
     <div id="resultSection" class="result-section">
       <div class="result-info">
         <p>임시 비밀번호가 발급되었습니다.</p>
@@ -55,13 +53,11 @@
           </ul>
         </div>
 
-        <div style="margin-top: 20px;">
-          <button type="button" onclick="location.href='/login'" class="btn-primary"
-                  style="width: auto; padding: 10px 30px; margin-right: 10px;">
+        <div class="result-buttons">
+          <button type="button" onclick="location.href='/login'" class="btn-primary btn-login">
             로그인
           </button>
-          <button type="button" onclick="location.href='/find/id'" class="btn-primary"
-                  style="width: auto; padding: 10px 30px; background-color: #6c757d;">
+          <button type="button" onclick="location.href='/find/id'" class="btn-primary btn-find-id">
             아이디 찾기
           </button>
         </div>

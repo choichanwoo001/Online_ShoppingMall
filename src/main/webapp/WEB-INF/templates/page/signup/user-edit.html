@@ -25,7 +25,14 @@
                         비밀번호 <span class="required">*</span>
                     </td>
                     <td class="input">
-                        <input type="password" id="password" name="password" class="form-input small" maxlength="16" placeholder="새 비밀번호 입력">
+                        <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                class="form-input small"
+                                maxlength="16"
+                                placeholder="새 비밀번호 입력"
+                        >
                         <span class="helper-text">(영문 대소문자/숫자 4자~16자)</span>
                         <span id="passwordMessage" class="error-message"></span>
                     </td>
@@ -36,7 +43,14 @@
                         비밀번호 확인 <span class="required">*</span>
                     </td>
                     <td class="input">
-                        <input type="password" id="passwordConfirm" name="passwordConfirm" class="form-input small" maxlength="16" placeholder="새 비밀번호 확인">
+                        <input
+                                type="password"
+                                id="passwordConfirm"
+                                name="passwordConfirm"
+                                class="form-input small"
+                                maxlength="16"
+                                placeholder="새 비밀번호 확인"
+                        >
                         <span id="passwordConfirmMessage" class="error-message"></span>
                     </td>
                 </tr>
@@ -46,7 +60,13 @@
                         이름 <span class="required">*</span>
                     </td>
                     <td class="input">
-                        <input type="text" id="userName" name="userName" class="form-input small" maxlength="20">
+                        <input
+                                type="text"
+                                id="userName"
+                                name="userName"
+                                class="form-input small"
+                                maxlength="20"
+                        >
                         <span id="userNameMessage" class="error-message"></span>
                     </td>
                 </tr>
@@ -55,22 +75,24 @@
                     <td class="label">주소</td>
                     <td class="input">
                         <div class="address-section">
-                            <div>
+                            <div class="address-row">
                                 <label>우편번호</label>
                                 <input type="text" id="postcode" name="postcode" placeholder="우편번호" readonly>
-                                <button type="button" onclick="searchPostcode()">우편번호 검색</button>
+                                <button type="button" class="btn-postcode" onclick="searchPostcode()">우편번호 검색</button>
                             </div>
-
-                            <div>
+                            <div class="address-row">
                                 <label>주소</label>
                                 <input type="text" id="address" name="address" placeholder="주소" readonly>
                             </div>
-
-                            <div>
+                            <div class="address-row">
                                 <label>상세 주소</label>
-                                <input type="text" id="detailAddress" name="detailAddress" placeholder="나머지 주소(선택 입력 가능)">
+                                <input
+                                        type="text"
+                                        id="detailAddress"
+                                        name="detailAddress"
+                                        placeholder="나머지 주소(선택 입력 가능)"
+                                >
                             </div>
-
                             <!-- ERD에 맞춘 숨김 필드들 -->
                             <input type="hidden" id="roadAddress1" name="roadAddress1">
                             <input type="hidden" id="roadAddress2" name="roadAddress2">
@@ -96,17 +118,37 @@
                                 <option value="019">019</option>
                             </select>
                             <span>-</span>
-                            <input type="text" id="mobilePhone2" name="mobilePhone2" class="form-input phone-input" maxlength="4">
+                            <input
+                                    type="text"
+                                    id="mobilePhone2"
+                                    name="mobilePhone2"
+                                    class="form-input phone-input"
+                                    maxlength="4"
+                            >
                             <span>-</span>
-                            <input type="text" id="mobilePhone3" name="mobilePhone3" class="form-input phone-input" maxlength="4">
+                            <input
+                                    type="text"
+                                    id="mobilePhone3"
+                                    name="mobilePhone3"
+                                    class="form-input phone-input"
+                                    maxlength="4"
+                            >
                         </div>
                     </td>
                 </tr>
 
                 <tr>
-                    <td class="label">이메일 <span class="required">*</span></td>
+                    <td class="label">
+                        이메일 <span class="required">*</span>
+                    </td>
                     <td class="input">
-                        <input type="email" id="email" name="email" class="form-input medium" maxlength="100">
+                        <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                class="form-input medium"
+                                maxlength="100"
+                        >
                         <div id="emailMessage" class="message"></div>
                     </td>
                 </tr>
@@ -141,11 +183,9 @@
                             <select id="birthYear" name="birthYear" class="birth-select birth-year">
                                 <option value="">년</option>
                             </select>
-
                             <select id="birthMonth" name="birthMonth" class="birth-select birth-month">
                                 <option value="">월</option>
                             </select>
-
                             <select id="birthDay" name="birthDay" class="birth-select birth-day">
                                 <option value="">일</option>
                             </select>
