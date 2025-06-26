@@ -1,0 +1,37 @@
+<!-- templates/page/notice/noticeList.html -->
+<div th:fragment="content">
+  <h1 class="category_tit" th:text="${subCategory}">Notice</h1>
+  <p class="category-subtext">공지사항입니다.</p>
+
+  <div class="subCategory">
+    <ul>
+      <li><a href="#">NOTICE</a></li>
+      <li><a href="#">FAQ</a></li>
+      <li><a href="#">Q / A</a></li>
+    </ul>
+  </div>
+
+  <div class="cont_wrap">
+    <table class="notice-table">
+      <thead>
+      <tr>
+        <th class="col-number">번호</th>
+        <th class="col-title">제목</th>
+        <th class="col-writer">작성자</th>
+        <th class="col-date">작성일</th>
+        <th class="col-views">조회수</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="notice, iterStat : ${notices}">
+        <td class="col-number" th:text="${iterStat.index + 1}">1</td>
+        <td class="col-title" th:text="${notice.title}">제목</td>
+        <td class="col-writer" th:text="${notice.writer}">작성자</td>
+        <td class="col-date" th:text="${#temporals.format(notice.createdAt, 'yyyy-MM-dd')}">2025-06-25</td>
+        <td class="col-views" th:text="${notice.viewCount}">0</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <link rel="stylesheet" th:href="@{/resources/css/notice.css}">
+</div>
