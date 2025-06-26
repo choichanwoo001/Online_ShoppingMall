@@ -34,7 +34,7 @@ public interface WishlistMapper {
         AND p.enabled = 1
         AND p.deleted_at IS NULL
         ORDER BY w.added_at DESC
-        LIMIT #{offset}, #{size}
+        LIMIT #{size} OFFSET #{offset}
     """)
     List<WishlistItemDto> selectWishlistByUserId(@Param("userId") String userId,
                                                  @Param("offset") int offset,
@@ -83,7 +83,4 @@ public interface WishlistMapper {
 
     @Delete("DELETE FROM WISH_LIST WHERE user_id = #{userId}")
     int deleteAllByUserId(@Param("userId") String userId);
-
-    @Select("SELECT * FROM WISH_LIST WHERE wish_id = #{wishId}")
-    WishList selectByWishId(@Param("wishId") Long wishId);
 }
