@@ -5,10 +5,11 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 
-@Data
 @Builder
 public class QnaDto {
     private Long id;
+    private Long userId;
+    private Long productId;
     private String nickname;
     private String content;
     private LocalDateTime createdAt;
