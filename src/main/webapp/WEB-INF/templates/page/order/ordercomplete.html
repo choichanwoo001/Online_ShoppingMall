@@ -18,74 +18,74 @@
                 </div>
 
                 <!-- 주문 정보 -->
-                <div class="order-info-card" th:if="${orderInfo}">
+                <div class="order-info-card">
                         <div class="card-header">
                                 <h2>📋 주문 정보</h2>
                         </div>
                         <div class="card-content">
                                 <div class="info-row">
                                         <span class="info-label">주문번호</span>
-                                        <span class="info-value highlight" th:text="${orderInfo.orderId}">ORD20241225001</span>
+                                        <span class="info-value highlight" th:text="${orderInfo != null and orderInfo.orderId != null ? orderInfo.orderId : '정보를 불러올 수 없습니다.'}"></span>
                                 </div>
                                 <div class="info-row">
                                         <span class="info-label">주문일시</span>
-                                        <span class="info-value" th:text="${orderInfo.formattedOrderDate}">2024-12-25 14:30:25</span>
+                                        <span class="info-value" th:text="${orderInfo != null and orderInfo.formattedOrderDate != null ? orderInfo.formattedOrderDate : '정보를 불러올 수 없습니다.'}">정보를 불러올 수 없습니다.</span>
                                 </div>
                                 <div class="info-row">
                                         <span class="info-label">주문상태</span>
-                                        <span class="info-value" th:text="${orderInfo.orderStatus}">주문완료</span>
+                                        <span class="info-value" th:text="${orderInfo != null and orderInfo.orderStatus != null ? orderInfo.orderStatus : '정보를 불러올 수 없습니다.'}">정보를 불러올 수 없습니다.</span>
                                 </div>
                                 <div class="info-row">
                                         <span class="info-label">결제방법</span>
-                                        <span class="info-value" th:text="${orderInfo.paymentMethodName}">카드결제</span>
+                                        <span class="info-value" th:text="${orderInfo != null and orderInfo.paymentMethodName != null ? orderInfo.paymentMethodName : '정보를 불러올 수 없습니다.'}">정보를 불러올 수 없습니다.</span>
                                 </div>
                         </div>
                 </div>
 
                 <!-- 주문자 정보 -->
-                <div class="order-info-card" th:if="${orderInfo}">
+                <div class="order-info-card">
                         <div class="card-header">
                                 <h2>👤 주문자 정보</h2>
                         </div>
                         <div class="card-content">
                                 <div class="info-row">
                                         <span class="info-label">이름</span>
-                                        <span class="info-value" th:text="${orderInfo.ordererName}">홍길동</span>
+                                        <span class="info-value" th:text="${orderInfo != null and orderInfo.name != null and !#strings.isEmpty(orderInfo.name) ? orderInfo.name : '정보를 불러올 수 없습니다.'}">정보를 불러올 수 없습니다.</span>
                                 </div>
                                 <div class="info-row">
                                         <span class="info-label">이메일</span>
-                                        <span class="info-value" th:text="${orderInfo.ordererEmail}">hong@example.com</span>
+                                        <span class="info-value" th:text="${orderInfo != null and orderInfo.emailId != null and orderInfo.emailDomain != null ? orderInfo.emailId + '@' + orderInfo.emailDomain : '정보를 불러올 수 없습니다.'}"></span>
                                 </div>
                                 <div class="info-row">
                                         <span class="info-label">연락처</span>
-                                        <span class="info-value" th:text="${orderInfo.ordererPhone}">010-1234-5678</span>
+                                        <span class="info-value" th:text="${orderInfo != null and orderInfo.firstPhoneNum != null and orderInfo.midPhoneNum != null and orderInfo.lastPhoneNum != null ? orderInfo.firstPhoneNum + '-' + orderInfo.midPhoneNum + '-' + orderInfo.lastPhoneNum : '정보를 불러올 수 없습니다.'}"></span>
                                 </div>
                         </div>
                 </div>
 
                 <!-- 배송 정보 -->
-                <div class="order-info-card" th:if="${orderInfo}">
+                <div class="order-info-card">
                         <div class="card-header">
                                 <h2>🚚 배송 정보</h2>
+                                <div class="card-content">
+                                        <div class="info-row">
+                                                <span class="info-label">수령자</span>
+                                                <span class="info-value" th:text="${orderInfo != null and orderInfo.receiverName != null and !#strings.isEmpty(orderInfo.receiverName) ? orderInfo.receiverName : '정보를 불러올 수 없습니다.'}"></span>
+                                        </div>
+                                        <div class="info-row">
+                                                <span class="info-label">연락처</span>
+                                                <span class="info-value" th:text="${orderInfo != null and orderInfo.receiverFirstPhone != null and orderInfo.receiverMidPhone != null and orderInfo.receiverLastPhone != null ? orderInfo.receiverFirstPhone + '-' + orderInfo.receiverMidPhone + '-' + orderInfo.receiverLastPhone : '정보를 불러올 수 없습니다.'}"></span>
+                                        </div>
+                                        <div class="info-row">
+                                                <span class="info-label">배송주소</span>
+                                                <span class="info-value" th:text="${orderInfo != null and orderInfo.receiverAddress1 != null and orderInfo.receiverAddress2 != null ? orderInfo.receiverAddress1 + ' ' + orderInfo.receiverAddress2 : '정보를 불러올 수 없습니다.'}"></span>
+                                        </div>
+                                </div>
+
                         </div>
-                        <div class="card-content">
-                                <div class="info-row">
-                                        <span class="info-label">수령자</span>
-                                        <span class="info-value" th:text="${orderInfo.receiverName}">홍길동</span>
-                                </div>
-                                <div class="info-row">
-                                        <span class="info-label">연락처</span>
-                                        <span class="info-value" th:text="${orderInfo.receiverPhone}">010-1234-5678</span>
-                                </div>
-                                <div class="info-row">
-                                        <span class="info-label">배송주소</span>
-                                        <span class="info-value" th:text="${orderInfo.receiverAddress}">서울시 강남구 테헤란로 123</span>
-                                </div>
-                        </div>
-                </div>
 
                 <!-- 주문 상품 -->
-                <div class="order-info-card" th:if="${orderInfo}">
+                <div class="order-info-card">
                         <div class="card-header">
                                 <h2>📦 주문 상품</h2>
                         </div>
@@ -96,17 +96,24 @@
                                                 <span>수량</span>
                                                 <span>금액</span>
                                         </div>
-                                        <div class="item-row" th:each="item : ${orderInfo.orderItems}">
-                                                <span th:text="${item.productName}">상품명</span>
-                                                <span th:text="${item.quantity} + '개'">1개</span>
-                                                <span th:text="${#numbers.formatInteger(item.totalPrice, 0, 'COMMA')} + '원'">10,000원</span>
+                                        <!-- 주문 상품이 있는 경우 -->
+                                        <div th:if="${orderInfo != null and orderInfo.orderItems != null and !#lists.isEmpty(orderInfo.orderItems)}">
+                                                <div class="item-row" th:each="item : ${orderInfo.orderItems}">
+                                                        <span th:text="${item.productName != null and !#strings.isEmpty(item.productName) ? item.productName : '상품명 없음'}">상품명 없음</span>
+                                                        <span th:text="${item.quantity != null ? item.quantity + '개' : '수량 없음'}">수량 없음</span>
+                                                        <span th:text="${item.totalPrice != null ? #numbers.formatInteger(item.totalPrice, 0, 'COMMA') + '원' : '금액 없음'}">금액 없음</span>
+                                                </div>
+                                        </div>
+                                        <!-- 주문 상품이 없는 경우 -->
+                                        <div th:if="${orderInfo == null or orderInfo.orderItems == null or #lists.isEmpty(orderInfo.orderItems)}" class="item-row" style="text-align: center; color: #999; padding: 20px;">
+                                                <span style="grid-column: 1 / -1;">주문 상품 정보를 불러올 수 없습니다.</span>
                                         </div>
                                 </div>
                         </div>
                 </div>
 
                 <!-- 결제 정보 -->
-                <div class="order-info-card" th:if="${orderInfo}">
+                <div class="order-info-card">
                         <div class="card-header">
                                 <h2>💳 결제 정보</h2>
                         </div>
@@ -114,31 +121,37 @@
                                 <div class="price-summary">
                                         <div class="price-row">
                                                 <span>상품 총액</span>
-                                                <span th:text="${#numbers.formatInteger(orderInfo.totalItemPrice, 0, 'COMMA')} + '원'">50,000원</span>
+                                                <span th:text="${orderInfo != null and orderInfo.totalItemPrice != null ? #numbers.formatInteger(orderInfo.totalItemPrice, 0, 'COMMA') + '원' : '정보 없음'}">정보 없음</span>
                                         </div>
                                         <div class="price-row">
                                                 <span>배송비</span>
-                                                <span th:text="${#numbers.formatInteger(orderInfo.shippingFee, 0, 'COMMA')} + '원'">3,000원</span>
+                                                <span th:text="${orderInfo != null and orderInfo.shippingFee != null ? #numbers.formatInteger(orderInfo.shippingFee, 0, 'COMMA') + '원' : '정보 없음'}">정보 없음</span>
                                         </div>
-                                        <div class="price-row discount" th:if="${orderInfo.couponDiscount > 0}">
-                                                <span>쿠폰 할인 <span th:if="${orderInfo.couponName}" th:text="'(' + ${orderInfo.couponName} + ')'"></span></span>
-                                                <span th:text="'-' + ${#numbers.formatInteger(orderInfo.couponDiscount, 0, 'COMMA')} + '원'">-5,000원</span>
+                                        <div class="price-row discount" th:if="${orderInfo != null and orderInfo.couponDiscount != null and orderInfo.couponDiscount > 0}">
+                                                <span>쿠폰 할인 <span th:if="${orderInfo.couponName != null and !#strings.isEmpty(orderInfo.couponName)}" th:text="'(' + ${orderInfo.couponName} + ')'"></span></span>
+                                                <span th:text="'-' + ${#numbers.formatInteger(orderInfo.couponDiscount, 0, 'COMMA')} + '원'">-0원</span>
                                         </div>
-                                        <div class="price-row discount" th:if="${orderInfo.mileageUsed > 0}">
+                                        <div class="price-row discount" th:if="${orderInfo != null and orderInfo.mileageUsed != null and orderInfo.mileageUsed > 0}">
                                                 <span>적립금 사용</span>
-                                                <span th:text="'-' + ${#numbers.formatInteger(orderInfo.mileageUsed, 0, 'COMMA')} + '원'">-2,000원</span>
+                                                <span th:text="'-' + ${#numbers.formatInteger(orderInfo.mileageUsed, 0, 'COMMA')} + '원'">-0원</span>
                                         </div>
                                         <div class="price-row total">
                                                 <span>최종 결제 금액</span>
-                                                <span th:text="${#numbers.formatInteger(orderInfo.finalAmount, 0, 'COMMA')} + '원'">46,000원</span>
+                                                <span th:text="${orderInfo != null and orderInfo.finalAmount != null ? #numbers.formatInteger(orderInfo.finalAmount, 0, 'COMMA') + '원' : '정보 없음'}">정보 없음</span>
                                         </div>
                                 </div>
-
-                                <div class="info-row" th:if="${orderInfo.earnedMileage > 0}" style="margin-top: 20px; background: #e8f5e8; padding: 15px; border-radius: 8px;">
+                                <div class="info-row" th:if="${orderInfo != null and orderInfo.earnedMileage != null and orderInfo.earnedMileage > 0}"
+                                     style="margin-top: 20px; background: #e8f5e8; padding: 15px; border-radius: 8px;">
                                         <span class="info-label">적립 예정 마일리지</span>
-                                        <span class="info-value" style="color: #4CAF50; font-weight: 600;" th:text="${#numbers.formatInteger(orderInfo.earnedMileage, 0, 'COMMA')} + '원'">460원</span>
+                                        <span class="info-value" style="color: #4CAF50; font-weight: 600;"
+                                              th:text="${#numbers.formatInteger(orderInfo.earnedMileage, 0, 'COMMA')} + '원'">0원</span>
                                 </div>
                         </div>
+                </div>
+
+                <!-- 전체 정보가 없는 경우 알림 -->
+                <div th:if="${orderInfo == null}" class="alert alert-error" style="margin: 20px 0;">
+                        <strong>⚠️</strong> 주문 정보를 불러올 수 없습니다. 잠시 후 다시 시도해주세요.
                 </div>
 
                 <!-- 액션 버튼들 -->
@@ -149,11 +162,13 @@
                         <a href="/order/list" class="btn btn-outline">
                                 📋 주문 내역 보기
                         </a>
-                        <a th:if="${orderInfo}" th:href="@{'/order/detail/' + ${orderInfo.orderId}}" class="btn btn-secondary">
+                        <a th:if="${orderInfo != null and orderInfo.orderId != null}" th:href="@{'/order/detail/' + ${orderInfo.orderId}}" class="btn btn-secondary">
                                 📄 주문 상세 보기
                         </a>
+                        <span th:if="${orderInfo == null or orderInfo.orderId == null}" class="btn btn-secondary" style="background: #ccc; cursor: not-allowed;">
+                                📄 주문 상세 보기 (정보 없음)
+                        </span>
                 </div>
-        </div>
         <script>
                 // 페이지 로드 시 스크롤을 맨 위로
                 window.scrollTo(0, 0);
@@ -173,4 +188,6 @@
                         });
                 });
         </script>
+</div>
+</div>
 </div>

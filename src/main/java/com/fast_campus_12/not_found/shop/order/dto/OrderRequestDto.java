@@ -1,11 +1,15 @@
 package com.fast_campus_12.not_found.shop.order.dto;
 
-import lombok.Data;
+import lombok.*;
 
 import java.util.List;
 
+@Getter
+@Setter
 @Data
+@RequiredArgsConstructor
 public class OrderRequestDto {
+    private String orderId;
     private String name;
     private String emailId;
     private String emailDomain;

@@ -4,8 +4,12 @@ import com.fast_campus_12.not_found.shop.mapper.OrderMapper;
 import com.fast_campus_12.not_found.shop.order.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import com.fast_campus_12.not_found.shop.entity.Order;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -30,9 +34,6 @@ public class OrderService {
         String[] phoneParts = userDetail.getPhoneNumber().split("-");
         String midPhoneNum = phoneParts.length > 1 ? phoneParts[1] : "";
         String lastPhoneNum = phoneParts.length > 2 ? phoneParts[2] : "";
-
-        OrderUserDetailServiceDto orderServiceDto = new OrderUserDetailServiceDto();
-
 
         return OrderUserDetailServiceDto.builder()
                 .emailId(emailId)
@@ -69,6 +70,15 @@ public class OrderService {
     public int shippingFee(){
         return 2500;
     }
+
+    public static String generateOrderId() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+        String datePart = LocalDateTime.now().format(formatter);
+
+        int randomPart = new Random().nextInt(90000) + 10000; // 5자리 랜덤 숫자
+
+        return "ORD-" + datePart + "-" + randomPart;
+    } // 주문번호 생성 메서드
 
 
 }
