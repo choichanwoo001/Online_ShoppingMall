@@ -1,0 +1,79 @@
+<div th:fragment="content">
+  <div class="cont_wrap">
+
+    <!-- 정렬 옵션 -->
+    <div class="sort-options" th:if="${pageView.baseUrl != null}">
+      <a th:href="@{${pageView.baseUrl}(sortBy='CREATED_AT', sort='DESC')}"
+         th:classappend="${pageView.sortBy == 'CREATED_AT' and pageView.sort == 'DESC'} ? ' active'"
+         class="sort-link">최신순</a>
+      <a th:href="@{${pageView.baseUrl}(sortBy='CREATED_AT', sort='ASC')}"
+         th:classappend="${pageView.sortBy == 'CREATED_AT' and pageView.sort == 'ASC'} ? ' active'"
+         class="sort-link">오래된순</a>
+<!--      <a th:href="@{${pageView.baseUrl}(sortBy='VIEW_COUNT', sort='DESC')}"-->
+<!--         th:classappend="${pageView.sortBy == 'VIEW_COUNT' and pageView.sort == 'DESC'} ? ' active'"-->
+<!--         class="sort-link">조회순</a>-->
+    </div>
+
+    <!-- 공지사항 테이블 -->
+    <table class="notice-table">
+      <thead>
+      <tr>
+        <th class="col-number">번호</th>
+        <th class="col-title">제목</th>
+        <th class="col-writer">작성자</th>
+        <th class="col-date">작성일</th>
+        <th class="col-views">조회수</th>
+      </tr>
+      </thead>
+      <tbody>
+      <!-- 고정 공지 (pinned) -->
+      <tr class="notice-pinned" th:each="notice : ${pinnedNotices.items}">
+        <td class="col-number">
+          <span class="badge">공지</span>
+        </td>
+        <td class="col-title">
+          <a th:href="@{'/notice/' + ${notice.id}}" th:text="${notice.title}">제목</a>
+        </td>
+        <td class="col-writer" th:text="${notice.writer}">작성자</td>
+        <td class="col-date" th:text="${#temporals.format(notice.createdAt, 'yyyy-MM-dd')}">날짜</td>
+        <td class="col-views" th:text="${notice.viewCount}">0</td>
+      </tr>
+
+      <!-- 일반 공지 -->
+      <tr th:each="notice, iterStat : ${pageView.pageResponseDto.items}">
+        <td class="col-number" th:text="${iterStat.count + (pageView.pageResponseDto.page - 1) * pageView.pageResponseDto.size}">번호</td>
+        <td class="col-title">
+          <a th:href="@{'/notice/' + ${notice.id}}" th:text="${notice.title}">제목</a>
+        </td>
+        <td class="col-writer" th:text="${notice.writer}">작성자</td>
+        <td class="col-date" th:text="${#temporals.format(notice.createdAt, 'yyyy-MM-dd')}">날짜</td>
+        <td class="col-views" th:text="${notice.viewCount}">0</td>
+      </tr>
+      </tbody>
+
+    </table>
+
+    <!-- 페이징 영역 -->
+    <div class="pagination" th:if="${pageView.baseUrl != null and pageView.pageResponseDto.totalPages > 1}">
+      <ul>
+        <li th:if="${pageView.pageResponseDto.hasPrev}">
+          <a th:href="@{${pageView.baseUrl}(page=${pageView.pageResponseDto.page - 1}, sortBy=${pageView.sortBy}, sort=${pageView.sort})}">
+            « 이전
+          </a>
+        </li>
+
+        <li th:each="i : ${#numbers.sequence(1, pageView.pageResponseDto.totalPages)}"
+            th:classappend="${i == pageView.pageResponseDto.page} ? 'active'">
+          <a th:href="@{${pageView.baseUrl}(page=${i}, sortBy=${pageView.sortBy}, sort=${pageView.sort})}" th:text="${i}">1</a>
+        </li>
+
+        <li th:if="${pageView.pageResponseDto.hasNext}">
+          <a th:href="@{${pageView.baseUrl}(page=${pageView.pageResponseDto.page + 1}, sortBy=${pageView.sortBy}, sort=${pageView.sort})}">
+            다음 »
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <link rel="stylesheet" th:href="@{/resources/css/notice.css}">
+</div>
