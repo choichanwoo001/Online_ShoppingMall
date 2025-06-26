@@ -264,11 +264,9 @@ function checkAndUpdateCartDisplay() {
     if (remainingItems === 0) {
         // 장바구니가 비어있으면 빈 장바구니 화면 표시
         $('.cart-items-section').html(`
-                    <div class="empty-cart">
-                        <div class="empty-cart-icon">🛒</div>
-                        <h3 class="empty-cart-title">장바구니가 비어있습니다</h3>
+                    <div class="empty-cart" style="text-align:center;">
+                        <h3 class="empty-cart-title">🛒 장바구니가 비어있습니다</h3>
                         <p class="empty-cart-message">장바구니에 상품을 담아보세요!</p>
-                        <a href="/products" class="btn-shopping">쇼핑 계속하기</a>
                     </div>
                 `);
 

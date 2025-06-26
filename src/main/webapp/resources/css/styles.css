@@ -257,6 +257,14 @@ html {
 	border: 0.05rem solid #eee; /* 1px */
 	box-sizing: border-box;
 }
+.cart-items-section .empty-cart {
+	text-align: center;
+	height: 100%;
+	display: flex;
+	display:-webkit-flex;
+	flex-direction: column;
+	justify-content: center;
+}
 
 /* 개별 장바구니 상품 항목 */
 .cart-item {
