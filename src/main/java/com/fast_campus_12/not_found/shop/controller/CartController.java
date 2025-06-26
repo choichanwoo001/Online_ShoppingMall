@@ -91,14 +91,15 @@ public class CartController {
             int totalItemCount = cartItems.size();
 
             // 총 금액 계산 (할인가 기준)
-            int totalAmount = cartItems.stream()
-                    .mapToInt(item -> item.getDiscountPrice() * item.getQuantity())
-                    .sum();
+            int totalAmount = 0;
 
             // 원래 가격 총합 (할인 전)
-            int originalTotalAmount = cartItems.stream()
-                    .mapToInt(item -> item.getPrice() * item.getQuantity())
-                    .sum();
+            int originalTotalAmount = 0;
+
+            for (CartItemViewDto item : cartItems) {
+                totalAmount += item.getDiscountPrice() * item.getQuantity();
+                originalTotalAmount += item.getPrice() * item.getQuantity();
+            }
 
             // 총 할인 금액
             int totalDiscountAmount = originalTotalAmount - totalAmount;
@@ -118,7 +119,7 @@ public class CartController {
     }
 
     // 장바구니 요약 정보 조회 API (총 금액, 아이템 수 등)
-    @GetMapping("/summary")
+    @GetMapping("/api/summary")
     @ResponseBody
     public ResponseEntity<?> getCartSummary(HttpServletRequest request) {
         try {
@@ -140,7 +141,7 @@ public class CartController {
     }
 
     // 장바구니 아이템 리스트 조회 API
-    @GetMapping("/items")
+    @GetMapping("/api/items")
     @ResponseBody
     public ResponseEntity<?> getCartItems(HttpServletRequest request) {
         try {
@@ -163,7 +164,7 @@ public class CartController {
     }
 
     // 장바구니에 상품 추가 API
-    @PostMapping("/add")
+    @PostMapping("/api/add")
     @ResponseBody
     public ResponseEntity<?> addItemToCart(@RequestBody Map<String, Object> request, HttpServletRequest httpRequest) {
         try {
@@ -219,7 +220,7 @@ public class CartController {
     }
 
     // 장바구니 아이템 삭제 API
-    @DeleteMapping("/items")
+    @DeleteMapping("/api/items")
     @ResponseBody
     public ResponseEntity<?> deleteCartItems(@RequestBody List<String> cartItemIds, HttpServletRequest request) {
         try {
@@ -252,7 +253,7 @@ public class CartController {
     }
 
     // 장바구니 상태 확인 API (비어있는지, 아이템 개수 등)
-    @GetMapping("/status")
+    @GetMapping("/api/status")
     @ResponseBody
     public ResponseEntity<?> getCartStatus(HttpServletRequest request) {
         try {
@@ -278,7 +279,7 @@ public class CartController {
     }
 
     // 장바구니 아이템 수량 변경 API
-    @PatchMapping("/items/{cartItemId}/quantity")
+    @PatchMapping("/api/items/{cartItemId}/quantity")
     @ResponseBody
     public ResponseEntity<?> updateCartItemQuantity(
             @PathVariable("cartItemId") String cartItemId,
