@@ -34,7 +34,7 @@ body, input, button {
 /* 로고 영역 */
 .login-box .logo-area {
     text-align: center;
-    margin-bottom: 10rem;
+    margin-bottom: 2rem;
 }
 
 .login-box .logo-area img {

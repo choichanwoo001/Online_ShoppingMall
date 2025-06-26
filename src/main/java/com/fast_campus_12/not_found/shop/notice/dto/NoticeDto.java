@@ -1,12 +1,12 @@
 package com.fast_campus_12.not_found.shop.notice.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Getter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class NoticeDto {
@@ -16,7 +16,7 @@ public class NoticeDto {
     private String writer;
     private int viewCount;
     private LocalDateTime createdAt;
-    private boolean pinned;
+    private boolean isPinned;
 
 }
 
