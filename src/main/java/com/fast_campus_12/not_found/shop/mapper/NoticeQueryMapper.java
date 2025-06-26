@@ -6,7 +6,9 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-public interface NoticeDynamicQueryMapper {
+public interface NoticeQueryMapper {
     List<NoticeDto> findNoticeList(@Param("request") NoticePageRequest request);
     int countNoticeList(@Param("request") NoticePageRequest request);
+
+    List<NoticeDto> findPinnedNotices();
 }

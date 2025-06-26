@@ -26,16 +26,31 @@
       </tr>
       </thead>
       <tbody>
-      <tr th:each="notice, iterStat : ${pageView.pageResponseDto.items}">
-        <td class="col-number" th:text="${notice.id}">1</td>
+      <!-- 고정 공지 (pinned) -->
+      <tr class="notice-pinned" th:each="notice : ${pinnedNotices.items}">
+        <td class="col-number">
+          <span class="badge">공지</span>
+        </td>
         <td class="col-title">
           <a th:href="@{'/notice/' + ${notice.id}}" th:text="${notice.title}">제목</a>
         </td>
         <td class="col-writer" th:text="${notice.writer}">작성자</td>
-        <td class="col-date" th:text="${#temporals.format(notice.createdAt, 'yyyy-MM-dd')}">2025-06-25</td>
+        <td class="col-date" th:text="${#temporals.format(notice.createdAt, 'yyyy-MM-dd')}">날짜</td>
+        <td class="col-views" th:text="${notice.viewCount}">0</td>
+      </tr>
+
+      <!-- 일반 공지 -->
+      <tr th:each="notice, iterStat : ${pageView.pageResponseDto.items}">
+        <td class="col-number" th:text="${iterStat.count + (pageView.pageResponseDto.page - 1) * pageView.pageResponseDto.size}">번호</td>
+        <td class="col-title">
+          <a th:href="@{'/notice/' + ${notice.id}}" th:text="${notice.title}">제목</a>
+        </td>
+        <td class="col-writer" th:text="${notice.writer}">작성자</td>
+        <td class="col-date" th:text="${#temporals.format(notice.createdAt, 'yyyy-MM-dd')}">날짜</td>
         <td class="col-views" th:text="${notice.viewCount}">0</td>
       </tr>
       </tbody>
+
     </table>
 
     <!-- 페이징 영역 -->

@@ -15,6 +15,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import static com.fast_campus_12.not_found.shop.notice.enums.NoticeSortBy.CREATED_AT;
@@ -28,14 +31,14 @@ public class NoticePageController extends AbstractPageController<NoticeSortBy, N
     public String showNotices(@ModelAttribute NoticePageRequest pageRequest,
             Model model) {
 
-        //NoticePageDto notices = noticeService.paging(pageRequest);
+
         PageResponseDto<NoticeDto> page
                 = fetchPage(null, pageRequest);
 
-        //Map<String, String> filters = Map.of("special", special.name());
         PageViewModel<NoticeDto> response = buildPageModel(null, "/notice", page, pageRequest);
         setModel(model, response);
 //        model.addAttribute("notices", notices);
+        model.addAttribute("pinnedNotices", noticeService.findPinnedNotices());
         model.addAttribute("title", "공지사항");
 //        model.addAttribute("subCategory", "Notice");
         return "layout/base";
@@ -44,8 +47,10 @@ public class NoticePageController extends AbstractPageController<NoticeSortBy, N
 
     @Override
     protected PageResponseDto<NoticeDto> fetchPage(Map<String, String> filters, PageRequestDto<NoticeSortBy> pageRequest) {
-        NoticePageDto notices = noticeService.paging((NoticePageRequest) pageRequest);
-        return PageResponseDto.of(notices.getItems(), notices.getTotalCount(), pageRequest.getPage(), PAGE_SIZE);
+        NoticePageDto notices = noticeService.findUnpinnedNotices((NoticePageRequest) pageRequest);
+
+        return PageResponseDto.of(notices.getItems(), notices.getTotalCount(), pageRequest.getPage(),
+                ((NoticePageRequest) pageRequest).getLimit());
     }
 
     @Override

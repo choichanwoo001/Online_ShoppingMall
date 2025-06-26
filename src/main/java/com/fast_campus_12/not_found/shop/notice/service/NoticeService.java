@@ -1,6 +1,6 @@
 package com.fast_campus_12.not_found.shop.notice.service;
 
-import com.fast_campus_12.not_found.shop.mapper.NoticeDynamicQueryMapper;
+import com.fast_campus_12.not_found.shop.mapper.NoticeQueryMapper;
 import com.fast_campus_12.not_found.shop.notice.dto.NoticeDto;
 import com.fast_campus_12.not_found.shop.notice.dto.NoticePageDto;
 import com.fast_campus_12.not_found.shop.notice.dto.request.NoticePageRequest;
@@ -15,16 +15,24 @@ import java.util.Optional;
 public class NoticeService {
 
     private final NoticeRepository noticeRepository;
-    private final NoticeDynamicQueryMapper noticeDynamicQueryMapper;
+    private final NoticeQueryMapper noticeQueryMapper;
 
     public List<NoticeDto> findAllNotices() {
         return noticeRepository.findAll();
     }
 
-    public NoticePageDto paging(NoticePageRequest noticePageRequest) {
+    public NoticePageDto findPinnedNotices() {
+        return
+        NoticePageDto.builder()
+                .items(noticeQueryMapper.findPinnedNotices())
+                .build();
+    }
+
+
+    public NoticePageDto findUnpinnedNotices(NoticePageRequest noticePageRequest) {
         return NoticePageDto.builder()
-                .totalCount(noticeDynamicQueryMapper.countNoticeList(noticePageRequest))
-                .items(noticeDynamicQueryMapper.findNoticeList(noticePageRequest))
+                .totalCount(noticeQueryMapper.countNoticeList(noticePageRequest))
+                .items(noticeQueryMapper.findNoticeList(noticePageRequest))
                 .build();
     }
 
