@@ -20,7 +20,8 @@ public class WishlistController {
 
     @GetMapping("/wishlist/{pageName}")
     public String renderPage(@PathVariable("pageName") String pageName, HttpSession session, Model model) {
-        String userId = (String) session.getAttribute("userId");
+        Long userId = (Long) session.getAttribute("userId");
+        System.out.println(userId);
 //        if (userId == null) {
 //            return "redirect:/login"; // 로그인 안 했을 때 리디렉션
 //        }
@@ -35,12 +36,18 @@ public class WishlistController {
     @GetMapping("/api/wishlist")
     @ResponseBody
     public ResponseEntity<WishlistPageDto> getWishlist(
-            @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(name = "page", defaultValue = "1") int page,
+            @RequestParam(name = "size", defaultValue = "10") int size,
             HttpSession session) {
 
-        String userId = (String) session.getAttribute("userId");
+        Long userId = (Long) session.getAttribute("userId");
+        System.out.println("=== WishlistController.getWishlist ===");
+        System.out.println("Session ID: " + session.getId());
+        System.out.println("userId from session: " + userId);
+        System.out.println("userRole from session: " + session.getAttribute("userRole"));
+
         if (userId == null) {
+            System.out.println("userId가 null입니다. 로그인 필요 응답 반환");
             return ResponseEntity.ok(WishlistPageDto.builder()
                     .success(false)
                     .message("로그인이 필요합니다.")
@@ -51,18 +58,25 @@ public class WishlistController {
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/api/wishlist/add")
+    @PostMapping("/api/wishlist/add")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> addToWishlist(
-            @RequestParam Long productId,
+            @RequestParam(name = "productId", required = false) Long productId,
             HttpSession session) {
         Map<String, Object> response = new HashMap<>();
 
-        String userId = (String) session.getAttribute("userId");
+        // productId 유효성 검사
+        if (productId == null) {
+            response.put("success", false);
+            response.put("message", "상품 ID가 누락되었습니다.");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        Long userId = (Long) session.getAttribute("userId");
         if (userId == null) {
             response.put("success", false);
             response.put("message", "로그인이 필요합니다.");
-            return ResponseEntity.ok(response);
+            return ResponseEntity.status(401).body(response);
         }
 
         boolean success = wishlistService.addToWishlist(userId, productId);
@@ -77,18 +91,25 @@ public class WishlistController {
         }
     }
 
-    @GetMapping("/api/wishlist/remove")
+    @DeleteMapping("/api/wishlist/remove")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> removeFromWishlist(
-            @RequestParam Long productId,
+            @RequestParam(name = "productId", required = false) Long productId,
             HttpSession session) {
         Map<String, Object> response = new HashMap<>();
 
-        String userId = (String) session.getAttribute("userId");
+        // productId 유효성 검사
+        if (productId == null) {
+            response.put("success", false);
+            response.put("message", "상품 ID가 누락되었습니다.");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        Long userId = (Long) session.getAttribute("userId");
         if (userId == null) {
             response.put("success", false);
             response.put("message", "로그인이 필요합니다.");
-            return ResponseEntity.ok(response);
+            return ResponseEntity.status(401).body(response);
         }
 
         boolean success = wishlistService.removeFromWishlist(userId, productId);
@@ -103,18 +124,18 @@ public class WishlistController {
         }
     }
 
-    @GetMapping("/api/wishlist/delete-multiple")
+    @DeleteMapping("/api/wishlist/remove-multiple")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> deleteMultiple(
             @RequestBody WishlistRequestDto request,
             HttpSession session) {
         Map<String, Object> response = new HashMap<>();
 
-        String userId = (String) session.getAttribute("userId");
+        Long userId = (Long) session.getAttribute("userId");
         if (userId == null) {
             response.put("success", false);
             response.put("message", "로그인이 필요합니다.");
-            return ResponseEntity.ok(response);
+            return ResponseEntity.status(401).body(response);
         }
 
         boolean success = wishlistService.removeMultipleFromWishlist(request.getWishIds());
@@ -129,16 +150,16 @@ public class WishlistController {
         }
     }
 
-    @GetMapping("/api/wishlist/clear")
+    @DeleteMapping("/api/wishlist/clear")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> clearWishlist(HttpSession session) {
         Map<String, Object> response = new HashMap<>();
 
-        String userId = (String) session.getAttribute("userId");
+        Long userId = (Long) session.getAttribute("userId");
         if (userId == null) {
             response.put("success", false);
             response.put("message", "로그인이 필요합니다.");
-            return ResponseEntity.ok(response);
+            return ResponseEntity.status(401).body(response);
         }
 
         boolean success = wishlistService.clearWishlist(userId);
@@ -156,11 +177,18 @@ public class WishlistController {
     @GetMapping("/api/wishlist/check")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> checkWishlist(
-            @RequestParam Long productId,
+            @RequestParam(name = "productId", required = false) Long productId,
             HttpSession session) {
         Map<String, Object> response = new HashMap<>();
 
-        String userId = (String) session.getAttribute("userId");
+        // productId 유효성 검사
+        if (productId == null) {
+            response.put("success", false);
+            response.put("message", "상품 ID가 누락되었습니다.");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        Long userId = (Long) session.getAttribute("userId");
         if (userId == null) {
             response.put("success", true);
             response.put("data", false);

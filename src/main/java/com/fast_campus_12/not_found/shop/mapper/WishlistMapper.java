@@ -10,70 +10,68 @@ public interface WishlistMapper {
 
     @Select("""
         SELECT 
-            w.wish_id,
-            w.user_id,
-            w.product_id,
-            w.added_at,
-            p.title,
-            p.summary,
-            p.thumbnail,
-            p.price,
-            p.discount_price,
-            p.stock_quantity,
-            p.average_rating,
-            p.tags,
-            p.enabled,
-            CONCAT(l1.name, ' > ', l2.name, ' > ', l3.name) as category_name,
-            (SELECT COUNT(*) FROM review r WHERE r.product_id = p.product_id AND r.state = 'approved') as review_count
+            w.WISH_ID as wish_id,
+            w.USER_ID as user_id,
+            w.PRODUCT_ID as product_id,
+            w.ADDED_AT as added_at,
+            p.PRODUCT_TITLE as title,
+            p.PRODUCT_SUMMARY as summary,
+            p.PRODUCT_THUMBNAIL as thumbnail,
+            p.PRODUCT_PRICE as price,
+            p.PRODUCT_STOCK as stock_quantity,
+            p.PRODUCT_AVERAGE_RATING as average_rating,
+            p.PRODUCT_TAG as tags,
+            p.IS_ENABLED as enabled,
+            CONCAT(l1.NAME, ' > ', l2.NAME, ' > ', l3.NAME) as category_name
         FROM WISH_LIST w
-        INNER JOIN product p ON w.product_id = p.product_id
-        LEFT JOIN lv3 ON p.lv3_id = lv3.lv3_id
-        LEFT JOIN lv2 ON lv3.lv2_id = lv2.lv2_id
-        LEFT JOIN lv1 ON lv2.lv1_id = lv1.lv1_id
-        WHERE w.user_id = #{userId}
-        AND p.enabled = 1
-        AND p.deleted_at IS NULL
-        ORDER BY w.added_at DESC
-        LIMIT #{offset}, #{size}
+        INNER JOIN PRODUCT p ON w.PRODUCT_ID = p.PRODUCT_ID
+        LEFT JOIN CATEGORY_LV3 l3 ON p.CATEGORY_LV3_ID = l3.CATEGORY_LV3_ID
+        LEFT JOIN CATEGORY_LV2 l2 ON l3.CATEGORY_LV2_ID = l2.CATEGORY_LV2_ID
+        LEFT JOIN CATEGORY_LV1 l1 ON l2.CATEGORY_LV1_ID = l1.CATEGORY_LV1_ID
+        WHERE w.USER_ID = #{userId}
+        AND p.IS_ENABLED = 1
+        AND p.DELETED_AT IS NULL
+        ORDER BY w.ADDED_AT DESC
+        LIMIT #{size} OFFSET #{offset}
     """)
-    List<WishlistItemDto> selectWishlistByUserId(@Param("userId") String userId,
+    List<WishlistItemDto> selectWishlistByUserId(@Param("userId") Long userId,
                                                  @Param("offset") int offset,
                                                  @Param("size") int size);
 
     @Select("""
         SELECT COUNT(*)
         FROM WISH_LIST w
-        INNER JOIN product p ON w.product_id = p.product_id
-        WHERE w.user_id = #{userId}
-        AND p.enabled = 1
-        AND p.deleted_at IS NULL
+        INNER JOIN PRODUCT p ON w.PRODUCT_ID = p.PRODUCT_ID
+        WHERE w.USER_ID = #{userId}
+        AND p.IS_ENABLED = 1
+        AND p.DELETED_AT IS NULL
     """)
-    int countWishlistByUserId(@Param("userId") String userId);
+    int countWishlistByUserId(@Param("userId") Long userId);
 
     @Select("""
         SELECT COUNT(*) > 0
         FROM WISH_LIST
-        WHERE user_id = #{userId} AND product_id = #{productId}
+        WHERE USER_ID = #{userId} AND PRODUCT_ID = #{productId}
     """)
-    boolean existsByUserIdAndProductId(@Param("userId") String userId, @Param("productId") Long productId);
+    boolean existsByUserIdAndProductId(@Param("userId") Long userId, @Param("productId") Long productId);
 
     @Insert("""
-        INSERT INTO WISH_LIST (user_id, product_id, added_at)
+        INSERT INTO WISH_LIST (USER_ID, PRODUCT_ID, ADDED_AT)
         VALUES (#{userId}, #{productId}, NOW())
     """)
     @Options(useGeneratedKeys = true, keyProperty = "wishId")
     int insertWishlist(WishList wishList);
 
-    @Delete("DELETE FROM WISH_LIST WHERE wish_id = #{wishId}")
+    @Delete("DELETE FROM WISH_LIST WHERE WISH_ID = #{wishId}")
     int deleteByWishId(@Param("wishId") Long wishId);
 
-    @Delete("DELETE FROM WISH_LIST WHERE user_id = #{userId} AND product_id = #{productId}")
-    int deleteByUserIdAndProductId(@Param("userId") String userId, @Param("productId") Long productId);
+    @Delete("DELETE FROM WISH_LIST WHERE USER_ID = #{userId} AND PRODUCT_ID = #{productId}")
+    int deleteByUserIdAndProductId(@Param("userId") Long userId, @Param("productId") Long productId);
 
     @Delete("""
         <script>
         DELETE FROM WISH_LIST 
-        WHERE wish_id IN
+        WHERE WISH_ID IN
         <foreach collection="wishIds" item="wishId" open="(" close=")" separator=",">
             #{wishId}
         </foreach>
@@ -81,9 +79,6 @@ public interface WishlistMapper {
     """)
     int deleteByWishIds(@Param("wishIds") List<Long> wishIds);
 
-    @Delete("DELETE FROM WISH_LIST WHERE user_id = #{userId}")
-    int deleteAllByUserId(@Param("userId") String userId);
-
-    @Select("SELECT * FROM WISH_LIST WHERE wish_id = #{wishId}")
-    WishList selectByWishId(@Param("wishId") Long wishId);
+    @Delete("DELETE FROM WISH_LIST WHERE USER_ID = #{userId}")
+    int deleteAllByUserId(@Param("userId") Long userId);
 }

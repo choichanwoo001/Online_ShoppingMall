@@ -16,26 +16,26 @@ import java.util.Map;
 public class TestLoginController {
 
     /**
-     * 테스트용 로그인 - Choi3495로 강제 로그인
+     * 테스트용 로그인 - userId로 강제 로그인
      */
-    @GetMapping("/api/test/login/{loginId}")
+    @GetMapping("/api/test/login/{userId}")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> testLogin(
-            @PathVariable("loginId") String loginId,
+            @PathVariable("userId") Long userId,
             HttpSession session) {
 
         Map<String, Object> response = new HashMap<>();
 
         try {
             // 세션에 로그인 정보 설정
-            session.setAttribute("loginId", loginId);
+            session.setAttribute("userId", userId);
             session.setAttribute("userRole", "USER");
 
-            log.info("테스트 로그인 설정 완료: LOGIN_ID={}", loginId);
+            log.info("테스트 로그인 설정 완료: USER_ID={}", userId);
 
             response.put("success", true);
             response.put("message", "테스트 로그인이 설정되었습니다.");
-            response.put("loginId", loginId);
+            response.put("userId", userId);
 
             return ResponseEntity.ok(response);
 
@@ -56,13 +56,13 @@ public class TestLoginController {
         Map<String, Object> response = new HashMap<>();
 
         try {
-            String loginId = (String) session.getAttribute("loginId");
+            Long userId = (Long) session.getAttribute("userId");
 
             // 세션 클리어
-            session.removeAttribute("loginId");
+            session.removeAttribute("userId");
             session.removeAttribute("userRole");
 
-            log.info("테스트 로그아웃 완료: LOGIN_ID={}", loginId);
+            log.info("테스트 로그아웃 완료: USER_ID={}", userId);
 
             response.put("success", true);
             response.put("message", "테스트 로그아웃이 완료되었습니다.");
@@ -85,13 +85,13 @@ public class TestLoginController {
     public ResponseEntity<Map<String, Object>> checkSession(HttpSession session) {
         Map<String, Object> response = new HashMap<>();
 
-        String loginId = (String) session.getAttribute("loginId");
+        Long userId = (Long) session.getAttribute("userId");
         String userRole = (String) session.getAttribute("userRole");
 
         response.put("success", true);
-        response.put("loginId", loginId);
+        response.put("userId", userId);
         response.put("userRole", userRole);
-        response.put("isLoggedIn", loginId != null);
+        response.put("isLoggedIn", userId != null);
 
         return ResponseEntity.ok(response);
     }

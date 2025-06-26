@@ -26,6 +26,13 @@
         <div class="main-content">
             <div class="page-header">
                 <h1 class="page-title">나의 관심상품</h1>
+            </div>
+
+            <div class="product-controls">
+                <label class="select-all">
+                    <input type="checkbox" id="selectAll" onchange="toggleSelectAll()">
+                    전체 선택
+                </label>
                 <span class="item-count" id="itemCount">총 0개</span>
             </div>
 
@@ -34,6 +41,7 @@
             </div>
 
             <div class="bottom-actions">
+                <button class="btn-cart-move" onclick="moveToCartAndDelete()">장바구니로 이동</button>
                 <button class="btn-selected-delete" onclick="deleteSelected()">선택삭제</button>
             </div>
 

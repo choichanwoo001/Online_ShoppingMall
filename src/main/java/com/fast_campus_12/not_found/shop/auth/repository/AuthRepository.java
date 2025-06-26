@@ -13,7 +13,7 @@ public class AuthRepository {
     private static final Map<String, Auth> fakeDB = new HashMap<>();
 
     static {
-        fakeDB.put("admin123", new Auth("admin123", "password123!"));
+        fakeDB.put("Choi3495", new Auth("Choi3495", "choi3495!"));
         fakeDB.put("admin000", new Auth("admin000", "adminpass000!"));
     }
 

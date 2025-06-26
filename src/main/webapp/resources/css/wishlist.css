@@ -1,88 +1,98 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Malgun Gothic', sans-serif;
-    background-color: #f8f9fa;
-    color: #333;
-}
-
+/* 전체 컨테이너 */
 .container {
+    display: flex;
     max-width: 1200px;
     margin: 0 auto;
-    display: flex;
-    min-height: 100vh;
+    padding: 20px;
+    gap: 30px;
 }
 
 /* 사이드바 */
 .sidebar {
     width: 200px;
-    background-color: white;
-    padding: 30px 20px;
-    border-right: 1px solid #e0e0e0;
+    flex-shrink: 0;
 }
 
 .sidebar h2 {
     font-size: 18px;
     font-weight: bold;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     color: #333;
 }
 
 .sidebar-menu {
     list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 .sidebar-menu li {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 .sidebar-menu a {
-    text-decoration: none;
-    color: #666;
-    font-size: 14px;
     display: block;
     padding: 8px 0;
-    border-bottom: 1px solid transparent;
+    color: #666;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s;
 }
 
-.sidebar-menu a:hover {
-    color: #333;
-}
-
+.sidebar-menu a:hover,
 .sidebar-menu a.active {
     color: #333;
     font-weight: bold;
-    border-bottom: 1px solid #333;
 }
 
 .sidebar-divider {
     height: 1px;
-    background-color: #e0e0e0;
+    background-color: #eee;
     margin: 20px 0;
 }
 
 /* 메인 컨텐츠 */
 .main-content {
     flex: 1;
-    padding: 30px;
-    background-color: white;
 }
 
 .page-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #333;
+    padding-bottom: 10px;
 }
 
 .page-title {
     font-size: 20px;
     font-weight: bold;
     color: #333;
+    margin: 0;
+}
+
+/* 상품 컨트롤 */
+.product-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 15px 0;
+}
+
+.select-all {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #666;
+    cursor: pointer;
+}
+
+.select-all input[type="checkbox"] {
+    margin-right: 8px;
+    width: 16px;
+    height: 16px;
 }
 
 .item-count {
@@ -92,138 +102,214 @@ body {
 
 /* 상품 리스트 */
 .product-list {
-    margin-bottom: 40px;
+    min-height: 400px;
 }
 
 .product-item {
     display: flex;
     align-items: center;
     padding: 20px 0;
-    border-bottom: 1px solid #f0f0f0;
-}
-
-.product-item:last-child {
-    border-bottom: none;
+    border-bottom: 1px solid #eee;
+    gap: 15px;
 }
 
 .product-checkbox {
-    margin-right: 15px;
+    flex-shrink: 0;
 }
 
 .product-checkbox input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    cursor: pointer;
+    width: 16px;
+    height: 16px;
 }
 
 .product-image {
-    width: 80px;
-    height: 80px;
-    margin-right: 20px;
-    border-radius: 4px;
-    overflow: hidden;
+    position: relative;
+    flex-shrink: 0;
+    width: 100px;
+    height: 100px;
 }
 
 .product-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 4px;
+}
+
+.soldout-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 4px;
 }
 
 .product-info {
     flex: 1;
+    padding: 0 15px;
 }
 
 .product-name {
     font-size: 16px;
+    font-weight: bold;
     color: #333;
-    margin-bottom: 8px;
     text-decoration: none;
+    display: block;
+    margin-bottom: 8px;
 }
 
 .product-name:hover {
     text-decoration: underline;
 }
 
+.product-summary {
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.price-info {
+    margin-bottom: 8px;
+}
+
 .product-price {
     font-size: 16px;
-    color: #333;
     font-weight: bold;
-    margin-bottom: 4px;
+    color: #333;
 }
 
 .product-original-price {
     font-size: 14px;
     color: #999;
     text-decoration: line-through;
+    margin-left: 8px;
 }
 
-.product-option {
+.discount-rate {
+    color: #e74c3c;
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+.product-meta {
+    font-size: 13px;
+    color: #888;
+}
+
+.rating {
+    margin-right: 10px;
+}
+
+.rating i {
+    color: #ffc107;
+    margin-right: 2px;
+}
+
+.category-name {
     font-size: 12px;
-    color: #666;
-    margin-top: 8px;
+    color: #999;
+    margin-top: 5px;
 }
 
 .product-actions {
     display: flex;
-    gap: 10px;
+    flex-direction: column;
+    gap: 8px;
+    flex-shrink: 0;
 }
 
-.btn {
+.product-actions .btn {
     padding: 8px 16px;
     border: 1px solid #ddd;
-    background-color: white;
-    font-size: 12px;
-    cursor: pointer;
-    border-radius: 3px;
-    text-decoration: none;
+    background: white;
     color: #333;
-    display: inline-block;
+    text-decoration: none;
     text-align: center;
+    border-radius: 4px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-width: 80px;
 }
 
-.btn:hover {
-    background-color: #f8f9fa;
+.product-actions .btn:hover {
+    border-color: #333;
+    background: #f8f9fa;
 }
 
-.btn-primary {
-    background-color: #333;
+.product-actions .btn-primary {
+    background: #333;
     color: white;
     border-color: #333;
 }
 
-.btn-primary:hover {
-    background-color: #555;
+.product-actions .btn-primary:hover {
+    background: #555;
+}
+
+.product-actions .btn:disabled {
+    background: #f5f5f5;
+    color: #999;
+    border-color: #ddd;
+    cursor: not-allowed;
 }
 
 .btn-delete {
-    color: #666;
+    padding: 6px 12px;
+    background: none;
+    border: none;
+    color: #999;
     font-size: 12px;
+    cursor: pointer;
+    text-decoration: underline;
 }
 
 .btn-delete:hover {
-    color: #333;
+    color: #e74c3c;
 }
 
 /* 하단 액션 버튼 */
 .bottom-actions {
     display: flex;
     justify-content: center;
-    margin-bottom: 40px;
+    gap: 15px;
+    margin: 30px 0;
+    padding: 20px 0;
+}
+
+.btn-cart-move,
+.btn-selected-delete {
+    padding: 12px 24px;
+    border: 1px solid #333;
+    background: white;
+    color: #333;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.2s;
 }
 
 .btn-selected-delete {
-    background-color: #333;
+    background: #333;
     color: white;
-    border: none;
-    padding: 12px 24px;
-    font-size: 14px;
-    cursor: pointer;
-    border-radius: 3px;
+}
+
+.btn-cart-move:hover {
+    background: #f8f9fa;
 }
 
 .btn-selected-delete:hover {
-    background-color: #555;
+    background: #555;
 }
 
 /* 페이지네이션 */
@@ -231,92 +317,48 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
+    gap: 5px;
+    margin-top: 30px;
 }
 
 .pagination button {
-    width: 32px;
-    height: 32px;
+    padding: 8px 12px;
     border: 1px solid #ddd;
-    background-color: white;
+    background: white;
+    color: #333;
     cursor: pointer;
+    border-radius: 4px;
     font-size: 14px;
-    border-radius: 3px;
+    transition: all 0.2s;
 }
 
 .pagination button:hover {
-    background-color: #f8f9fa;
+    border-color: #333;
+    background: #f8f9fa;
 }
 
 .pagination button.active {
-    background-color: #333;
+    background: #333;
     color: white;
     border-color: #333;
 }
 
 .pagination button:disabled {
-    opacity: 0.5;
+    background: #f5f5f5;
+    color: #999;
+    border-color: #ddd;
     cursor: not-allowed;
 }
 
 /* 빈 상태 */
 .empty-state {
     text-align: center;
-    padding: 60px 20px;
-    color: #666;
+    padding: 80px 20px;
+    color: #999;
 }
 
 .empty-state p {
-    font-size: 16px;
-    margin-bottom: 20px;
-}
-
-/* 반응형 */
-@media (max-width: 768px) {
-    .container {
-        flex-direction: column;
-    }
-
-    .sidebar {
-        width: 100%;
-        padding: 20px;
-    }
-
-    .sidebar-menu {
-        display: flex;
-        gap: 20px;
-        overflow-x: auto;
-        padding-bottom: 10px;
-    }
-
-    .sidebar-menu li {
-        margin-bottom: 0;
-        white-space: nowrap;
-    }
-
-    .main-content {
-        padding: 20px;
-    }
-
-    .product-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 15px;
-    }
-
-    .product-checkbox {
-        order: -1;
-        align-self: flex-end;
-    }
-
-    .product-image {
-        width: 100%;
-        height: 200px;
-        margin-right: 0;
-    }
-
-    .product-actions {
-        width: 100%;
-        justify-content: space-between;
-    }
+    margin: 10px 0;
+    font-size: 14px;
+    line-height: 1.5;
 }
