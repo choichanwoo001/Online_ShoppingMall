@@ -27,7 +27,7 @@ function sendVerification() {
     sendBtn.disabled = true;
     sendBtn.textContent = '발송 중...';
 
-    fetch('/api/find/password/send-verification', {
+    fetch('/api/login-password/send-verification', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
