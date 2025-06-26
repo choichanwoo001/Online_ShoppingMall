@@ -10,6 +10,7 @@ public class CartItemViewDto {
     private String color;
     private String size;
     private String imageUrl;
+    private String productUrl;
     private int quantity;
     private int price;
     private int discountPrice;

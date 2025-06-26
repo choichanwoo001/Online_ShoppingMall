@@ -1,26 +1,26 @@
 <div th:fragment="content">
     <h1 class="category_tit">장바구니</h1>
-    <p th:text="${cartId}">aa</p>
+    <p th:text="${userId}">aa</p>
     <div class="cart-container">
         <div class="cart-content-wrapper">
             <div class="cart-items-section">
-                <div th:each="item : ${cartItems}" class="cart-item">
+                <div th:each="item : ${cartItems}" class="cart-item" th:data-cart-item-id="${item.cartItemId}">
                     <div class="item-selection">
-                        <input type="checkbox" class="item-checkbox" checked>
+                        <input type="checkbox" class="item-checkbox">
                     </div>
                     <div class="item-image-area">
                         <img th:src="${item.imageUrl}" alt="상품 이미지" class="item-image">
                     </div>
                     <div class="item-details">
                         <div class="item-name-price">
-                            <p class="item-name" th:text="${item.productName}">상품명</p>
+                            <a class="item-name" th:text="${item.productName}" th:href="${item.productUrl}">상품명</a>
                             <p class="item-price">
                                 <span class="original-price" th:text="${#numbers.formatInteger(item.price, 3, 'COMMA')} + '원'">원래 가격</span>
                                 <span class="discounted-price" th:text="${#numbers.formatInteger(item.discountPrice, 3, 'COMMA')} + '원'">할인가격</span>
                             </p>
                         </div>
                         <p class="item-options" th:text="'[' + ${item.color} + '/' + ${item.size} + ']'">[옵션]</p>
-                        <button class="option-change-button" id="showMyPopupBtn">옵션변경</button>
+                        <!--                        <button class="option-change-button" id="showMyPopupBtn">옵션변경</button>-->
                         <div class="item-quantity-controls">
                             <button class="quantity-minus">-</button>
                             <input type="text" th:value="${item.quantity}" class="quantity-input">
@@ -34,11 +34,11 @@
             <div class="order-summary-section">
                 <div class="summary-line">
                     <span class="summary-label">상품 합계금액</span>
-                    <span class="summary-value">158,000원</span>
+                    <span class="summary-value"><span th:text="${originalTotalAmount}"></span>원</span>
                 </div>
                 <div class="summary-line">
                     <span class="summary-label">총 할인금액</span>
-                    <span class="summary-value">19,500원</span>
+                    <span class="summary-value"><span th:text="${totalDiscountAmount}"></span>원</span>
                 </div>
                 <div class="summary-line">
                     <span class="summary-label">배송비</span>
@@ -46,27 +46,19 @@
                 </div>
                 <div class="summary-total-line">
                     <span class="summary-label">총 주문 합계</span>
-                    <span class="summary-total-value">138,500원</span>
+                    <span class="summary-total-value"><span th:text="${totalAmount}"></span>원</span>
                 </div>
                 <button class="order-button full-order">전체상품주문</button>
                 <button class="order-button selected-order">선택상품주문</button>
             </div>
         </div>
+        <button type="button" class="btn-secondary" onclick="loadCartSummary();">loadCartSummary</button>
+        <button type="button" class="btn-secondary" onclick="addTestcartItem();">addTestcartItem</button>
 
         <div class="bottom-selection-actions">
             <button class="btn-secondary">전체선택</button>
-            <button class="btn-secondary">선택삭제</button>
+            <button class="btn-secondary" id="sel-item-delete-button">선택삭제</button>
         </div>
     </div>
-    <script th:inline="javascript">
-        // DOMContentLoaded 이벤트 리스너 제거
-        const openCartPopupBtn = document.getElementById('showMyPopupBtn');
-
-        if (openCartPopupBtn) {
-            openCartPopupBtn.addEventListener('click', () => {
-                // alert('alert from cart.html inline script!'); // 테스트를 위한 alert
-                window.openCommonPopup('commonModalPopup');
-            });
-        }
-    </script>
+    <script th:src="@{/resources/js/cart.js}"></script>
 </div>
