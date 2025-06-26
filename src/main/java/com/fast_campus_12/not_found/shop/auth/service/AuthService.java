@@ -1,140 +1,61 @@
 package com.fast_campus_12.not_found.shop.auth.service;
 
 import com.fast_campus_12.not_found.shop.auth.dto.Auth;
-import com.fast_campus_12.not_found.shop.auth.dto.LoginHistory;
-import com.fast_campus_12.not_found.shop.mapper.AuthMapper;
-import com.fast_campus_12.not_found.shop.mapper.LoginHistoryMapper;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.mindrot.jbcrypt.BCrypt;
+import com.fast_campus_12.not_found.shop.auth.repository.AuthRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.Optional;
-import java.util.regex.Pattern;
-
-import static com.fast_campus_12.not_found.shop.service.UserService.PASSWORD_PATTERN;
-import static com.fast_campus_12.not_found.shop.service.UserService.USER_ID_PATTERN;
+import java.util.Objects;
 
 @Service
-@RequiredArgsConstructor
-@Slf4j
-@Transactional
 public class AuthService {
 
-    private final AuthMapper authMapper;
-    private final LoginHistoryMapper loginHistoryMapper;
+    private final AuthRepository authRepository;
 
-    private static final int MAX_FAILED_ATTEMPTS = 3;
-    private static final Duration LOCK_DURATION = Duration.ofMinutes(1);
-
-    /** 로그인 처리 */
-    public Auth login(String loginId, String password) {
-        // ── 1) 입력값 유효성 검사 ─────────────────────────────────────────
-        if (loginId == null || loginId.isBlank()
-                || !USER_ID_PATTERN.matcher(loginId).matches()) {
-            // 유효성 실패 시 null 반환
-            return null;
-        }
-        if (password == null || password.isBlank()
-                || !PASSWORD_PATTERN.matcher(password).matches()) {
-            // 유효성 실패 시 null 반환
-            return null;
-        }
-
-        // ── 2) DB에서 사용자 조회 (실패 횟수 포함) ─────────────────────────
-        Optional<Auth> userOpt = authMapper.findUserWithFailCount(loginId);
-        if (userOpt.isEmpty()) {
-            return null;
-        }
-        Auth user = userOpt.get();
-
-        // ── 3) 활성화·삭제 여부 확인 ────────────────────────────────────
-        if (!user.getIsActivate() || user.getIsDeleted()) {
-            recordLoginAttempt(user.getUserId(), false);
-            return null;
-        }
-
-        // ── 4) 잠김 상태 확인 (마지막 실패 시점으로부터 30분 이내) ───────
-        if (isAccountLocked(user.getUserId())) {
-            user.setLocked(true);
-            recordLoginAttempt(user.getUserId(), false);
-            return null;
-        }
-
-        // ── 5) 비밀번호 검증 ───────────────────────────────────────────
-        if (verifyPassword(password, user.getPassword())) {
-            recordLoginAttempt(user.getUserId(), true);
-            user.setFailCount(0);
-            return user;
-        } else {
-            recordLoginAttempt(user.getUserId(), false);
-            int failCount = getFailedAttemptCount(user.getUserId());
-            user.setFailCount(failCount);
-            if (failCount >= MAX_FAILED_ATTEMPTS) {
-                user.setLocked(true);
-            }
-            return null;
-        }
+    @Autowired
+    public AuthService(AuthRepository authRepository) {
+        this.authRepository = authRepository;
     }
 
-    /** 비밀번호 검증 (로그인 시 사용) */
-    public boolean verifyPassword(String plainPassword, String hashedPassword) {
-        if (plainPassword == null || hashedPassword == null) {
-            return false;
+    public Auth login(String id, String pw) {
+        Auth auth = authRepository.findById(id);
+
+        // 1. ID에 해당하는 row가 없으면 false
+        if (Objects.isNull(auth) || auth.isLocked()) {
+            return null;    //사용자가 없거나 이미 잠긴 계정
         }
-        if (!(hashedPassword.startsWith("$2a$") ||
-                hashedPassword.startsWith("$2b$") ||
-                hashedPassword.startsWith("$2y$"))) {
-            log.warn("유효하지 않은 BCrypt 해시 형식: {}", hashedPassword);
-            return false;
+
+        // 2. 비밀번호 일치 확인
+        if (Objects.equals(pw, auth.getPw())) {
+            // 로그인 성공 → 실패 횟수 초기화
+            auth.setFailCount(0);
+            authRepository.save(auth);  // 변경된 정보 저장
+            return auth;
         }
-        return BCrypt.checkpw(plainPassword, hashedPassword);
-    }
 
-    /** 로그인 시도 기록 저장 */
-    private void recordLoginAttempt(Long userId, boolean success) {
-        int prevFailures = getFailedAttemptCount(userId);
-        int consecutiveFailures = success ? 0 : prevFailures + 1;
-        boolean locked = consecutiveFailures >= MAX_FAILED_ATTEMPTS;
+        // 3. 로그인 실패 -> 실패 횟수 증가
+        int failCount = auth.getFailCount() + 1;
+        auth.setFailCount(failCount);
 
-        LoginHistory lh = LoginHistory.builder()
-                .userId(userId)
-                .attemptResult(success)
-                .consecutiveFailedLoginAttempt(consecutiveFailures)
-                .isLocked(locked)
-                .createdAt(LocalDateTime.now())
-                .build();
-        loginHistoryMapper.insertLoginHistory(lh);
-    }
-
-    /** 계정 잠김 여부 확인 (마지막 실패 시점 기준 30분 이내면 잠김) */
-    public boolean isAccountLocked(Long userId) {
-        Optional<LoginHistory> last = loginHistoryMapper.findLatestByUserId(userId);
-        if (last.isEmpty() || !last.get().getIsLocked()) {
-            return false;
+        // 3회 이상 실패 시 계정 잠금
+        if (failCount >= 3) {
+            auth.setLocked(true);
         }
-        LocalDateTime lockedAt = last.get().getCreatedAt();
-        return Duration.between(lockedAt, LocalDateTime.now())
-                .compareTo(LOCK_DURATION) < 0;
+
+        authRepository.save(auth);  // 실패 횟수 및 잠금 상태 저장
+        return null;
+
     }
 
-    /** 연속 실패 횟수 조회 */
-    public int getFailedAttemptCount(Long userId) {
-        return loginHistoryMapper.getConsecutiveFailedAttempts(userId);
-    }
-
-    /** 추가 로그인 히스토리(성공) 처리 */
-    public void uploadLoginHistory(String loginId) {
-        // 기본 로그인 기록은 recordLoginAttempt에서 이미 저장됨.
-        log.info("사용자 [{}] 로그인 성공 처리 완료", loginId);
-    }
-
-    /** 사용자 조회 (컨트롤러에서 failCount, locked 조회용) */
-    public Auth findById(String loginId) {
-        return authMapper.findUserWithFailCount(loginId)
-                .orElse(null);
+    public void uploadLoginHistory(String id) {
+        // @TODO: 진짜 DB 기록 저장 구현 예정
+        System.out.println("로그인 히스토리 저장: " + id);
     }
 }
+
+// 1. auth table에 주어진 id의 row(데이터)가 있는가
+// 2. 있다면 해당 데이터의 pw가 주어진 pw와 일치하는가
+// 1, 2를 모두 만족하면 return true
+// 1, 2 중 하나라도 아니라면 return false
+// 근데 db 조회 결과 null이 return되면 어떻게 하지?
+// null.getPw()하면 nullPointException이 발생할텐데...

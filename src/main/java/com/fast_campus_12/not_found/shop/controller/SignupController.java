@@ -1,5 +1,6 @@
 package com.fast_campus_12.not_found.shop.controller;
 
+import com.fast_campus_12.not_found.shop.dao.UserDAO;
 import com.fast_campus_12.not_found.shop.dto.SignupRequest;
 import com.fast_campus_12.not_found.shop.service.UserService;
 import com.fast_campus_12.not_found.shop.service.EmailService;
@@ -20,6 +21,7 @@ import java.util.Map;
 public class SignupController {
     private final UserService userService;
     private final EmailService emailService;
+    private final UserDAO userDAO;
 
     /**
      * 회원가입 페이지 표시

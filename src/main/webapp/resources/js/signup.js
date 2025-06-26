@@ -14,7 +14,7 @@ const validators = {
     },
 
     password: function(value) {
-        const regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=\[{\]};:'",<.>/?\\|`~])[A-Za-z\d!@#$%^&*()_\-+=\[{\]};:'",<.>/?\\|`~]{8,16}$/;
+        const regex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{4,16}$/;
         if (!value) return { valid: false, message: '비밀번호를 입력해주세요.' };
         if (!regex.test(value)) return { valid: false, message: '영문 대소문자/숫자 조합 4~16자로 입력해주세요.' };
         return { valid: true, message: '' };
