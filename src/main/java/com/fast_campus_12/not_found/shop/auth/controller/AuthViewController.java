@@ -55,7 +55,6 @@ public class AuthViewController {
 
             if (locked) {
                 model.addAttribute("error", "해당 계정은 로그인 3회 실패로 잠겼습니다. 10분 후 다시 시도해 주세요.");
-
             } else {
                 model.addAttribute("error", "아이디 또는 비밀번호가 올바르지 않습니다.");
                 model.addAttribute("failCount", failCount);

@@ -21,7 +21,6 @@ import static com.fast_campus_12.not_found.shop.service.UserService.USER_ID_PATT
 @Service
 @RequiredArgsConstructor
 @Slf4j
-
 public class AuthService {
 
     private final AuthMapper authMapper;
@@ -57,8 +56,7 @@ public class AuthService {
             recordLoginAttempt(user.getUserId(), false);
             return null;
         }
-        return BCrypt.checkpw(plainPassword, hashedPassword);
-    }
+
         // ── 4) 잠김 상태 확인 (마지막 실패 시점으로부터 30분 이내) ───────
         if (isAccountLocked(user.getUserId())) {
             user.setLocked(true);
