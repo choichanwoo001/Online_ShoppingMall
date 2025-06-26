@@ -1,0 +1,47 @@
+<!-- /WEB-INF/templates/page/login.html -->
+<div th:fragment="content">
+    <div class="login-wrapper">
+        <section class="login-box">
+
+            <div class="login-topbar">
+                <a th:href="@{/#}" class="btn-back">←</a>
+                <a th:href="@{/#}" class="btn-home">⌂</a>
+            </div>
+
+            <div class="logo-area">
+                <img th:src="@{/resources/images/common/logo.png}" alt="로고">
+            </div>
+
+            <form id="login-form" method="post" th:action="@{/login}">
+                <div class="form-group">
+                    <input type="text" id="login-username" name="id" placeholder="아이디">
+                </div>
+
+                <div class="form-group password-group">
+                    <input type="password" id="login-password" name="pw" placeholder="패스워드">
+                    <span class="toggle-password">
+                         <i class="bi bi-eye"></i>
+                     </span>
+                </div>
+
+                <div id="login-error" class="error-message" th:if="${error != null}" th:text="${error}"></div>
+                <div class="fail-count" th:if="${failCount != null}">
+                    실패 횟수: <span th:text="${failCount}">0</span>
+                </div>
+
+                <button type="submit" class="btn-login">기존 회원 로그인</button>
+
+                <div class="login-links">
+                    <span class="find-id"><a th:href="@{/#}">아이디 찾기</a></span>
+                    <span class="divider">|</span>
+                    <span class="find-pw"><a th:href="@{/#}">비밀번호 찾기</a></span>
+                    <span class="divider">|</span>
+                    <span class="signup"><a th:href="@{/#}">회원가입</a></span>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <link rel="stylesheet" th:href="@{/resources/css/login.css}" />
+    <script th:src="@{/resources/js/login.js}"></script>
+</div>

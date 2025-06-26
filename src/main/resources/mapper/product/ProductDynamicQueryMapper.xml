@@ -11,14 +11,15 @@
         JOIN CATEGORY_LV3 lv3 ON p.CATEGORY_LV3_ID = lv3.CATEGORY_LV3_ID
         JOIN CATEGORY_LV2 lv2 ON lv3.CATEGORY_LV2_ID = lv2.CATEGORY_LV2_ID
         WHERE p.IS_ENABLED = 1
-        <if test="lv2Name != null and lv2Name != ''">
-            AND lv2.NAME = #{lv2Name}
+        <if test="request.category != null and request.category != ''">
+            AND lv2.NAME = #{request.category}
         </if>
-        <if test="lv3Name != null and lv3Name != ''">
-            AND lv3.NAME = #{lv3Name}
+        <if test="request.subCategory != null and request.subCategory != ''">
+            AND lv3.NAME = #{request.subCategory}
         </if>
     </sql>
 
+    <!-- 결과 매핑 -->
     <resultMap id="Product" type="com.fast_campus_12.not_found.shop.product.model.Product">
         <result property="id" column="PRODUCT_ID"/>
         <result property="title" column="PRODUCT_TITLE"/>
@@ -43,8 +44,33 @@
         lv2.CATEGORY_LV2_ID,
         lv2.NAME AS LV2_NAME
         <include refid="baseProductFilter"/>
-        ORDER BY p.CREATED_AT DESC
-        LIMIT #{limit} OFFSET #{offset}
+
+        <!-- 정렬 조건 -->
+        <if test="request.sortBy != null">
+            <choose>
+                <when test="request.sortBy.name() == 'PRICE'">
+                    ORDER BY p.PRODUCT_PRICE
+                </when>
+                <when test="request.sortBy.name() == 'NAME'">
+                    ORDER BY p.PRODUCT_TITLE
+                </when>
+                <when test="request.sortBy.name() == 'CREATED_AT'">
+                    ORDER BY p.CREATED_AT
+                </when>
+            </choose>
+
+            <choose>
+                <when test="request.sortDirection.name() == 'DESC'">DESC</when>
+                <when test="request.sortDirection.name() == 'ASC'">ASC</when>
+            </choose>
+        </if>
+
+        <!-- sortBy 없으면 기본 정렬 -->
+        <if test="request.sortBy == null">
+            ORDER BY p.CREATED_AT DESC
+        </if>
+
+        LIMIT #{request.limit} OFFSET #{request.offset}
     </select>
 
     <!-- 상품 개수 조회 -->
@@ -52,4 +78,5 @@
         SELECT COUNT(*)
         <include refid="baseProductFilter"/>
     </select>
+
 </mapper>

@@ -1,6 +1,6 @@
 package com.fast_campus_12.not_found.shop.qna.controller;
 
-import com.fast_campus_12.not_found.shop.qna.dto.QuestionDto;
+import com.fast_campus_12.not_found.shop.qna.dto.QnaDto;
 import com.fast_campus_12.not_found.shop.qna.service.QnaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -25,13 +25,13 @@ public class QnaController {
     // ✅ 2. 페이지별 요청 처리: /qna/1, /qna/2, ...
     @GetMapping("/{page}")
     public String qnaPage(@PathVariable("page") int page, Model model) {
-        List<QuestionDto> all = qnaService.getAllQuestions();
+        List<QnaDto> all = qnaService.getAllQuestions();
         int pageSize = 10;
         int total = all.size();
 
         int fromIndex = (page - 1) * pageSize;
         int toIndex = Math.min(fromIndex + pageSize, total);
-        List<QuestionDto> pageList = all.subList(fromIndex, toIndex);
+        List<QnaDto> pageList = all.subList(fromIndex, toIndex);
 
         model.addAttribute("questions", pageList);
         model.addAttribute("currentPage", page);

@@ -42,86 +42,85 @@
 
 
 
-
 /* ---------------아래 커스텀 추가 상단 변경 x-------------------- */
 /* --------- header ------------ */
 .main-header {
-	border-bottom: 1px solid #eee;
-}
+	border-bottom: 0.05rem solid #eee;
+	.top-bar {
+		display: flex;
+		display:-webkit-flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 1.2rem 2rem;
+	}
 
-.top-bar {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 24px 40px;
-}
+	.logo {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
 
-.logo {
-	display: flex;
-	align-items: center;
-	gap: 10px;
-}
+	.logo img {
+		height: 2.5rem;
+	}
 
-.logo img {
-	height: 50px;
-}
+	.brand-name {
+		font-size: 0.9rem;
+		font-weight: 700;
+		color: #000;
+	}
 
-.brand-name {
-	font-size: 18px;
-	font-weight: 700;
-	color: #000;
-}
+	.search-box {
+		display: flex;
+		align-items: center;
+		border: 0.05rem solid #ddd;
+		border-radius: 1.2rem;
+		padding: 0.3rem 0.6rem;
+		width: 12.5rem;
+	}
 
-.search-box {
-	display: flex;
-	align-items: center;
-	border: 1px solid #ddd;
-	border-radius: 24px;
-	padding: 6px 12px;
-	width: 250px;
-}
+	.search-box input {
+		border: none;
+		outline: none;
+		flex: 1;
+	}
 
-.search-box input {
-	border: none;
-	outline: none;
-	flex: 1;
-}
+	.search-btn {
+		background: none;
+		border: none;
+		font-size: 0.8rem;
+		cursor: pointer;
+	}
 
-.search-btn {
-	background: none;
-	border: none;
-	font-size: 16px;
-	cursor: pointer;
-}
+	.icon-group a {
+		margin-left: 0.8rem;
+		color:#000;
+		font-weight:bold;
+	}
 
-.icon-group a {
-	margin-left: 16px;
-	color:#000;
-	font-weight:bold;
-}
-
-.icon-group img {
-	width: 24px;
-	height: 24px;
+	.icon-group img {
+		width: 1.2rem;
+		height: 1.2rem;
+	}
 }
 
 .category-nav {
 	display: flex;
 	justify-content: space-between;
-	padding: 12px 40px;
+	padding: 0.6rem 2rem;
 	background-color: #fff;
 }
 
 .main-menu, .sub-menu {
 	display: flex;
-	gap: 20px;
+	gap: 1rem;
 	list-style: none;
 }
 
 .main-menu li a,
 .sub-menu li a {
 	text-decoration: none;
-	font-size: 14px;
+	font-size: 0.7rem;
 	font-weight: 500;
 	color: #111;
 }
@@ -157,77 +156,106 @@
 	font-weight:500;
 }
 
+/* ---------- product list sort options -----------*/
+.sort-options {
+	display: flex;
+	justify-content: flex-end;
+	gap: 1rem;
+	margin-bottom: 1rem;
+	font-size: 0.95rem;
+}
+
+.sort-link {
+	color: #333;
+	text-decoration: none;
+	position: relative;
+	padding-bottom: 0.15rem; /* 3px ÷ 20 */
+}
+
+.sort-link:hover,
+.sort-link.active {
+	font-weight: bold;
+	border-bottom: 0.1rem solid #000; /* 2px ÷ 20 */
+}
+
 /* --------- footer ------------ */
 footer {
-	background:#eee;
+	background:#f7f7f7;
 	padding:2rem 0;
 	text-align:center;
+	font-size: 0.7rem;
+	color: #333;
 }
 
 .footer-container {
 	display: flex;
 	justify-content: space-between;
+	align-items: stretch;
 	flex-wrap: wrap;
-	gap: 2rem;
-	margin-bottom: 2rem;
+	gap: 1.5rem;
+	margin-bottom: 1.5rem;
 	text-align: left;
 }
 
 .footer-column {
-	flex: 1 1 30%;
-	min-width: 13rem;
+	flex: 1;
+	min-width: 0;
 }
 
 .footer-column h4 {
-	font-size: 0.8rem;
+	font-size: 0.75rem;
 	font-weight: bold;
-	margin-bottom: 1rem;
-	color: #111;
+	margin-bottom: 0.75rem;
+	color: #000;
 }
 
 .footer-column p {
-	margin-bottom: 0.5rem;
-	line-height: 1.6;
+	margin-bottom: 0.4rem;
+	line-height: 1.5;
+	font-size: 0.68rem;
+	color: #444;
 }
 
 .footer-column .footer-small {
 	font-size: 0.6rem;
-	color: #777;
-	margin-top: 0.5rem;
-}
-
-.footer-column a.btn {
-	margin-top: 0.75rem;
-	display: inline-block;
+	color: #999;
+	margin-top: 0.3rem;
 }
 
 .footer-column img {
-	margin: 1rem 0;
+	width: 5rem;
+}
+
+.footer-divider {
+	width: 0.05rem;
+	background-color: #ddd;
+	align-self: stretch;
 }
 
 .footer-nav {
 	display: flex;
 	justify-content: center;
 	flex-wrap: wrap;
-	gap: 1.5rem;
-	border-top: 1px solid #ccc;
-	padding-top: 1.5rem;
+	gap: 1.2rem;
+	border-top: 0.05rem solid #ccc;
+	padding-top: 1.2rem;
+	margin-top: 1rem;
 }
 
 .footer-nav a {
-	color: #555;
+	color: #666;
 	text-decoration: none;
 	font-size: 0.65rem;;
 }
 
 .footer-nav a:hover {
-	color: #007aff;
+	color: #000;
 }
 
-footer .copyright {
-	margin-top: 1.5rem;
-	font-size: 0.6rem;;
-	color: #888;
+.footer-column .footer-copyright {
+	margin-top: 1rem;
+	font-size: 0.5rem;
+	color: #5a6268;
 }
 
 .footer-container .text-red {
@@ -236,13 +264,14 @@ footer .copyright {
 
 .footer-btn {
 	display: inline-block;
-	padding: 0.5rem 1rem;
+	padding: 0.4rem 0.9rem;
 	background-color: #333;
 	color: #fff;
 	text-decoration: none;
 	border-radius: 0.2rem;
-	font-size: 0.9rem;
+	font-size: 0.7em;
 	transition: background-color 0.2s ease;
+	margin-top: 0.5rem;
 }
 
 .footer-btn:hover {
