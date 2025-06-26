@@ -84,6 +84,8 @@ CREATE TABLE `PRODUCT` (
                            `PRODUCT_STOCK` INT NULL DEFAULT 0,
                            `PRODUCT_AVAILABLE_DATE` DATETIME NULL,
                            `IS_ENABLED` TINYINT(1) NOT NULL DEFAULT 1,
+                           `IS_BEST` TINYINT(1) NOT NULL DEFAULT 0,
+                           `IS_NEW` TINYINT(1) NOT NULL DEFAULT 0,
                            `CREATED_AT` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
                            `UPDATED_AT` DATETIME NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                            `DELETED_AT` DATETIME NULL,

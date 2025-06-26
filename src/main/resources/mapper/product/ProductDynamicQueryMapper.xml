@@ -5,17 +5,35 @@
 
 <mapper namespace="com.fast_campus_12.not_found.shop.mapper.ProductDynamicQueryMapper">
 
+    <!-- 공통 필터 fragment -->
+    <sql id="baseProductFilter">
+        FROM PRODUCT p
+        JOIN CATEGORY_LV3 lv3 ON p.CATEGORY_LV3_ID = lv3.CATEGORY_LV3_ID
+        JOIN CATEGORY_LV2 lv2 ON lv3.CATEGORY_LV2_ID = lv2.CATEGORY_LV2_ID
+        WHERE p.IS_ENABLED = 1
+        <if test="request.category != null and request.category != ''">
+            AND lv2.NAME = #{request.category}
+        </if>
+        <if test="request.subCategory != null and request.subCategory != ''">
+            AND lv3.NAME = #{request.subCategory}
+        </if>
+    </sql>
+
+    <!-- 결과 매핑 -->
     <resultMap id="Product" type="com.fast_campus_12.not_found.shop.product.model.Product">
         <result property="id" column="PRODUCT_ID"/>
         <result property="title" column="PRODUCT_TITLE"/>
         <result property="price" column="PRODUCT_PRICE"/>
         <result property="thumbnail" column="PRODUCT_THUMBNAIL"/>
         <result property="comment" column="PRODUCT_SUMMARY"/>
+        <result property="isBest" column="IS_BEST"/>
+        <result property="isNew" column="IS_NEW"/>
         <result property="lv3Category.lv3Id" column="CATEGORY_LV3_ID"/>
         <result property="lv3Category.name" column="LV3_NAME"/>
         <result property="lv3Category.lv2Id" column="CATEGORY_LV2_ID"/>
     </resultMap>
 
+    <!-- 상품 목록 조회 -->
     <select id="findProductListByCategory" resultMap="Product">
         SELECT
         p.PRODUCT_ID,
@@ -27,17 +45,100 @@
         lv3.NAME AS LV3_NAME,
         lv2.CATEGORY_LV2_ID,
         lv2.NAME AS LV2_NAME
+        <include refid="baseProductFilter"/>
+
+        <!-- 정렬 조건 -->
+        <if test="request.sortBy != null">
+            <choose>
+                <when test="request.sortBy.name() == 'PRICE'">
+                    ORDER BY p.PRODUCT_PRICE
+                </when>
+                <when test="request.sortBy.name() == 'NAME'">
+                    ORDER BY p.PRODUCT_TITLE
+                </when>
+                <when test="request.sortBy.name() == 'CREATED_AT'">
+                    ORDER BY p.CREATED_AT
+                </when>
+            </choose>
+
+            <choose>
+                <when test="request.sortDirection.name() == 'DESC'">DESC</when>
+                <when test="request.sortDirection.name() == 'ASC'">ASC</when>
+            </choose>
+        </if>
+
+        <!-- sortBy 없으면 기본 정렬 -->
+        <if test="request.sortBy == null">
+            ORDER BY p.CREATED_AT DESC
+        </if>
+
+        LIMIT #{request.limit} OFFSET #{request.offset}
+    </select>
+
+    <!-- 상품 개수 조회 -->
+    <select id="countProductListByCategory" resultType="int">
+        SELECT COUNT(*)
+        <include refid="baseProductFilter"/>
+    </select>
+
+    <!-- 공통 필터 fragment -->
+    <sql id="baseSpecialProductFilter">
         FROM PRODUCT p
-        JOIN CATEGORY_LV3 lv3 ON p.CATEGORY_LV3_ID = lv3.CATEGORY_LV3_ID
-        JOIN CATEGORY_LV2 lv2 ON lv3.CATEGORY_LV2_ID = lv2.CATEGORY_LV2_ID
         WHERE p.IS_ENABLED = 1
-        <if test="lv2Name != null and lv2Name != ''">
-            AND lv2.NAME = #{lv2Name}
+        <if test="request.specialProductCategory != null">
+            <choose>
+                <when test="request.specialProductCategory.name() == 'BEST'">
+                    AND p.IS_BEST = 1
+                </when>
+                <when test="request.specialProductCategory.name() == 'NEW'">
+                    AND p.IS_NEW = 1
+                </when>
+            </choose>
         </if>
-        <if test="lv3Name != null and lv3Name != ''">
-            AND lv3.NAME = #{lv3Name}
+    </sql>
+
+
+
+    <select id="findProductListBySpecialTag" resultMap="Product">
+        SELECT
+            p.PRODUCT_ID,
+            p.PRODUCT_TITLE,
+            p.PRODUCT_PRICE,
+            p.PRODUCT_THUMBNAIL,
+            p.PRODUCT_SUMMARY AS COMMENT,
+            p.IS_NEW,
+            p.IS_BEST
+        <include refid="baseSpecialProductFilter"/>
+        <!-- 정렬 조건 -->
+        <if test="request.sortBy != null">
+            <choose>
+                <when test="request.sortBy.name() == 'PRICE'">
+                    ORDER BY p.PRODUCT_PRICE
+                </when>
+                <when test="request.sortBy.name() == 'NAME'">
+                    ORDER BY p.PRODUCT_TITLE
+                </when>
+                <when test="request.sortBy.name() == 'CREATED_AT'">
+                    ORDER BY p.CREATED_AT
+                </when>
+            </choose>
+
+            <choose>
+                <when test="request.sortDirection.name() == 'DESC'">DESC</when>
+                <when test="request.sortDirection.name() == 'ASC'">ASC</when>
+            </choose>
         </if>
-        ORDER BY p.CREATED_AT DESC
-        LIMIT 10
+
+        <!-- sortBy 없으면 기본 정렬 -->
+        <if test="request.sortBy == null">
+            ORDER BY p.CREATED_AT DESC
+        </if>
+        LIMIT #{request.limit} OFFSET #{request.offset}
+    </select>
+
+
+    <select id="countProductListBySpecialTag" resultType="int">
+        SELECT COUNT(*)
+        <include refid="baseSpecialProductFilter"/>
     </select>
 </mapper>

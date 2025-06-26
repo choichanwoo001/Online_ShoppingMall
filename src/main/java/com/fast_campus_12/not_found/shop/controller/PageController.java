@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class PageController {
     @GetMapping("/")
     public String renderPage( Model model) {
-        model.addAttribute("contentPath", "index :: content");
+        model.addAttribute("contentPath", "home");
         return "layout/base";
     }
 

@@ -1,13 +1,16 @@
 package com.fast_campus_12.not_found.shop.product.service;
 
+
 import com.fast_campus_12.not_found.shop.product.dto.ProductDetailDto;
-import com.fast_campus_12.not_found.shop.product.dto.ProductSummaryDto;
+import com.fast_campus_12.not_found.shop.product.dto.ProductPageDto;
+
+import com.fast_campus_12.not_found.shop.product.dto.ProductSpecialSummaryRequestDto;
+import com.fast_campus_12.not_found.shop.product.dto.ProductSummaryRequestDto;
 
 import java.math.BigInteger;
-import java.util.List;
 
 public interface ProductService {
-    List<ProductSummaryDto> getSummaryByCategory(String category);
-    List<ProductSummaryDto> getSummaryByCategory(String category, String subCategory);
+    ProductPageDto getSummaryByCategory(ProductSummaryRequestDto productSummaryRequestDto);
+    ProductPageDto getSummaryBySpecialCategory(ProductSpecialSummaryRequestDto productSpecialSummaryRequestDto);
     ProductDetailDto getProductDetailDto(BigInteger productId);
 }

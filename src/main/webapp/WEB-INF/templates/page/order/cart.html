@@ -1,59 +1,33 @@
 <div th:fragment="content">
     <h1 class="category_tit">장바구니</h1>
+    <p th:text="${cartId}">aa</p>
     <div class="cart-container">
         <div class="cart-content-wrapper">
             <div class="cart-items-section">
-                <div class="cart-item">
+                <div th:each="item : ${cartItems}" class="cart-item">
                     <div class="item-selection">
                         <input type="checkbox" class="item-checkbox" checked>
                     </div>
                     <div class="item-image-area">
-                        <img src="https://via.placeholder.com/100x120" alt="상품 이미지" class="item-image">
+                        <img th:src="${item.imageUrl}" alt="상품 이미지" class="item-image">
                     </div>
                     <div class="item-details">
                         <div class="item-name-price">
-                            <p class="item-name">A. 프린 박스티에 원피스</p>
+                            <p class="item-name" th:text="${item.productName}">상품명</p>
                             <p class="item-price">
-                                <span class="original-price">65,000원</span>
-                                <span class="discounted-price">45,500원</span>
+                                <span class="original-price" th:text="${#numbers.formatInteger(item.price, 3, 'COMMA')} + '원'">원래 가격</span>
+                                <span class="discounted-price" th:text="${#numbers.formatInteger(item.discountPrice, 3, 'COMMA')} + '원'">할인가격</span>
                             </p>
                         </div>
-                        <p class="item-options">[옵션 블랙/S]</p>
-                        <button id="showMyPopupBtn" class="option-change-button">옵션변경</button>
+                        <p class="item-options" th:text="'[' + ${item.color} + '/' + ${item.size} + ']'">[옵션]</p>
+                        <button class="option-change-button" id="showMyPopupBtn">옵션변경</button>
                         <div class="item-quantity-controls">
                             <button class="quantity-minus">-</button>
-                            <input type="text" value="1" class="quantity-input">
+                            <input type="text" th:value="${item.quantity}" class="quantity-input">
                             <button class="quantity-plus">+</button>
                         </div>
                     </div>
                     <button class="item-delete-button">삭제</button>
-                </div>
-
-                <div class="cart-item">
-                    <div class="item-selection">
-                        <input type="checkbox" class="item-checkbox" checked>
-                    </div>
-                    <div class="item-image-area">
-                        <img src="https://via.placeholder.com/100x120" alt="상품 이미지" class="item-image">
-                    </div>
-                    <div class="item-details">
-                        <div class="item-name-price">
-                            <p class="item-name">Farben 바스락 싱글자켓</p>
-                            <p class="item-price">93,000원</p>
-                        </div>
-                        <p class="item-options">[옵션 블랙/FREE]</p>
-                        <button class="option-change-button">옵션변경</button>
-                        <div class="item-quantity-controls">
-                            <button class="quantity-minus">-</button>
-                            <input type="text" value="1" class="quantity-input">
-                            <button class="quantity-plus">+</button>
-                        </div>
-                    </div>
-                    <button class="item-delete-button">삭제</button>
-                </div>
-
-                <div class="cart-actions-bottom">
-                    <button class="btn-primary">견적서출력</button>
                 </div>
             </div>
 
@@ -83,7 +57,6 @@
             <button class="btn-secondary">전체선택</button>
             <button class="btn-secondary">선택삭제</button>
         </div>
-
     </div>
     <script th:inline="javascript">
         // DOMContentLoaded 이벤트 리스너 제거

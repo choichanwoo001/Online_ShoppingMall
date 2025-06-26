@@ -1,16 +1,12 @@
 package com.fast_campus_12.not_found.shop.product.controller;
 
-import com.fast_campus_12.not_found.shop.product.dto.ProductSummaryDto;
 import com.fast_campus_12.not_found.shop.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;
-import java.util.List;
 
 @Controller
 @RequestMapping("/product")
@@ -24,36 +20,6 @@ public class ProductViewController {
     public String productDetails(@PathVariable("id") String id, Model model) {
         model.addAttribute("contentPath", "product/productDetail");
         model.addAttribute("product", productService.getProductDetailDto(new BigInteger(id)));
-        return "layout/base";
-    }
-
-    // 카테고리 목록 (ex: /product/category/top)
-    @GetMapping("/category/{category}")
-    public String productByCategory(@PathVariable("category") String category, Model model) {
-        List<ProductSummaryDto> productList = productService.getSummaryByCategory(category);
-
-        model.addAttribute("title", category.toUpperCase());
-        model.addAttribute("productList", productList);
-        model.addAttribute("category", category);
-        model.addAttribute("productCount", productList.size());
-        model.addAttribute("contentPath", "product/productList");
-
-        return "layout/base";
-    }
-
-    // 카테고리 목록 (ex: /product/category/top/knit)
-    @GetMapping("/category/{category}/{subCategory}")
-    public String productBySubCategory(@PathVariable("category") String category,
-                                       @PathVariable("subCategory") String subCategory,
-                                       Model model) {
-        List<ProductSummaryDto> productList = productService.getSummaryByCategory(category, subCategory);
-
-        model.addAttribute("title", category.toUpperCase());
-        model.addAttribute("productList", productList);
-        model.addAttribute("category", category);
-        model.addAttribute("productCount", productList.size());
-        model.addAttribute("contentPath", "product/productList");
-
         return "layout/base";
     }
 }

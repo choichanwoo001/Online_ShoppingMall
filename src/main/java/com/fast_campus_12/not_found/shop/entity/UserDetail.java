@@ -8,14 +8,15 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class UserDetail {
-    private String userId;            // FK (USERS.id 참조)
-    private String email;           // 이메일
-    private String name;            // 이름
-    private String phoneNumber;     // 전화번호
-    private LocalDate birthDate;    // 생년월일
-    private String gender;          // 성별
+    private Long userId;          // USER_ID (FK)
+    private String email;         // EMAIL
+    private String name;          // NAME
+    private String phoneNumber;   // PHONE_NUMBER
+    private LocalDate birthDate;  // BIRTH_DATE
+    private String gender;        // GENDER (M, F)
+    private Integer jobCode;      // JOB_CODE (필수 필드)
 }

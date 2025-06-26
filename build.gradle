@@ -90,6 +90,14 @@ dependencies {
 
     // jBCrypt 라이브러리(passwordEncoder)
     implementation 'org.mindrot:jbcrypt:0.4'
+
+    // localDataTime 변환을 위한 라이브러리
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2'
+
+}
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs += ['-parameters']
 }
 
     
