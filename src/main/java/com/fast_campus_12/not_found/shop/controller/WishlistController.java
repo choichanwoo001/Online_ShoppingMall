@@ -20,13 +20,13 @@ public class WishlistController {
 
     @GetMapping("/wishlist/{pageName}")
     public String renderPage(@PathVariable("pageName") String pageName, HttpSession session, Model model) {
-//        String userId = (String) session.getAttribute("userId");
-//        if (userId == null) {
-//            return "redirect:/login"; // 로그인 안 했을 때 리디렉션
-//        }
+        String userId = (String) session.getAttribute("userId");
+        if (userId == null) {
+            return "redirect:/login"; // 로그인 안 했을 때 리디렉션
+        }
 
         // 필요한 데이터를 모델에 담아서 전달
-//        model.addAttribute("userId", userId);
+        model.addAttribute("userId", userId);
         model.addAttribute("title", "위시리스트");
         model.addAttribute("contentPath", "myshop/" + pageName); // signup/basic 등
         return "layout/base";
