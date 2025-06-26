@@ -4,6 +4,7 @@ import com.fast_campus_12.not_found.shop.mapper.CategoryMapper;
 import com.fast_campus_12.not_found.shop.product.dto.CategoryMenuDto;
 import com.fast_campus_12.not_found.shop.product.dto.FlatSubCategoryDto;
 import com.fast_campus_12.not_found.shop.product.dto.SubCategoryDto;
+import com.fast_campus_12.not_found.shop.product.enums.SpecialProductCategory;
 import com.fast_campus_12.not_found.shop.product.model.Lv1Category;
 import com.fast_campus_12.not_found.shop.product.model.Lv2Category;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.fast_campus_12.not_found.shop.product.enums.SpecialProductCategory.BEST;
+import static com.fast_campus_12.not_found.shop.product.enums.SpecialProductCategory.NEW;
+
 @Service
 @Profile("dev")
 @RequiredArgsConstructor
@@ -31,7 +35,6 @@ public class DevCategoryServiceImpl implements CategoryService {
     @Transactional
     public List<CategoryMenuDto> getCategoryMenus() {
         List<Lv1Category> categories = categoryMapper.getLv1CategoriesWithLv2();
-
         List<CategoryMenuDto> dynamicMenus = toCategoryMenuDtoList(categories);
         List<CategoryMenuDto> fixedMenus = getPredefinedMenus();
 
@@ -60,8 +63,10 @@ public class DevCategoryServiceImpl implements CategoryService {
 
     private List<CategoryMenuDto> getPredefinedMenus() {
         return List.of(
-                CategoryMenuDto.builder().categoryName("BEST").categoryLink("/product/category/best").priority(-99).build(),
-                CategoryMenuDto.builder().categoryName("NEW").categoryLink("/product/category/new").priority(-98).build()
+                CategoryMenuDto.builder()
+                        .categoryName(BEST.name()).categoryLink("/product/special/" + BEST.name()).priority(-99).build(),
+                CategoryMenuDto.builder()
+                        .categoryName(NEW.name()).categoryLink("/product/special/" + NEW.name()).priority(-98).build()
         );
     }
 
