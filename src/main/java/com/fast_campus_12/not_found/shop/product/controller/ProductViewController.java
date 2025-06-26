@@ -22,4 +22,5 @@ public class ProductViewController {
         model.addAttribute("product", productService.getProductDetailDto(new BigInteger(id)));
         return "layout/base";
     }
+
 }
