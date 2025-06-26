@@ -5,14 +5,15 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 
+@Data
 @Builder
 public class QnaDto {
     private Long id;
     private Long userId;
     private Long productId;
-    private String nickname;
+    private String nickname;     // 추후 JOIN으로 붙일 경우
     private String content;
     private LocalDateTime createdAt;
     private boolean isSecret;
-    private String answer;  // 답변
+    private String answer;       // 답변 (추후 조인)
 }

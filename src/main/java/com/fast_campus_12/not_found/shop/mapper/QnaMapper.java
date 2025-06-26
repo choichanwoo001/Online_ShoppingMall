@@ -6,32 +6,35 @@ import org.apache.ibatis.annotations.*;
 
 import java.math.BigInteger;
 import java.util.List;
-import java.util.function.BinaryOperator;
 
 @Mapper
 public interface QnaMapper {
+
     @Select("""
-                select INQUIRY_ID,
-                       USER_ID,
-                       PRODUCT_ID,
-                       CONTENT,
-                       IS_SECRET,
-                       CREATED_AT         
-                from INQUIRY
-                where DELETED_AT is null 
-                """)List<QnaDto> getAllQnas();
+        SELECT INQUIRY_ID,
+               USER_ID,
+               PRODUCT_ID,
+               CONTENT,
+               IS_SECRET,
+               CREATED_AT         
+        FROM INQUIRY
+        WHERE DELETED_AT IS NULL
+        ORDER BY CREATED_AT DESC
+    """)
+    List<QnaDto> getAllQnas();
+
     @Select("""
-                select INQUIRY_ID,
-                       USER_ID,
-                       PRODUCT_ID,
-                       CONTENT,
-                       IS_SECRET,
-                       CREATED_AT
-                from INQUIRY
-                where 
-                """)List<QnaDto>getQnaByUserId(BigInteger userId);
-
-
-
+        SELECT INQUIRY_ID,
+               USER_ID,
+               PRODUCT_ID,
+               CONTENT,
+               IS_SECRET,
+               CREATED_AT         
+        FROM INQUIRY
+        WHERE USER_ID = #{userId}
+          AND DELETED_AT IS NULL
+        ORDER BY CREATED_AT DESC
+    """)
+    List<QnaDto> getQnaByUserId(@Param("userId") BigInteger userId);
 };
 
