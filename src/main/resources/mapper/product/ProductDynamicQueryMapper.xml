@@ -28,6 +28,7 @@
         <result property="comment" column="PRODUCT_SUMMARY"/>
         <result property="isBest" column="IS_BEST"/>
         <result property="isNew" column="IS_NEW"/>
+        <result property="salesCount" column="PRODUCT_SALE_COUNT"/>
         <result property="lv3Category.lv3Id" column="CATEGORY_LV3_ID"/>
         <result property="lv3Category.name" column="LV3_NAME"/>
         <result property="lv3Category.lv2Id" column="CATEGORY_LV2_ID"/>
@@ -41,6 +42,7 @@
         p.PRODUCT_PRICE,
         p.PRODUCT_THUMBNAIL,
         p.PRODUCT_SUMMARY AS COMMENT,
+        p.PRODUCT_SALE_COUNT,
         lv3.CATEGORY_LV3_ID,
         lv3.NAME AS LV3_NAME,
         lv2.CATEGORY_LV2_ID,
@@ -58,6 +60,9 @@
                 </when>
                 <when test="request.sortBy.name() == 'CREATED_AT'">
                     ORDER BY p.CREATED_AT
+                </when>
+                <when test="request.sortBy.name() == 'SALE_COUNT'">
+                    ORDER BY p.PRODUCT_SALE_COUNT
                 </when>
             </choose>
 
@@ -107,7 +112,8 @@
             p.PRODUCT_THUMBNAIL,
             p.PRODUCT_SUMMARY AS COMMENT,
             p.IS_NEW,
-            p.IS_BEST
+            p.IS_BEST,
+            p.PRODUCT_SALE_COUNT
         <include refid="baseSpecialProductFilter"/>
         <!-- 정렬 조건 -->
         <if test="request.sortBy != null">
@@ -120,6 +126,9 @@
                 </when>
                 <when test="request.sortBy.name() == 'CREATED_AT'">
                     ORDER BY p.CREATED_AT
+                </when>
+                <when test="request.sortBy.name() == 'SALE_COUNT'">
+                    ORDER BY p.PRODUCT_SALE_COUNT
                 </when>
             </choose>
 
