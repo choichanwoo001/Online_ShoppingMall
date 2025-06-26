@@ -125,11 +125,8 @@ public class CartController {
         try {
             Long userId = getEffectiveUserId(request);
 
-            // CartService를 통해 장바구니 아이템 조회
-            List<CartItemViewDto> cartItemViewDtos = cartServiceImpl.getCartItemViews(userId);
-
-            // 공통 메서드 사용
-            Map<String, Object> summary = calculateCartSummary(cartItemViewDtos);
+            // CartService의 calculateCartSummary 메서드 사용
+            Map<String, Object> summary = cartServiceImpl.calculateCartSummary(userId);
 
             return ResponseEntity.ok(summary);
 

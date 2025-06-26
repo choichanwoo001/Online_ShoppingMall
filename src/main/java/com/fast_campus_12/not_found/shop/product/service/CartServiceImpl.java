@@ -9,7 +9,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @Slf4j
@@ -98,28 +100,47 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void clearCart(Long userId) {
-        Cart cart = cartMapper.findByUserId(userId);
-        if (Objects.nonNull(cart)) {
-            cartItemMapper.deleteAllByCartId(cart.getId());
-            cartMapper.updateCart(cart.getId());
-        }
-    }
-
-    @Override
-    public int getCartItemCount(Long userId) {
-        Cart cart = cartMapper.findByUserId(userId);
-        if (Objects.isNull(cart)) {
-            return 0;
-        }
-        return cartItemMapper.countByCartId(cart.getId());
-    }
-
-    @Override
     public List<CartItemViewDto> getCartItemViews(Long userId) {
         // 먼저 장바구니가 있는지 확인하고 없으면 생성
         Cart cart = getOrCreateCart(userId);
         // 장바구니 아이템 뷰 조회
         return cartItemMapper.findCartItemViewsByCartId(cart.getId());
+    }
+
+    @Override
+    public Map<String, Object> calculateCartSummary(Long userId) {
+        Map<String, Object> summary = new HashMap<>();
+
+        List<CartItemViewDto> cartItems = getCartItemViews(userId);
+
+        if (Objects.nonNull(cartItems) && !cartItems.isEmpty()) {
+            int totalItemCount = cartItems.size();
+
+            // 총 금액 계산 (할인가 기준)
+            int totalAmount = 0;
+
+            // 원래 가격 총합 (할인 전)
+            int originalTotalAmount = 0;
+
+            for (CartItemViewDto item : cartItems) {
+                totalAmount += item.getDiscountPrice() * item.getQuantity();
+                originalTotalAmount += item.getPrice() * item.getQuantity();
+            }
+
+            // 총 할인 금액
+            int totalDiscountAmount = originalTotalAmount - totalAmount;
+
+            summary.put("totalItemCount", totalItemCount);
+            summary.put("totalAmount", totalAmount);
+            summary.put("originalTotalAmount", originalTotalAmount);
+            summary.put("totalDiscountAmount", totalDiscountAmount);
+        } else {
+            summary.put("totalItemCount", 0);
+            summary.put("totalAmount", 0);
+            summary.put("originalTotalAmount", 0);
+            summary.put("totalDiscountAmount", 0);
+        }
+
+        return summary;
     }
 }

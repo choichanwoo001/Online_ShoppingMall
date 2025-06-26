@@ -5,6 +5,7 @@ import com.fast_campus_12.not_found.shop.product.model.Cart;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 public interface CartService {
     //사용자 장바구니 조회
@@ -22,13 +23,9 @@ public interface CartService {
     //사용자의 장바구니 전체 조회(아이템 포함)
     Cart getCartWithItems(Long userId);
 
-    //장바구니 비우기
-    void clearCart(Long userId);
-
-    //장바구니 아이템 개수 조회
-    int getCartItemCount(Long userId);
 
     //장바구니 아이디로 장바구니 목록 불러오기
     List<CartItemViewDto> getCartItemViews(Long userId);
 
+    Map<String, Object> calculateCartSummary(Long userId);
 }
