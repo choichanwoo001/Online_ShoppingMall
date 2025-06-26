@@ -12,8 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Optional;
-import java.util.regex.Pattern;
 
 import static com.fast_campus_12.not_found.shop.service.UserService.PASSWORD_PATTERN;
 import static com.fast_campus_12.not_found.shop.service.UserService.USER_ID_PATTERN;
@@ -21,7 +21,7 @@ import static com.fast_campus_12.not_found.shop.service.UserService.USER_ID_PATT
 @Service
 @RequiredArgsConstructor
 @Slf4j
-@Transactional
+
 public class AuthService {
 
     private final AuthMapper authMapper;
@@ -31,14 +31,15 @@ public class AuthService {
     private static final Duration LOCK_DURATION = Duration.ofMinutes(1);
 
     /** 로그인 처리 */
+    @Transactional
     public Auth login(String loginId, String password) {
         // ── 1) 입력값 유효성 검사 ─────────────────────────────────────────
-        if (loginId == null || loginId.isBlank()
+        if (Objects.isNull(loginId) || loginId.isBlank()
                 || !USER_ID_PATTERN.matcher(loginId).matches()) {
             // 유효성 실패 시 null 반환
             return null;
         }
-        if (password == null || password.isBlank()
+        if (Objects.isNull(password) || password.isBlank()
                 || !PASSWORD_PATTERN.matcher(password).matches()) {
             // 유효성 실패 시 null 반환
             return null;
@@ -56,7 +57,8 @@ public class AuthService {
             recordLoginAttempt(user.getUserId(), false);
             return null;
         }
-
+        return BCrypt.checkpw(plainPassword, hashedPassword);
+    }
         // ── 4) 잠김 상태 확인 (마지막 실패 시점으로부터 30분 이내) ───────
         if (isAccountLocked(user.getUserId())) {
             user.setLocked(true);
@@ -82,16 +84,19 @@ public class AuthService {
 
     /** 비밀번호 검증 (로그인 시 사용) */
     public boolean verifyPassword(String plainPassword, String hashedPassword) {
-        if (plainPassword == null || hashedPassword == null) {
+        if (Objects.isNull(plainPassword) || Objects.isNull(hashedPassword)) {
             return false;
         }
         if (!(hashedPassword.startsWith("$2a$") ||
                 hashedPassword.startsWith("$2b$") ||
                 hashedPassword.startsWith("$2y$"))) {
-            log.warn("유효하지 않은 BCrypt 해시 형식: {}", hashedPassword);
-            return false;
+            throw new IllegalStateException("유효하지 않은 BCrypt 해시 형식입니다.");
         }
-        return BCrypt.checkpw(plainPassword, hashedPassword);
+        try {
+            return BCrypt.checkpw(plainPassword, hashedPassword);
+        } catch (Exception e) {
+            throw new IllegalStateException("비밀번호 검증 중 오류가 발생했습니다.", e);
+        }
     }
 
     /** 로그인 시도 기록 저장 */

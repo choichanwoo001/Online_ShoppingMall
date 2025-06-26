@@ -18,18 +18,14 @@ public class AuthViewController {
 
     private final AuthService authService;
 
-    /**
-     * 로그인 폼 화면
-     */
+    /* 로그인 폼 화면 */
     @GetMapping("/login")
     public String loginForm(Model model) {
         model.addAttribute("contentPath", "login");
         return "layout/base";
     }
 
-    /**
-     * 로그인 처리
-     */
+    /* 로그인 처리 */
     @PostMapping("/login")
     public String loginSubmit(
             @RequestParam("id") String id,
@@ -48,17 +44,18 @@ public class AuthViewController {
         Auth user = authService.login(id, pw);
         if (Objects.nonNull(user)) {
             // 로그인 성공: 세션에 아이디 저장, 히스토리 기록
-            session.setAttribute("loginId", user.getId());
+            session.setAttribute("UserId_long", user.getUserId());
             authService.uploadLoginHistory(id);
             return "redirect:/home";
         } else {
             // 로그인 실패: DB에 저장된 failCount 조회 후 모델에 전달
             Auth failedUser = authService.findById(id);
-            int failCount = (failedUser != null ? failedUser.getFailCount() : 0);
-            boolean locked = (failedUser != null && failedUser.isLocked());
+            int failCount = (Objects.nonNull(failedUser) ? failedUser.getFailCount() : 0);
+            boolean locked = (Objects.nonNull(failedUser) && failedUser.isLocked());
 
             if (locked) {
-                model.addAttribute("error", "해당 계정은 로그인 3회 실패로 잠겼습니다. 관리자에게 문의하세요.");
+                model.addAttribute("error", "해당 계정은 로그인 3회 실패로 잠겼습니다. 10분 후 다시 시도해 주세요.");
+
             } else {
                 model.addAttribute("error", "아이디 또는 비밀번호가 올바르지 않습니다.");
                 model.addAttribute("failCount", failCount);
@@ -69,9 +66,7 @@ public class AuthViewController {
         }
     }
 
-    /**
-     * 로그아웃 처리
-     */
+    /* 로그아웃 처리 */
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
