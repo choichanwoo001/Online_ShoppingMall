@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Builder
-public class QuestionDto {
+public class QnaDto {
     private Long id;
     private String nickname;
     private String content;
