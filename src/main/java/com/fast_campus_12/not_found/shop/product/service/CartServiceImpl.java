@@ -35,12 +35,12 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void addItemToCart(Long userId, Long productId, Long productVariantId, int quantity) {
+    public void addItemToCart(Long userId, Long productVariantId, int quantity) {
         // 장바구니 조회/생성
         Cart cart = getOrCreateCart(userId);
 
         // 이미 있는 상품인지 확인
-        CartItem existingItem = cartItemMapper.findByCartIdAndProductId(cart.getId(), productId);
+        CartItem existingItem = cartItemMapper.findByCartIdAndProductId(cart.getId(), productVariantId);
 
         if (Objects.nonNull(existingItem)) {
             // 기존 상품이면 수량 업데이트

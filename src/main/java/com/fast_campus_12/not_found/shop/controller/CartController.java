@@ -37,32 +37,46 @@ public class CartController {
     @Autowired
     private final CartService cartServiceImpl;
 
+    /**
+     * 세션 기반 사용자 ID 생성 (간단 버전)
+     */
+    private Long getEffectiveUserId(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+
+        // 1. 로그인 사용자 확인
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId != null) {
+            return userId;
+        }
+
+        // 2. 비로그인 사용자 - 세션 해시값으로 임시 ID 생성
+        if (userId == null) {
+            userId = 1L; // 테스트용 사용자 ID
+            session.setAttribute("userId", userId);
+            session.setAttribute("userName", "테스트사용자");
+            session.setAttribute("loginId", "testuser123");
+            session.setAttribute("isLoggedIn", true);
+        }
+
+        return userId;
+    }
+
     //cart url 매핑 임시 + 팝업
     @GetMapping
-    public String showPopup(HttpServletRequest request, Model model) {
+    public String showPopup(HttpServletRequest request, HttpSession session,Model model) {
         // 1. 사용자 ID 가져오기 (세션 또는 인증에서)
-        //Long userId = getUserIdFromSession(request);
-        Long userId = 3L;
+        Long userId = getEffectiveUserId(request);
         Cart cart = cartServiceImpl.getOrCreateCart(userId);
-        // 장바구니와 장바구니 아이템들을 함께 조회
         Cart cartWithItems = cartServiceImpl.getCartWithItems(userId);
-
-        // 장바구니 아이템 조회 (Thymeleaf에서 사용)
         List<CartItemViewDto> cartItems = cartServiceImpl.getCartItemViews(userId);
-        // 요약 정보 계산
-        Map<String, Object> summary = calculateCartSummary(cartItems);
 
         // getCartWithItems가 null을 반환하면 빈 장바구니 사용
         if (Objects.isNull(cartWithItems)) {
             cartWithItems = cart; // 방금 생성하거나 조회한 장바구니 사용
         }
         model.addAttribute("cart", cartWithItems);
-        model.addAttribute("cartId", cartWithItems.getId());
+        model.addAttribute("userId", userId);
         model.addAttribute("cartItems", cartItems);
-        model.addAttribute("totalItemCount", summary.get("totalItemCount"));
-        model.addAttribute("totalAmount", summary.get("totalAmount"));
-        model.addAttribute("originalTotalAmount", summary.get("originalTotalAmount"));
-        model.addAttribute("totalDiscountAmount", summary.get("totalDiscountAmount"));
         model.addAttribute("contentPath", "order/cart");
 
         log.info("장바구니 조회 완료 - userId: {}, cartId: {}", userId, cartWithItems.getId());
@@ -108,7 +122,7 @@ public class CartController {
     @ResponseBody
     public ResponseEntity<?> getCartSummary(HttpServletRequest request) {
         try {
-            Long userId = 3L; // 실제로는 세션에서 가져와야 함
+            Long userId = getEffectiveUserId(request);
 
             // CartService를 통해 장바구니 아이템 조회
             List<CartItemViewDto> cartItemViewDtos = cartServiceImpl.getCartItemViews(userId);
@@ -121,79 +135,192 @@ public class CartController {
         } catch (Exception e) {
             log.error("장바구니 요약 정보 조회 중 오류 발생", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("장바구니 요약 정보 조회 중 오류가 발생했습니다.");
+                    .body(Map.of("error", "장바구니 조회 중 오류가 발생했습니다."));
         }
     }
-    
-    // 장바구니 아이템 리스트만 조회하는 API (AJAX용)
+
+    // 장바구니 아이템 리스트 조회 API
     @GetMapping("/items")
     @ResponseBody
     public ResponseEntity<?> getCartItems(HttpServletRequest request) {
         try {
-            Long userId = 3L; // 실제로는 세션에서 가져와야 함
+            Long userId = getEffectiveUserId(request);
 
-            // 먼저 장바구니 존재 확인 및 생성
-            Cart cart = cartServiceImpl.getOrCreateCart(userId);
-
-            // CartItemMapper를 사용해서 장바구니 아이템 뷰 정보 직접 조회
             List<CartItemViewDto> cartItemViewDtos = cartServiceImpl.getCartItemViews(userId);
 
-            if (cartItemViewDtos == null || cartItemViewDtos.isEmpty()) {
-                return ResponseEntity.ok().body(Collections.emptyList());
+            if (Objects.isNull(cartItemViewDtos) || cartItemViewDtos.isEmpty()) {
+                return ResponseEntity.ok(Collections.emptyList());
             }
 
-            // 개발 환경에서 디버그 정보 포함
-            Map<String, Object> response = new HashMap<>();
-            response.put("data", cartItemViewDtos);
-            response.put("debug", Map.of(
-                    "userId", userId,
-                    "itemCount", cartItemViewDtos.size(),
-                    "timestamp", System.currentTimeMillis()
-            ));
-
             log.info("장바구니 아이템 조회 완료 - userId: {}, 아이템 수: {}", userId, cartItemViewDtos.size());
-            return ResponseEntity.ok(response);
+            return ResponseEntity.ok(cartItemViewDtos);
 
         } catch (Exception e) {
             log.error("장바구니 아이템 조회 중 오류 발생", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("장바구니 조회 중 오류가 발생했습니다.");
+                    .body(Map.of("error", "장바구니 조회 중 오류가 발생했습니다."));
+        }
+    }
+
+    // 장바구니에 상품 추가 API
+    @PostMapping("/add")
+    @ResponseBody
+    public ResponseEntity<?> addItemToCart(@RequestBody Map<String, Object> request, HttpServletRequest httpRequest) {
+        try {
+            Long userId = getEffectiveUserId(httpRequest);
+            Long productVariantId = Long.valueOf(request.get("productVariantId").toString());
+            Integer quantity = Integer.valueOf(request.get("quantity").toString());
+
+            // 유효성 검증
+            if (productVariantId == null || quantity == null || quantity < 1) {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("error", "잘못된 요청 데이터입니다."));
+            }
+
+            if (quantity > 99) {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("error", "최대 99개까지 주문 가능합니다."));
+            }
+
+            // === 이미 담겨져 있는지 먼저 확인 ===
+            List<CartItemViewDto> existingItems = cartServiceImpl.getCartItemViews(userId);
+
+            boolean isAlreadyInCart = existingItems.stream()
+                    .anyMatch(item -> item.getProductVariantId().equals(productVariantId));
+
+            if (isAlreadyInCart) {
+                // 이미 담겨져 있으면 추가하지 않고 메시지만 반환
+                log.info("장바구니 추가 시도 - 이미 존재하는 상품: userId={}, productVariantId={}", userId, productVariantId);
+
+                return ResponseEntity.ok(Map.of(
+                        "productVariantId", productVariantId,
+                        "isAlreadyInCart", true,
+                        "message", "이미 장바구니에 담긴 상품입니다."
+                ));
+            }
+
+            // CartService의 기존 메서드 활용
+            cartServiceImpl.addItemToCart(userId, productVariantId, quantity);
+
+            log.info("장바구니 상품 추가 완료 - userId: {}, productVariantId: {}, quantity: {}",
+                    userId, productVariantId, quantity);
+            return ResponseEntity.ok(Map.of(
+                    "productVariantId", productVariantId,
+                    "quantity", quantity,
+                    "isAlreadyInCart", false,
+                    "message", "장바구니에 상품이 추가되었습니다."
+            ));
+
+        } catch (Exception e) {
+            log.error("장바구니 상품 추가 중 오류 발생", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "상품 추가 중 오류가 발생했습니다."));
         }
     }
 
     // 장바구니 아이템 삭제 API
-    @DeleteMapping("/items/{cartItemId}")
+    @DeleteMapping("/items")
     @ResponseBody
-    public ResponseEntity<?> deleteCartItem(@PathVariable("cartItemId") String cartItemId, HttpServletRequest request) {
+    public ResponseEntity<?> deleteCartItems(@RequestBody List<String> cartItemIds, HttpServletRequest request) {
         try {
-            Long userId = 3L; // 실제로는 세션에서 가져와야 함
+            Long userId = getEffectiveUserId(request);
 
-            // 장바구니 아이템 삭제
-            cartServiceImpl.removeItemFromCart(userId, cartItemId);
+            if (cartItemIds == null || cartItemIds.isEmpty()) {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("error", "삭제할 상품을 선택해주세요."));
+            }
 
-            log.info("장바구니 아이템 삭제 완료 - userId: {}, cartItemId: {}", userId, cartItemId);
-            return ResponseEntity.ok(Map.of(
-                    "success", true,
-                    "message", "상품이 장바구니에서 삭제되었습니다.",
-                    "deletedItemId", cartItemId
-            ));
+            // 각 아이템 삭제
+            for (String cartItemId : cartItemIds) {
+                cartServiceImpl.removeItemFromCart(userId, cartItemId);
+            }
 
-        } catch (IllegalArgumentException e) {// 실제로는 세션에서 가져와야 함
-            Long userId = 3L;
-            log.info("장바구니 아이템 삭제 실패 - 장바구니를 찾을 수 없음: userId= {}", userId);
+            log.info("장바구니 아이템 삭제 완료 - userId: {}, 삭제된 아이템 수: {}, 아이템 IDs: {}",
+                    userId, cartItemIds.size(), cartItemIds);
+
+            return ResponseEntity.ok().build(); // 성공 시 빈 응답
+
+        } catch (IllegalArgumentException e) {
+            log.info("장바구니 아이템 삭제 실패: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(Map.of(
-                            "success", false,
-                            "message", e.getMessage()
-                    ));
+                    .body(Map.of("error", e.getMessage()));
         } catch (Exception e) {
-            log.error("장바구니 아이템 삭제 중 오류 발생 - cartItemId: {}", cartItemId, e);
+            log.error("장바구니 아이템 삭제 중 오류 발생", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of(
-                            "success", false,
-                            "message", "상품 삭제 중 오류가 발생했습니다.",
-                            "error", e.getMessage()
-                    ));
+                    .body(Map.of("error", "상품 삭제 중 오류가 발생했습니다."));
+        }
+    }
+
+    // 장바구니 상태 확인 API (비어있는지, 아이템 개수 등)
+    @GetMapping("/status")
+    @ResponseBody
+    public ResponseEntity<?> getCartStatus(HttpServletRequest request) {
+        try {
+            Long userId = getEffectiveUserId(request);
+
+            List<CartItemViewDto> cartItems = cartServiceImpl.getCartItemViews(userId);
+
+            boolean isEmpty = cartItems == null || cartItems.isEmpty();
+            int itemCount = isEmpty ? 0 : cartItems.size();
+
+            Map<String, Object> status = Map.of(
+                    "isEmpty", isEmpty,
+                    "itemCount", itemCount
+            );
+
+            return ResponseEntity.ok(status);
+
+        } catch (Exception e) {
+            log.error("장바구니 상태 확인 중 오류 발생", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "장바구니 상태 확인 중 오류가 발생했습니다."));
+        }
+    }
+
+    // 장바구니 아이템 수량 변경 API
+    @PatchMapping("/items/{cartItemId}/quantity")
+    @ResponseBody
+    public ResponseEntity<?> updateCartItemQuantity(
+            @PathVariable("cartItemId") String cartItemId,
+            @RequestBody Map<String, Integer> request,
+            HttpServletRequest httpRequest) {
+        try {
+            Long userId = getEffectiveUserId(httpRequest);
+            Integer newQuantity = request.get("quantity");
+
+            // 유효성 검증
+            if (newQuantity == null || newQuantity < 1) {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("error", "수량은 1개 이상이어야 합니다."));
+            }
+
+            if (newQuantity > 99) {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("error", "최대 99개까지 주문 가능합니다."));
+            }
+
+            // 기존 CartService의 updateItemQuantity 메서드 활용!
+            cartServiceImpl.updateItemQuantity(userId, cartItemId, newQuantity);
+
+            // 성공 응답 (간단하게)
+            Map<String, Object> response = Map.of(
+                    "cartItemId", cartItemId,
+                    "quantity", newQuantity
+            );
+
+            log.info("장바구니 수량 변경 완료 - userId: {}, cartItemId: {}, newQuantity: {}",
+                    userId, cartItemId, newQuantity);
+
+            return ResponseEntity.ok(response);
+
+        } catch (IllegalArgumentException e) {
+            log.info("장바구니 수량 변경 실패: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("error", e.getMessage()));
+        } catch (Exception e) {
+            log.error("장바구니 수량 변경 중 오류 발생 - cartItemId: {}", cartItemId, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "수량 변경 중 오류가 발생했습니다."));
         }
     }
 }

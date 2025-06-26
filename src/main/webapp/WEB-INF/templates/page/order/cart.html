@@ -1,6 +1,6 @@
 <div th:fragment="content">
     <h1 class="category_tit">장바구니</h1>
-    <p th:text="${cartId}">aa</p>
+    <p th:text="${userId}">aa</p>
     <div class="cart-container">
         <div class="cart-content-wrapper">
             <div class="cart-items-section">
@@ -13,14 +13,14 @@
                     </div>
                     <div class="item-details">
                         <div class="item-name-price">
-                            <p class="item-name" th:text="${item.productName}">상품명</p>
+                            <a class="item-name" th:text="${item.productName}" th:href="${item.productUrl}">상품명</a>
                             <p class="item-price">
                                 <span class="original-price" th:text="${#numbers.formatInteger(item.price, 3, 'COMMA')} + '원'">원래 가격</span>
                                 <span class="discounted-price" th:text="${#numbers.formatInteger(item.discountPrice, 3, 'COMMA')} + '원'">할인가격</span>
                             </p>
                         </div>
                         <p class="item-options" th:text="'[' + ${item.color} + '/' + ${item.size} + ']'">[옵션]</p>
-                        <button class="option-change-button" id="showMyPopupBtn">옵션변경</button>
+                        <!--                        <button class="option-change-button" id="showMyPopupBtn">옵션변경</button>-->
                         <div class="item-quantity-controls">
                             <button class="quantity-minus">-</button>
                             <input type="text" th:value="${item.quantity}" class="quantity-input">
@@ -46,200 +46,19 @@
                 </div>
                 <div class="summary-total-line">
                     <span class="summary-label">총 주문 합계</span>
-                    <span class="summary-total-value"><span th:text="${totalAmount}"></span>원원</span>
+                    <span class="summary-total-value"><span th:text="${totalAmount}"></span>원</span>
                 </div>
                 <button class="order-button full-order">전체상품주문</button>
                 <button class="order-button selected-order">선택상품주문</button>
             </div>
         </div>
+        <button type="button" class="btn-secondary" onclick="loadCartSummary();">loadCartSummary</button>
+        <button type="button" class="btn-secondary" onclick="addTestcartItem();">addTestcartItem</button>
 
         <div class="bottom-selection-actions">
             <button class="btn-secondary">전체선택</button>
-            <button class="btn-secondary" id="item-delete-button">선택삭제</button>
+            <button class="btn-secondary" id="sel-item-delete-button">선택삭제</button>
         </div>
     </div>
-    <script>
-        // DOMContentLoaded 이벤트 리스너 제거
-        const openCartPopupBtn = document.getElementById('showMyPopupBtn');
-
-        if (openCartPopupBtn) {
-            openCartPopupBtn.addEventListener('click', () => {
-                // alert('alert from cart.html inline script!'); // 테스트를 위한 alert
-                window.openCommonPopup('commonModalPopup');
-            });
-        }
-        $(document).ready(function(){
-            // 이벤트 위임을 사용해서 동적으로 생성된 요소에도 이벤트 적용
-            $(document).on('click', '.item-delete-button', function() {
-                deleteSelectedItems();
-                console.log("선택 버튼 클릭");
-            });
-        });
-        // 장바구니 아이템 로드
-        function loadCartItems() {
-            console.log("장바구니 아이템 로드 시작");
-
-            $.get('/order/cart/items', function(response) {
-                console.log('🛒 장바구니 응답:', response);
-
-                if (!response || response.length === 0) {
-                    renderEmptyCart('장바구니가 비어있습니다.');
-                } else {
-                    renderCartItems(response);
-                    loadCartSummary();
-                }
-            }).fail(function(xhr, status, error) {
-                console.error('❌ 장바구니 로드 실패:', error);
-                renderEmptyCart('장바구니를 불러오는 중 오류가 발생했습니다.');
-            });
-        }
-
-        // 필수 유틸리티 함수들
-        function loadCartSummary() {
-            $.get('/order/cart/summary', function(data) {
-                updateCartSummary(
-                    data.totalItemCount,
-                    data.totalAmount,
-                    data.originalTotalAmount,
-                    data.totalDiscountAmount
-                );
-            });
-        }
-
-        function deleteSelectedItems() {
-            console.log("deleteSelectedItems 함수 실행");
-
-            const selectedItems = $('.item-checkbox:checked');
-            console.log("선택된 아이템 수:", selectedItems.length);
-
-            if (selectedItems.length === 0) {
-                alert('삭제할 상품을 선택해주세요.');
-                return;
-            }
-
-            const selectedCount = selectedItems.length;
-            if (!confirm(`선택한 ${selectedCount}개 상품을 장바구니에서 삭제하시겠습니까?`)) {
-                return;
-            }
-
-            // 선택된 아이템들의 ID 수집
-            const cartItemIds = [];
-            selectedItems.each(function() {
-                const cartItem = $(this).closest('.cart-item');
-                const cartItemId = cartItem.data('cart-item-id');
-                console.log("HTML에서 찾은 cartItemId:", cartItemId);
-
-                if (cartItemId) {
-                    cartItemIds.push(cartItemId);
-                }
-            });
-
-            console.log("삭제할 아이템 IDs:", cartItemIds);
-
-            if (cartItemIds.length === 0) {
-                alert('삭제할 상품의 ID를 찾을 수 없습니다.');
-                return;
-            }
-
-            deleteItemsAndRerender(cartItemIds);
-        }
-        // 아이템들 삭제 후 페이지 새로고침
-        function deleteItemsAndRerender(cartItemIds) {
-            let completedRequests = 0;
-            let hasError = false;
-
-            cartItemIds.forEach(cartItemId => {
-                $.ajax({
-                    url: `/order/cart/items/${cartItemId}`,
-                    type: 'DELETE',
-                    success: function (response) {
-                        completedRequests++;
-
-                        if (response.success) {
-                            console.log(`✅ 아이템 삭제 성공: ${cartItemId}`);
-                        } else {
-                            console.error('❌ 아이템 삭제 실패:', response.message);
-                            hasError = true;
-                        }
-
-                        if (completedRequests === cartItemIds.length) {
-
-                            if (hasError) {
-                                alert('일부 상품 삭제 중 오류가 발생했습니다.');
-                            } else {
-                                alert('선택한 상품들이 삭제되었습니다.');
-                            }
-
-                            // 페이지 새로고침으로 최신 상태 반영
-                            //location.reload();
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        completedRequests++;
-                        hasError = true;
-                        console.error('❌ 아이템 삭제 실패:', error);
-
-                        // 서버 응답이 JSON인지 확인
-                        try {
-                            const errorResponse = JSON.parse(xhr.responseText);
-                            console.error('- 서버 에러 응답:', errorResponse);
-                            alert(`삭제 실패: ${errorResponse.message || error}`);
-                        } catch (parseError) {
-                            console.error('- JSON 파싱 실패, 원본 응답:', xhr.responseText);
-                            alert(`삭제 중 오류 발생: ${error} (HTTP ${xhr.status})`);
-                        }
-
-                        if (completedRequests === cartItemIds.length) {
-                            // location.reload(); // 임시로 주석 처리
-                        }
-
-                        if (completedRequests === cartItemIds.length) {
-                            alert('상품 삭제 중 오류가 발생했습니다.');
-                            //location.reload();
-                        }
-                    }
-                });
-            });
-        }
-        function updateCartSummary(totalCount, totalAmount, originalAmount, discountAmount) {
-            $('#totalItemCount').text(totalCount);
-            $('#totalAmount').text(totalAmount.toLocaleString());
-            $('#originalTotalAmount').text(originalAmount.toLocaleString());
-            $('#totalDiscountAmount').text(discountAmount.toLocaleString());
-        }
-
-        function renderEmptyCart(message) {
-            const container = $('#cart-items-container');
-            container.html(`
-            <div class="empty-cart">
-                <div class="empty-cart-icon">🛒</div>
-                <h3 class="empty-cart-title">장바구니가 비어있습니다</h3>
-                <p class="empty-cart-message">${message || '장바구니에 상품을 담아보세요!'}</p>
-                <a href="/products" class="btn-shopping">쇼핑 계속하기</a>
-            </div>
-        `);
-            updateCartSummary(0, 0, 0, 0);
-        }
-
-        function updateSelectAllState() {
-            const totalItems = $('.item-checkbox').length;
-            const checkedItems = $('.item-checkbox:checked').length;
-            $('#selectAll').prop('checked', totalItems > 0 && checkedItems === totalItems);
-        }
-
-        function updateDeleteButtonState() {
-            const checkedItems = $('.item-checkbox:checked').length;
-            const deleteButton = $('.item-delete-button');
-
-            if (checkedItems > 0) {
-                deleteButton.text(`선택 삭제 (${checkedItems})`);
-                deleteButton.prop('disabled', false);
-                deleteButton.removeClass('disabled');
-            } else {
-                deleteButton.text('삭제');
-                deleteButton.prop('disabled', false); // 비활성화하지 않음
-            }
-        }
-
-    </script>
+    <script th:src="@{/resources/js/cart.js}"></script>
 </div>

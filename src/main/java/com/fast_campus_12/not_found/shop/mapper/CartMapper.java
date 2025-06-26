@@ -14,7 +14,7 @@ public interface CartMapper {
     @Select("SELECT * FROM cart WHERE user_id = #{userId} AND deleted_at IS NULL")
     @Results(id = "cartMap", value = {
             @Result(column = "cart_id", property = "id"),
-            @Result(column = "user_id", property = "userId"),
+            @Result(column = "user_login_id", property = "userLoginId"),
             @Result(column = "created_at", property = "createdAt"),
             @Result(column = "updated_at", property = "updatedAt"),
             @Result(column = "deleted_at", property = "deletedAt")
@@ -91,5 +91,5 @@ public interface CartMapper {
         WHERE ci.cart_id = #{cartId}
     """)
     List<CartItemViewDto> findCartItemViewsByCartId(String cartId);
-    
+
 }
