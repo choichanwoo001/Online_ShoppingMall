@@ -51,10 +51,10 @@ public class CartController {
 
         // 2. 비로그인 사용자 - 세션 해시값으로 임시 ID 생성
         if (userId == null) {
-            userId = 1L; // 테스트용 사용자 ID
+            userId = 11L; // 테스트용 사용자 ID
             session.setAttribute("userId", userId);
             session.setAttribute("userName", "테스트사용자");
-            session.setAttribute("loginId", "testuser123");
+            session.setAttribute("loginId", "user007");
             session.setAttribute("isLoggedIn", true);
         }
 
