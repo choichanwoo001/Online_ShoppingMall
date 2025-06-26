@@ -34,6 +34,8 @@ public class Product {
     private Date deletedAt;
     private boolean isDeleted;
     private String comment;
+    private boolean isBest;
+    private boolean isNew;
 
     private Lv3Category lv3Category;
 }

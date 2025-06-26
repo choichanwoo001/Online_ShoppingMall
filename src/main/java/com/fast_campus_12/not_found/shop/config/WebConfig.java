@@ -1,14 +1,11 @@
 package com.fast_campus_12.not_found.shop.config;
 
-import com.fast_campus_12.not_found.shop.common.enums.SortDirectionConverter;
-import com.fast_campus_12.not_found.shop.product.service.ProductService;
-import com.fast_campus_12.not_found.shop.product.service.ProductServiceImpl;
+import com.fast_campus_12.not_found.shop.global.converter.StringToEnumConverterFactory;
 import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
-import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -56,7 +53,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addFormatters(FormatterRegistry registry) {
-        registry.addConverter(new SortDirectionConverter());
+        registry.addConverterFactory(new StringToEnumConverterFactory());
     }
 
 }
