@@ -25,10 +25,22 @@
         </ul>
 
         <ul class="sub-menu">
-            <li><a href="signup/">회원가입</a></li>
-            <li><a href="/login">로그인</a></li>
-            <li><a href="#">주문조회</a></li>
-            <li><a href="#">마이페이지</a></li>
+            <li th:if="${session.loginId == null}">
+                <a th:href="@{/signup}">회원가입</a>
+            </li>
+            <li th:if="${session.loginId == null}">
+                <a th:href="@{/login}">로그인</a>
+            </li>
+            <!-- 로그인 상태일 때 -->
+            <li th:if="${session.loginId != null}">
+                <a th:href="@{/logout}">로그아웃</a>
+            </li>
+            <li th:if="${session.loginId != null}">
+                <a th:href="@{/order-history}">주문조회</a>
+            </li>
+            <li th:if="${session.loginId != null}">
+                <a th:href="@{/mypage}">마이페이지</a>
+            </li>
             <li><a href="#">COMMUNITY ⌄</a></li>
         </ul>
     </nav>
