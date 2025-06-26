@@ -1,15 +1,18 @@
 package com.fast_campus_12.not_found.shop.inquiry.dto;
 
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class InquiryDto {
-    private Long inquiryId;
+    private Long id;
     private Long userId;
+    private String writer;
     private Long productId;
     private String title;
     private String content;

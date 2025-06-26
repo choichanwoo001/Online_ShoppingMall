@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fast_campus_12.not_found.shop.mapper.InquiryQueryMapper">
+
+    <!-- InquiryDto용 resultMap -->
+    <resultMap id="InquiryDto" type="com.fast_campus_12.not_found.shop.inquiry.dto.InquiryDto">
+        <result property="id" column="INQUIRY_ID"/>
+        <result property="userId" column="USER_ID"/>
+        <result property="writer" column="WRITER"/>
+        <result property="title" column="TITLE"/>
+        <result property="content" column="CONTENT"/>
+        <result property="inquiryCategory" column="INQUIRY_CATEGORY"/>
+        <result property="productId" column="PRODUCT_ID"/>
+        <result property="status" column="STATUS"/>
+        <result property="isSecret" column="IS_SECRET"/>
+        <result property="createdAt" column="CREATED_AT"/>
+        <result property="updatedAt" column="UPDATED_AT"/>
+        <result property="deletedAt" column="DELETED_AT"/>
+    </resultMap>
+
+    <!-- 전체 문의 목록 조회 -->
+    <select id="findInquiryList" resultMap="InquiryDto">
+        SELECT
+        i.INQUIRY_ID,
+        i.USER_ID,
+        i.PRODUCT_ID,
+        i.TITLE,
+        i.CONTENT,
+        i.INQUIRY_CATEGORY,
+        i.STATUS,
+        i.IS_SECRET,
+        i.CREATED_AT,
+        i.UPDATED_AT,
+        i.DELETED_AT,
+        u.LOGIN_ID AS WRITER
+        FROM INQUIRY i
+        INNER JOIN USERS u ON i.USER_ID = u.USER_ID
+        WHERE i.DELETED_AT IS NULL
+        <choose>
+            <when test="request.sortBy != null">
+                ORDER BY
+                <choose>
+                    <when test="request.sortBy.name() == 'CREATED_AT'">
+                        i.CREATED_AT
+                    </when>
+                    <when test="request.sortBy.name() == 'STATUS'">
+                        i.STATUS
+                    </when>
+                    <otherwise>
+                        i.CREATED_AT
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="request.sort.name() == 'ASC'"> ASC</when>
+                    <otherwise> DESC</otherwise>
+                </choose>
+            </when>
+            <otherwise>
+                ORDER BY i.CREATED_AT DESC
+            </otherwise>
+        </choose>
+        LIMIT #{request.limit} OFFSET #{request.offset}
+    </select>
+
+    <!-- 전체 문의 개수 -->
+    <select id="countInquiryList" resultType="int">
+        SELECT COUNT(*)
+        FROM INQUIRY i
+                 INNER JOIN USERS u ON i.USER_ID = u.USER_ID
+        WHERE i.DELETED_AT IS NULL
+    </select>
+
+</mapper>
