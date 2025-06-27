@@ -20,7 +20,7 @@ public class WishlistController {
 
     @GetMapping("/wishlist/{pageName}")
     public String renderPage(@PathVariable("pageName") String pageName, HttpSession session, Model model) {
-        String userId = (String) session.getAttribute("userId");
+        String userId = (String) session.getAttribute("loginId");
         if (userId == null) {
             return "redirect:/login"; // 로그인 안 했을 때 리디렉션
         }
@@ -39,7 +39,7 @@ public class WishlistController {
             @RequestParam(defaultValue = "10") int size,
             HttpSession session) {
 
-        String userId = (String) session.getAttribute("userId");
+        String userId = (String) session.getAttribute("loginId");
         if (userId == null) {
             return ResponseEntity.ok(WishlistPageDto.builder()
                     .success(false)
@@ -58,7 +58,7 @@ public class WishlistController {
             HttpSession session) {
         Map<String, Object> response = new HashMap<>();
 
-        String userId = (String) session.getAttribute("userId");
+        String userId = (String) session.getAttribute("loginId");
         if (userId == null) {
             response.put("success", false);
             response.put("message", "로그인이 필요합니다.");
@@ -84,7 +84,7 @@ public class WishlistController {
             HttpSession session) {
         Map<String, Object> response = new HashMap<>();
 
-        String userId = (String) session.getAttribute("userId");
+        String userId = (String) session.getAttribute("loginId");
         if (userId == null) {
             response.put("success", false);
             response.put("message", "로그인이 필요합니다.");
@@ -110,7 +110,7 @@ public class WishlistController {
             HttpSession session) {
         Map<String, Object> response = new HashMap<>();
 
-        String userId = (String) session.getAttribute("userId");
+        String userId = (String) session.getAttribute("loginId");
         if (userId == null) {
             response.put("success", false);
             response.put("message", "로그인이 필요합니다.");
@@ -134,7 +134,7 @@ public class WishlistController {
     public ResponseEntity<Map<String, Object>> clearWishlist(HttpSession session) {
         Map<String, Object> response = new HashMap<>();
 
-        String userId = (String) session.getAttribute("userId");
+        String userId = (String) session.getAttribute("loginId");
         if (userId == null) {
             response.put("success", false);
             response.put("message", "로그인이 필요합니다.");
@@ -160,7 +160,7 @@ public class WishlistController {
             HttpSession session) {
         Map<String, Object> response = new HashMap<>();
 
-        String userId = (String) session.getAttribute("userId");
+        String userId = (String) session.getAttribute("loginId");
         if (userId == null) {
             response.put("success", true);
             response.put("data", false);

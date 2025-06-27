@@ -1,0 +1,24 @@
+<!-- templates/page/notice/noticeDetail.html -->
+<div th:fragment="content">
+  <h1 class="category_tit" th:text="${subCategory}">NOTICE</h1>
+<!--  <p class="category-subtext">공지사항입니다.</p>-->
+
+  <div class="notice-detail-box">
+    <div class="notice-title" th:text="${notice.title}">공지 제목</div>
+
+    <ul class="notice-meta">
+      <li><strong>작성자</strong> <span th:text="${notice.writer}">관리자</span></li>
+      <li><strong>작성일</strong> <span th:text="${#temporals.format(notice.createdAt, 'yyyy-MM-dd')}">2025-06-26</span></li>
+      <li><strong>조회수</strong> <span th:text="${notice.viewCount}">0</span></li>
+    </ul>
+
+    <div class="notice-content" th:utext="${#strings.replace(notice.content, '\n', '<br/>')}">
+      공지 상세 내용이 여기에 출력됩니다.
+    </div>
+
+    <div class="notice-btn-area">
+      <a th:href="@{/notice}" class="notice-btn-back">목록</a>
+    </div>
+  </div>
+  <link rel="stylesheet" th:href="@{/resources/css/noticeDetail.css}">
+</div>

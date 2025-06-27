@@ -44,7 +44,8 @@ public class AuthViewController {
         Auth user = authService.login(id, pw);
         if (Objects.nonNull(user)) {
             // 로그인 성공: 세션에 아이디 저장, 히스토리 기록
-            session.setAttribute("UserId_long", user.getUserId());
+            session.getAttribute("loginId");
+            session.setAttribute("loginId", user.getId());
             authService.uploadLoginHistory(id);
             return "redirect:/home";
         } else {

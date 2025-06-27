@@ -1,23 +1,23 @@
 /* 마이페이지 레이아웃 */
 .mypage-container {
     display: flex;
-    max-width: 1200px;
+    max-width: 60rem;       /* 1200px ÷ 20 */
     margin: 0 auto;
-    padding: 20px;
-    gap: 30px;
+    padding: 1rem;          /* 20px ÷ 20 */
+    gap: 1.5rem;            /* 30px ÷ 20 */
 }
 
 /* 사이드바 스타일 */
 .mypage-sidebar {
-    width: 200px;
+    width: 10rem;           /* 200px ÷ 20 */
     flex-shrink: 0;
 }
 
 .mypage-sidebar h2 {
-    font-size: 20px;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid #333;
+    font-size: 1rem;        /* 20px ÷ 20 */
+    margin-bottom: 1rem;    /* 20px ÷ 20 */
+    padding-bottom: 0.5rem; /* 10px ÷ 20 */
+    border-bottom: 0.1rem solid #333; /* 2px ÷ 20 */
 }
 
 .mypage-sidebar nav ul {
@@ -27,21 +27,21 @@
 }
 
 .mypage-sidebar nav li {
-    margin-bottom: 10px;
+    margin-bottom: 0.5rem;  /* 10px ÷ 20 */
 }
 
 .mypage-sidebar nav li.divider {
-    height: 1px;
+    height: 0.05rem;        /* 1px ÷ 20 */
     background: #e0e0e0;
-    margin: 15px 0;
+    margin: 0.75rem 0;      /* 15px ÷ 20 */
 }
 
 .mypage-sidebar nav a {
     display: block;
-    padding: 8px 0;
+    padding: 0.4rem 0;      /* 8px ÷ 20 */
     color: #666;
     text-decoration: none;
-    font-size: 14px;
+    font-size: 0.7rem;      /* 14px ÷ 20 */
     transition: color 0.3s;
 }
 
@@ -61,10 +61,10 @@
 }
 
 .page-title {
-    font-size: 24px;
-    margin-bottom: 30px;
-    padding-bottom: 15px;
-    border-bottom: 2px solid #333;
+    font-size: 1.2rem;      /* 24px ÷ 20 */
+    margin-bottom: 1.5rem;  /* 30px ÷ 20 */
+    padding-bottom: 0.75rem;/* 15px ÷ 20 */
+    border-bottom: 0.1rem solid #333; /* 2px ÷ 20 */
 }
 
 .content-area {
@@ -73,38 +73,38 @@
 
 /* 쿠폰 등록 섹션 */
 .coupon-register-section {
-    margin-bottom: 30px;
-    padding: 20px;
+    margin-bottom: 1.5rem;  /* 30px ÷ 20 */
+    padding: 1rem;          /* 20px ÷ 20 */
     background: #f8f9fa;
-    border-radius: 8px;
+    border-radius: 0.4rem;  /* 8px ÷ 20 */
 }
 
 .register-form {
     display: flex;
-    gap: 10px;
+    gap: 0.5rem;            /* 10px ÷ 20 */
     align-items: center;
 }
 
-.register-form input[type="text"] {
+.coupon-input {
     flex: 1;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 14px;
+    padding: 0.5rem;        /* 10px ÷ 20 */
+    border: 0.05rem solid #ddd; /* 1px ÷ 20 */
+    border-radius: 0.2rem;  /* 4px ÷ 20 */
+    font-size: 0.7rem;      /* 14px ÷ 20 */
 }
 
-.register-form button {
-    padding: 10px 20px;
+.btn-register {
+    padding: 0.5rem 1rem;   /* (10px ÷ 20)/(20px ÷ 20) */
     background: #333;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 0.2rem;  /* 4px ÷ 20 */
     cursor: pointer;
-    font-size: 14px;
+    font-size: 0.7rem;      /* 14px ÷ 20 */
     white-space: nowrap;
 }
 
-.register-form button:hover {
+.btn-register:hover {
     background: #555;
 }
 
@@ -112,48 +112,53 @@
 .coupon-table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 30px;
+    margin-bottom: 1.5rem;  /* 30px ÷ 20 */
 }
 
 .coupon-table thead {
     background: #f8f9fa;
-    border-top: 2px solid #333;
-    border-bottom: 1px solid #ddd;
+    border-top: 0.1rem solid #333;  /* 2px ÷ 20 */
+    border-bottom: 0.05rem solid #ddd; /* 1px ÷ 20 */
 }
 
 .coupon-table th {
-    padding: 15px;
+    padding: 0.75rem;       /* 15px ÷ 20 */
     text-align: center;
     font-weight: normal;
-    font-size: 14px;
+    font-size: 0.7rem;      /* 14px ÷ 20 */
 }
 
 .coupon-table td {
-    padding: 15px;
+    padding: 0.75rem;       /* 15px ÷ 20 */
     text-align: center;
-    border-bottom: 1px solid #eee;
-    font-size: 14px;
+    border-bottom: 0.05rem solid #eee; /* 1px ÷ 20 */
+    font-size: 0.7rem;      /* 14px ÷ 20 */
 }
 
 .coupon-table tbody tr:hover {
     background: #f8f9fa;
 }
 
+.col-number { width: 5rem; }    /* 100px ÷ 20 */
+.col-discount { width: 5rem; }
+.col-earning  { width: 5rem; }
+.col-detail   { width: 5rem; }
+
 .no-data {
-    padding: 50px !important;
+    padding: 2.5rem !important;  /* 50px ÷ 20 */
     color: #999;
 }
 
 /* 쿠폰 이용 안내 */
 .coupon-guide {
-    margin-top: 40px;
-    padding-top: 30px;
-    border-top: 1px solid #ddd;
+    margin-top: 2rem;       /* 40px ÷ 20 */
+    padding-top: 1.5rem;    /* 30px ÷ 20 */
+    border-top: 0.05rem solid #ddd; /* 1px ÷ 20 */
 }
 
 .coupon-guide h3 {
-    font-size: 16px;
-    margin-bottom: 20px;
+    font-size: 0.8rem;      /* 16px ÷ 20 */
+    margin-bottom: 1rem;    /* 20px ÷ 20 */
 }
 
 .coupon-guide ul {
@@ -163,9 +168,9 @@
 
 .coupon-guide li {
     position: relative;
-    padding-left: 15px;
-    margin-bottom: 10px;
-    font-size: 13px;
+    padding-left: 0.75rem;  /* 15px ÷ 20 */
+    margin-bottom: 0.5rem;  /* 10px ÷ 20 */
+    font-size: 0.65rem;     /* 13px ÷ 20 */
     color: #666;
     line-height: 1.6;
 }
