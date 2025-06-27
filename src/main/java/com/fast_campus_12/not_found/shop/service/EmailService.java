@@ -1,10 +1,15 @@
 package com.fast_campus_12.not_found.shop.service;
 
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
@@ -19,6 +24,10 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class EmailService {
     private final JavaMailSender mailSender;
+
+    /** 메일 발신자 주소를 application.properties의 mail.from에 설정 */
+    @Value("${mail.from}")
+    private String fromAddress;
 
     // 인증코드 저장용 (실제로는 Redis 사용 권장)
     private ConcurrentHashMap<String, String> verificationCodes = new ConcurrentHashMap<String, String>();
@@ -105,15 +114,28 @@ public class EmailService {
     public boolean sendTempPasswordEmail(String email, String tempPassword) {
         try {
             log.info("임시 비밀번호 이메일 발송 시작: email={}", email);
-            String subject = "[쇼핑몰] 임시 비밀번호 발급 안내";
-            String htmlContent = buildTempPasswordEmailContent(tempPassword);
-            // 이메일 발송 (실제 구현 시 SMTP 설정 필요)
-            // mailSender.send(email, subject, htmlContent);
+
+            // MimeMessage 생성 및 UTF-8 기본 인코딩
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, "UTF-8");
+            helper.setFrom(fromAddress);
+            helper.setTo(email);
+            helper.setSubject("[쇼핑몰] 임시 비밀번호 발급 안내");
+
+            // HTML 본문
+            helper.setText(buildTempPasswordEmailContent(tempPassword), true);
+
+            // 실제 발송
+            mailSender.send(message);
+
             log.info("임시 비밀번호 이메일 발송 완료: email={}", email);
             return true;
 
-        } catch (Exception e) {
-            log.error("임시 비밀번호 이메일 발송 실패: email={}, error={}", email, e.getMessage(), e);
+        } catch (MessagingException e) {
+            log.error("이메일 메시지 구성 실패: email={}, error={}", email, e.getMessage(), e);
+            return false;
+        } catch (MailException e) {
+            log.error("SMTP 발송 실패: email={}, error={}", email, e.getMessage(), e);
             return false;
         }
     }
@@ -123,42 +145,46 @@ public class EmailService {
      */
     private String buildTempPasswordEmailContent(String tempPassword) {
         return String.format("""
-        <html>
-        <body style="font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #f5f5f5;">
-            <div style="max-width: 600px; margin: 0 auto; background-color: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-                <h2 style="color: #333; text-align: center; margin-bottom: 30px;">임시 비밀번호 발급 안내</h2>
-                
-                <p style="color: #666; line-height: 1.6; margin-bottom: 20px;">
-                    안녕하세요.<br>
-                    요청하신 임시 비밀번호가 발급되었습니다.
+            <html>
+            <body style="font-family: Arial, sans-serif; margin:0; padding:20px; background:#f5f5f5;">
+              <div style="max-width:600px; margin:0 auto; background:#fff; padding:30px;
+                          border-radius:8px; box-shadow:0 2px 10px rgba(0,0,0,0.1);">
+                <h2 style="text-align:center; color:#333; margin-bottom:30px;">
+                  임시 비밀번호 발급 안내
+                </h2>
+                <p style="color:#666; line-height:1.6; margin-bottom:20px;">
+                  요청하신 임시 비밀번호를 안내드립니다.
                 </p>
-                
-                <div style="background-color: #f8f9fa; padding: 20px; border-radius: 6px; margin: 20px 0; text-align: center;">
-                    <p style="margin: 0; color: #333; font-size: 14px;">임시 비밀번호</p>
-                    <p style="margin: 10px 0 0 0; font-size: 24px; font-weight: bold; color: #007bff; letter-spacing: 2px;">%s</p>
+                <div style="background:#f8f9fa; padding:20px; border-radius:6px; text-align:center;
+                            margin-bottom:20px;">
+                  <p style="margin:0; color:#333; font-size:14px;">임시 비밀번호</p>
+                  <p style="margin:10px 0 0; font-size:24px; font-weight:bold; color:#007bff; letter-spacing:2px;">
+                    %s
+                  </p>
                 </div>
-                
-                <div style="background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 6px; padding: 15px; margin: 20px 0;">
-                    <h4 style="color: #856404; margin: 0 0 10px 0; font-size: 16px;">⚠️ 보안 안내</h4>
-                    <ul style="color: #856404; margin: 0; padding-left: 20px;">
-                        <li>임시 비밀번호는 24시간 후 만료됩니다.</li>
-                        <li>로그인 후 즉시 새로운 비밀번호로 변경해주세요.</li>
-                        <li>임시 비밀번호는 타인에게 노출되지 않도록 주의하세요.</li>
-                    </ul>
+                <div style="background:#fff3cd; border:1px solid #ffeaa7; border-radius:6px;
+                            padding:15px; margin-bottom:20px;">
+                  <h4 style="margin:0 0 10px; color:#856404; font-size:16px;">⚠️ 보안 안내</h4>
+                  <ul style="margin:0; padding-left:20px; color:#856404;">
+                    <li>임시 비밀번호는 24시간 후 만료됩니다.</li>
+                    <li>로그인 후 즉시 새로운 비밀번호로 변경해주세요.</li>
+                    <li>타인에게 노출되지 않도록 주의하세요.</li>
+                  </ul>
                 </div>
-                
-                <div style="text-align: center; margin-top: 30px;">
-                    <a href="#" style="background-color: #007bff; color: white; text-decoration: none; padding: 12px 30px; border-radius: 6px; display: inline-block;">
-                        로그인 하기
-                    </a>
+                <div style="text-align:center; margin-top:30px;">
+                  <a href="https://yourshop.com/login"
+                     style="display:inline-block; background:#007bff; color:#fff; text-decoration:none;
+                            padding:12px 30px; border-radius:6px;">
+                    로그인 하기
+                  </a>
                 </div>
-                
-                <p style="color: #999; font-size: 12px; text-align: center; margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
-                    본 메일은 발신전용입니다. 문의사항이 있으시면 고객센터로 연락해주세요.
+                <p style="font-size:12px; color:#999; text-align:center; margin-top:30px;
+                          border-top:1px solid #eee; padding-top:20px;">
+                  본 메일은 발신전용입니다. 문의사항은 고객센터로 연락해주세요.
                 </p>
-            </div>
-        </body>
-        </html>
-        """, tempPassword);
+              </div>
+            </body>
+            </html>
+            """, tempPassword);
     }
 }

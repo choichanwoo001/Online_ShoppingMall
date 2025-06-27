@@ -1,165 +1,184 @@
+/* 컨테이너 */
 .find-container {
-    max-width: 250rem;
-    margin: 25rem auto;
-    padding: 20rem;
-    border: 0.5rem solid #ddd;
-    border-radius: 4rem;
+    max-width: 25rem;           /* 500px ÷ 20 */
+    margin: 2.5rem auto;        /* 50px ÷ 20 */
+    padding: 2rem;              /* 40px ÷ 20 */
+    border: 0.05rem solid #ddd; /* 1px ÷ 20 */
+    border-radius: 0.4rem;      /* 8px ÷ 20 */
     background-color: #fff;
 }
 
+/* 타이틀 */
 .find-title {
     text-align: center;
-    font-size: 12rem;
+    font-size: 1.2rem;          /* 24px ÷ 20 */
     font-weight: bold;
-    margin-bottom: 5rem;
+    margin-bottom: 0.5rem;      /* 10px ÷ 20 */
 }
 
+/* 설명 */
 .find-description {
     text-align: center;
     color: #666;
-    margin-bottom: 15rem;
+    margin-bottom: 1.5rem;      /* 30px ÷ 20 */
     line-height: 1.5;
 }
 
+/* 폼 그룹 */
 .form-group {
-    margin-bottom: 10rem;
+    margin-bottom: 1rem;        /* 20px ÷ 20 */
 }
 
+/* 폼 라벨 */
 .form-label {
     display: block;
-    margin-bottom: 4rem;
+    margin-bottom: 0.4rem;      /* 8px ÷ 20 */
     font-weight: bold;
     color: #333;
 }
 
+/* 입력 필드 */
 .form-input {
     width: 100%;
-    padding: 6rem;
-    border: 0.5rem solid #ddd;
-    border-radius: 2rem;
-    font-size: 8rem;
+    padding: 0.6rem;            /* 12px ÷ 20 */
+    border: 0.05rem solid #ddd; /* 1px ÷ 20 */
+    border-radius: 0.2rem;      /* 4px ÷ 20 */
+    font-size: 0.8rem;          /* 16px ÷ 20 */
+    transition: border-color 0.2s;
+}
+.form-input:focus {
+    border-color: #007bff;
 }
 
+/* 버튼 컨테이너 */
 .btn-container {
     text-align: center;
-    margin-top: 15rem;
+    margin-top: 1.5rem;         /* 30px ÷ 20 */
 }
 
+/* 기본 버튼 */
 .btn-primary {
+    display: inline-block;
     background-color: #000;
-    color: white;
+    color: #fff;
     border: none;
-    padding: 7.5rem 20rem;
-    font-size: 8rem;
-    border-radius: 2rem;
+    padding: 0.75rem 2rem;      /* 15px ÷ 20, 40px ÷ 20 */
+    font-size: 0.8rem;          /* 16px ÷ 20 */
+    border-radius: 0.2rem;      /* 4px ÷ 20 */
     cursor: pointer;
     width: 100%;
+    transition: background-color 0.2s, opacity 0.2s;
 }
+.btn-find-id {
+    margin-top: 0.5rem; /* 10px ÷ 20px */
+}
+
 .btn-primary:hover {
     background-color: #333;
 }
 .btn-primary:disabled {
     background-color: #ccc;
+    opacity: 0.6;
     cursor: not-allowed;
 }
 
+/* 인증번호 섹션 */
 .verification-section {
     display: none;
-    margin-top: 10rem;
-    padding: 10rem;
+    margin-top: 1rem;           /* 20px ÷ 20 */
+    padding: 1rem;              /* 20px ÷ 20 */
     background-color: #f9f9f9;
-    border-radius: 2rem;
-    border: 0.5rem solid #e0e0e0;
+    border-radius: 0.2rem;      /* 4px ÷ 20 */
+    border: 0.05rem solid #e0e0e0; /* 1px ÷ 20 */
 }
 
+/* 결과 표시 섹션 */
 .result-section {
     display: none;
-    margin-top: 10rem;
-    padding: 10rem;
+    margin-top: 1rem;           /* 20px ÷ 20 */
+    padding: 1rem;              /* 20px ÷ 20 */
     background-color: #f0f8ff;
-    border-radius: 2rem;
-    border: 0.5rem solid #87ceeb;
+    border-radius: 0.2rem;      /* 4px ÷ 20 */
+    border: 0.05rem solid #87ceeb; /* 1px ÷ 20 */
 }
 
+/* 결과 내용 정렬 */
 .result-info {
     text-align: center;
 }
 
+/* 결과 메시지 */
 .result-message {
-    font-size: 8rem;
+    font-size: 0.8rem;          /* 16px ÷ 20 */
     color: #0066cc;
-    margin: 7.5rem 0;
+    margin: 0.75rem 0;          /* 15px ÷ 20 */
     line-height: 1.5;
 }
 
-.result-buttons {
-    margin-top: 10rem;
-}
-
-.btn-login {
-    width: auto;
-    padding: 5rem 15rem;
-    margin-right: 5rem;
-}
-
-.btn-find-id {
-    width: auto;
-    padding: 5rem 15rem;
-    background-color: #6c757d;
-}
-
+/* 에러/성공 메시지 */
 .error-message {
     color: #ff0000;
-    font-size: 7rem;
-    margin-top: 2.5rem;
+    font-size: 0.7rem;          /* 14px ÷ 20 */
+    margin-top: 0.25rem;        /* 5px ÷ 20 */
 }
-
 .success-message {
     color: #008000;
-    font-size: 7rem;
-    margin-top: 2.5rem;
+    font-size: 0.7rem;          /* 14px ÷ 20 */
+    margin-top: 0.25rem;        /* 5px ÷ 20 */
 }
 
+/* 입력 그룹 (인증번호+버튼) */
 .input-group {
     display: flex;
-    gap: 5rem;
+    gap: 0.5rem;                /* 10px ÷ 20 */
 }
 .input-group input {
     flex: 1;
 }
 
+/* 인증 확인 버튼 */
 .btn-verify {
     background-color: #007bff;
-    color: white;
+    color: #fff;
     border: none;
-    padding: 6rem 10rem;
-    border-radius: 2rem;
+    padding: 0.6rem 1rem;       /* 12px ÷ 20, 20px ÷ 20 */
+    font-size: 0.8rem;          /* 16px ÷ 20 */
+    border-radius: 0.2rem;      /* 4px ÷ 20 */
     cursor: pointer;
     white-space: nowrap;
+    transition: background-color 0.2s;
 }
 .btn-verify:hover {
     background-color: #0056b3;
 }
 
+/* 경고 박스 */
 .warning-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;    /* 가로 중앙 정렬 */
+    justify-content: center;/* 세로 중앙 정렬 (필요 시) */
+    text-align: center;     /* 텍스트 중앙 정렬 */
     background-color: #fff3cd;
-    border: 0.5rem solid #ffeaa7;
-    border-radius: 2rem;
-    padding: 7.5rem;
-    margin: 10rem 0;
+    border: 0.05rem solid #ffeaa7;
+    border-radius: 0.2rem;
+    padding: 0.75rem;
+    margin: 1rem 0;
     color: #856404;
 }
 
 .warning-box h4 {
-    margin: 0 0 5rem 0;
-    font-size: 8rem;
+    margin: 0 0 0.5rem 0;        /* 10px ÷ 20 */
+    font-size: 0.8rem;           /* 16px ÷ 20 */
 }
-
+/* 리스트 중앙 배치, 항목 내부는 왼쪽 정렬 */
 .warning-box ul {
+    list-style: disc inside;
+    display: inline-block;  /* ul 블록을 내부 중앙에 배치 */
+    padding: 0;
     margin: 0;
-    padding-left: 10rem;
+    text-align: center;       /* 항목 내부는 왼쪽 정렬 */
 }
-
 .warning-box li {
-    margin-bottom: 2.5rem;
+    margin-bottom: 0.25rem;      /* 5px ÷ 20 */
 }
