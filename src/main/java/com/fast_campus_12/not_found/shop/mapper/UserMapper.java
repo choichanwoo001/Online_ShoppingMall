@@ -1,6 +1,6 @@
 package com.fast_campus_12.not_found.shop.mapper;
 
-import com.fast_campus_12.not_found.shop.entity.User;
+import com.fast_campus_12.not_found.shop.domain.user.dto.User;
 import org.apache.ibatis.annotations.*;
 
 @Mapper

@@ -1,7 +1,7 @@
 package com.fast_campus_12.not_found.shop.mapper;
 
-import com.fast_campus_12.not_found.shop.inquiry.dto.InquiryDto;
-import com.fast_campus_12.not_found.shop.inquiry.dto.request.InquiryPageRequest;
+import com.fast_campus_12.not_found.shop.domain.inquiry.dto.InquiryDto;
+import com.fast_campus_12.not_found.shop.domain.inquiry.dto.request.InquiryPageRequest;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

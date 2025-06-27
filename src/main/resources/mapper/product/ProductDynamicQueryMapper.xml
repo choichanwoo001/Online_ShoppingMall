@@ -20,7 +20,7 @@
     </sql>
 
     <!-- 결과 매핑 -->
-    <resultMap id="Product" type="com.fast_campus_12.not_found.shop.product.model.Product">
+    <resultMap id="Product" type="com.fast_campus_12.not_found.shop.domain.product.model.Product">
         <result property="id" column="PRODUCT_ID"/>
         <result property="title" column="PRODUCT_TITLE"/>
         <result property="price" column="PRODUCT_PRICE"/>
