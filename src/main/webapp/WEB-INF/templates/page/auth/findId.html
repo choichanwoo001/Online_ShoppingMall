@@ -1,0 +1,59 @@
+<div th:fragment="content">
+  <div class="find-container">
+    <h1 class="find-title">아이디 찾기</h1>
+    <p class="find-description">
+      가입하신 이메일 주소를 입력하시면 아이디를 찾아드립니다.<br>
+      본인인증을 위해 등록된 이메일로 인증번호를 보내드릴 예정입니다.
+    </p>
+
+    <form id="findIdForm">
+      <div class="form-group">
+        <label for="email" class="form-label">이메일</label>
+        <input type="email" id="email" name="email" class="form-input"
+               placeholder="이메일을 입력해주세요" required>
+        <div id="emailError" class="error-message"></div>
+      </div>
+
+      <div class="btn-container">
+        <button type="submit" id="sendBtn" class="btn-primary">
+          인증번호 발송
+        </button>
+      </div>
+    </form>
+
+    <!-- 인증번호 입력 섹션 -->
+    <div id="verificationSection" class="verification-section">
+      <div class="form-group">
+        <label for="verificationCode" class="form-label">인증번호</label>
+        <div class="input-group">
+          <input type="text" id="verificationCode" class="form-input"
+                 placeholder="인증번호를 입력해주세요" maxlength="6">
+          <button type="button" id="verifyBtn" class="btn-verify">
+            인증 확인
+          </button>
+        </div>
+        <div id="verificationError" class="error-message"></div>
+        <div id="verificationSuccess" class="success-message"></div>
+      </div>
+    </div>
+
+    <!-- 결과 표시 섹션 -->
+    <div id="resultSection" class="result-section">
+      <div class="result-info">
+        <p>고객님의 아이디 찾기가 완료 되었습니다.</p>
+        <div class="result-id" id="resultLoginId"></div>
+        <div class="result-buttons">
+          <button type="button" onclick="location.href='/login'" class="btn-primary btn-login">
+            로그인
+          </button>
+          <button type="button" onclick="location.href='/password/findPw'" class="btn-primary btn-password">
+            비밀번호 찾기
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <link rel="stylesheet" th:href="@{/resources/css/findId.css}" />
+  <script th:src="@{/resources/js/findId.js}"></script>
+</div>

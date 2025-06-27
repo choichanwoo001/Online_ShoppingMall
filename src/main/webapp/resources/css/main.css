@@ -1,0 +1,149 @@
+/* 메인 컨테이너 기본 설정 */
+.main-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px 16px;
+    margin-bottom: 48px; /* 푸터와의 간격을 위한 하단 마진 추가 */
+}
+
+/* 푸터 상단 여백 추가 */
+footer {
+    margin-top: 48px;
+    padding-top: 24px;
+}
+
+/* 배너 영역 - 화면의 70% 차지하도록 수정 */
+.main-container .banner-section {
+    width: 70%; /* 화면의 70%만 차지 */
+    margin: 0 auto 48px auto; /* 가운데 정렬 */
+    height: 400px; /* 비율에 맞게 높이 조정 (1200:800 = 3:2) */
+    /* flex 관련 속성 제거 - Swiper가 내부에서 처리 */
+}
+
+/* 큰 배너 스타일 수정 */
+.main-container .big-banner {
+    width: 100%;
+    height: 100%;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Swiper 컨테이너 크기 명시적 설정 */
+.main-container .big-swiper {
+    width: 100%;
+    height: 100%;
+}
+
+/* Swiper wrapper 설정 추가 */
+.main-container .big-swiper .swiper-wrapper {
+    display: flex; /* Swiper가 필요로 하는 flex */
+    align-items: stretch;
+}
+
+/* Swiper 슬라이드 크기 명시적 설정 */
+.main-container .big-swiper .swiper-slide {
+    width: 100% !important; /* 슬라이드가 100% 차지하도록 강제 */
+    flex-shrink: 0; /* 축소 방지 */
+    display: flex; /* 내부 컨텐츠 정렬을 위해 */
+}
+
+/* 배너 링크와 컨테이너 */
+.main-container .banner-link,
+.main-container .banner-container {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* 배너 이미지 - 컨테이너에 맞게 꽉 채우기 */
+.main-container .banner-image {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover; /* 비율 유지하면서 컨테이너 채우기 */
+}
+
+/* 배너 없을 때 표시 */
+.main-container .no-banner {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f5f5f5;
+    color: #666;
+}
+
+/* 네비게이션 버튼 스타일 */
+.main-container .swiper-button-next,
+.main-container .swiper-button-prev {
+    color: #fff;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+}
+
+.main-container .swiper-button-next:after,
+.main-container .swiper-button-prev:after {
+    font-size: 18px;
+}
+
+/* 페이지네이션 스타일 */
+.main-container .swiper-pagination-bullet {
+    background: #fff;
+    opacity: 0.7;
+}
+
+.main-container .swiper-pagination-bullet-active {
+    background: #fff;
+    opacity: 1;
+}
+
+/* 상품 리스트 */
+.main-container .product-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+}
+
+/* 상품 카드 */
+.main-container .product-card {
+    display: block;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 18px 16px;
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+    background: #fff;
+    transition: box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.main-container .product-card:hover {
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.15);
+    transform: translateY(-4px);
+}
+
+.main-container .product-card img {
+    width: 100%;
+    height: 230px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 12px;
+}
+
+.main-container .product-card h3 {
+    margin-top: 0;
+    font-size: 22px;
+    font-weight: 700;
+    color: #222;
+}
+
+.main-container .product-card p {
+    color: #666;
+    margin-top: 8px;
+    font-weight: 600;
+}

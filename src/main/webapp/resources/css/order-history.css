@@ -1,0 +1,285 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+.container {
+    max-width: 600rem;      /* 24000rem ÷ 40 */
+    margin: 0 auto;
+    background-color: #fff;
+    min-height: 100vh;
+    display: flex;
+}
+
+/* 사이드바 */
+.sidebar {
+    width: 100rem;          /* 4000rem ÷ 40 */
+    background-color: #fff;
+    border-right: 0.5rem solid #e0e0e0; /* 20rem ÷ 40 */
+    padding: 10rem 0;       /* 400rem ÷ 40 */
+}
+
+.sidebar h2 {
+    font-size: 9rem;        /* 360rem ÷ 40 */
+    font-weight: bold;
+    margin-bottom: 10rem;   /* 400rem ÷ 40 */
+    padding: 0 10rem;       /* 400rem ÷ 40 */
+}
+
+.sidebar ul {
+    list-style: none;
+}
+
+.sidebar li {
+    margin-bottom: 2.5rem;  /* 100rem ÷ 40 */
+}
+
+.sidebar a {
+    display: block;
+    padding: 6rem 10rem;    /* 240rem ÷ 40, 400rem ÷ 40 */
+    text-decoration: none;
+    color: #666;
+    font-size: 7rem;        /* 280rem ÷ 40 */
+    transition: background-color 0.2s;
+}
+
+.sidebar a:hover {
+    background-color: #f0f0f0;
+}
+
+.sidebar a.active {
+    background-color: #f0f0f0;
+    color: #333;
+    font-weight: 500;
+}
+
+/* 메인 콘텐츠 */
+.main-content {
+    flex: 1;
+    padding: 10rem 15rem;   /* 400rem ÷ 40, 600rem ÷ 40 */
+}
+
+.page-title {
+    font-size: 12rem;       /* 480rem ÷ 40 */
+    font-weight: bold;
+    margin-bottom: 15rem;   /* 600rem ÷ 40 */
+    text-align: right;
+}
+
+/* 탭 메뉴 */
+.order-tabs {
+    display: flex;
+    border-bottom: 0.5rem solid #e0e0e0; /* 20rem ÷ 40 */
+    margin-bottom: 15rem;   /* 600rem ÷ 40 */
+}
+
+.tab {
+    padding: 7.5rem 10rem;   /* 300rem ÷ 40, 400rem ÷ 40 */
+    background-color: #f8f8f8;
+    border: 0.5rem solid #e0e0e0; /* 20rem ÷ 40 */
+    border-bottom: none;
+    cursor: pointer;
+    font-size: 7rem;         /* 280rem ÷ 40 */
+    color: #666;
+    margin-right: 2.5rem;    /* 100rem ÷ 40 */
+}
+
+.tab.active {
+    background-color: #fff;
+    color: #333;
+    font-weight: 500;
+}
+
+/* 검색 섹션 */
+.search-section {
+    background-color: #f8f8f8;
+    padding: 10rem;          /* 400rem ÷ 40 */
+    margin-bottom: 10rem;    /* 400rem ÷ 40 */
+    border: 0.5rem solid #e0e0e0; /* 20rem ÷ 40 */
+}
+
+.search-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 7.5rem;   /* 300rem ÷ 40 */
+}
+
+.search-row:last-child {
+    margin-bottom: 0;
+}
+
+/* 주문 처리 상태 셀렉트 */
+.period-select {
+    margin-right: 10rem;     /* 400rem ÷ 40 */
+    padding: 4rem;           /* 160rem ÷ 40 */
+    border: 0.5rem solid #ddd; /* 20rem ÷ 40 */
+    font-size: 7rem;         /* 280rem ÷ 40 */
+}
+
+/* 기간 버튼 */
+.period-buttons {
+    display: flex;
+    gap: 5rem;               /* 200rem ÷ 40 */
+    margin-right: 10rem;     /* 400rem ÷ 40 */
+}
+
+.period-btn {
+    padding: 4rem 8rem;      /* 160rem ÷ 40, 320rem ÷ 40 */
+    border: 0.5rem solid #ddd; /* 20rem ÷ 40 */
+    background-color: #fff;
+    cursor: pointer;
+    font-size: 6.5rem;       /* 260rem ÷ 40 */
+    color: #666;
+}
+
+.period-btn.active {
+    background-color: #333;
+    color: #fff;
+    border-color: #333;
+}
+
+/* 날짜 입력 */
+.date-inputs {
+    display: flex;
+    align-items: center;
+    gap: 5rem;               /* 200rem ÷ 40 */
+}
+
+.date-input {
+    padding: 4rem 6rem;      /* 160rem ÷ 40, 240rem ÷ 40 */
+    border: 0.5rem solid #ddd; /* 20rem ÷ 40 */
+    font-size: 6.5rem;       /* 260rem ÷ 40 */
+    width: 75rem;            /* 3000rem ÷ 40 */
+}
+
+.date-separator {
+    margin: 0 4rem;          /* 160rem ÷ 40 */
+}
+
+/* 조회 버튼 */
+.search-btn {
+    padding: 4rem 10rem;     /* 160rem ÷ 40, 400rem ÷ 40 */
+    background-color: #333;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 6.5rem;       /* 260rem ÷ 40 */
+    margin-left: 10rem;      /* 400rem ÷ 40 */
+}
+
+/* 검색 안내 */
+.search-info {
+    font-size: 6rem;         /* 240rem ÷ 40 */
+    color: #666;
+    line-height: 1.5;
+}
+
+/* 주문 목록 */
+.order-list {
+    background-color: #fff;
+    border: 0.5rem solid #e0e0e0; /* 20rem ÷ 40 */
+}
+
+.no-orders {
+    text-align: center;
+    padding: 40rem 10rem;    /* 1600rem ÷ 40, 400rem ÷ 40 */
+    color: #999;
+    font-size: 7rem;         /* 280rem ÷ 40 */
+}
+
+/* 페이지네이션 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15rem;       /* 600rem ÷ 40 */
+    gap: 5rem;               /* 200rem ÷ 40 */
+}
+
+.pag-btn {
+    padding: 4rem 6rem;      /* 160rem ÷ 40, 240rem ÷ 40 */
+    border: 0.5rem solid #ddd; /* 20rem ÷ 40 */
+    background-color: #fff;
+    cursor: pointer;
+    font-size: 6.5rem;       /* 260rem ÷ 40 */
+    color: #666;
+}
+
+.pag-btn:hover {
+    background-color: #f0f0f0;
+}
+
+.pag-btn.active {
+    background-color: #333;
+    color: #fff;
+    border-color: #333;
+}
+
+/* 주문 상세 */
+.order-item {
+    border-bottom: 0.5rem solid #e0e0e0; /* 20rem ÷ 40 */
+    padding: 10rem;          /* 400rem ÷ 40 */
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 7.5rem;   /* 300rem ÷ 40 */
+}
+
+.order-date,
+.order-number {
+    font-size: 7rem;         /* 280rem ÷ 40 */
+}
+
+.order-number {
+    font-weight: 500;
+}
+
+.order-status {
+    padding: 2rem 4rem;      /* 80rem ÷ 40, 160rem ÷ 40 */
+    font-size: 6rem;         /* 240rem ÷ 40 */
+    border-radius: 1.5rem;   /* 60rem ÷ 40 */
+    font-weight: 500;
+}
+
+.status-confirmed {
+    background-color: #e3f2fd;
+    color: #1976d2;
+}
+
+.status-shipped {
+    background-color: #f3e5f5;
+    color: #7b1fa2;
+}
+
+.status-delivered {
+    background-color: #e8f5e8;
+    color: #388e3c;
+}
+
+/* 주문 상세 정보 */
+.order-details {
+    display: flex;
+    gap: 10rem;              /* 400rem ÷ 40 */
+}
+
+.order-amount {
+    font-size: 8rem;         /* 320rem ÷ 40 */
+    font-weight: bold;
+    color: #333;
+}
+
+.order-comment {
+    font-size: 6.5rem;       /* 260rem ÷ 40 */
+    color: #666;
+    margin-top: 2.5rem;      /* 100rem ÷ 40 */
+}

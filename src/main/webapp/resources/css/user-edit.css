@@ -1,0 +1,329 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Malgun Gothic', '맑은 고딕', Arial, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 50rem;      /* 1000rem ÷ 20 */
+    margin: 0 auto;
+    padding: 1rem;         /* 20rem ÷ 20 */
+    background-color: #fff;
+}
+
+.title {
+    text-align: center;
+    margin-bottom: 2rem;   /* 40rem ÷ 20 */
+    font-size: 1.2rem;     /* 24rem ÷ 20 */
+    font-weight: bold;
+    color: #333;
+}
+
+.section-title {
+    font-size: 1rem;       /* 20rem ÷ 20 */
+    font-weight: bolder;
+    margin-top: 1rem;      /* 20rem ÷ 20 */
+    padding: 0.75rem 1rem; /* (15rem ÷20)/(20rem ÷20) */
+    background-color: #f8f9fa;
+    position: relative;
+}
+
+.section-title.additional-info {
+    margin-top: 2rem;      /* 40rem ÷ 20 */
+}
+
+.required-info {
+    color: #007bff;
+    float: right;
+    font-size: 0.6rem;     /* 12rem ÷ 20 */
+    font-weight: normal;
+}
+
+.form-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 0.05rem solid #ddd; /* 1rem ÷ 20 */
+}
+
+.form-table tr {
+    border-bottom: 0.05rem solid #ddd; /* 1rem ÷ 20 */
+}
+
+.form-table tr:last-child {
+    border-bottom: none;
+}
+
+.form-table td.label {
+    background-color: #f8f9fa;
+    padding: 0.75rem 1rem; /* 15rem ÷20 / 20rem ÷20 */
+    width: 9rem;           /* 180rem ÷20 */
+    border-right: 0.05rem solid #ddd; /* 1rem ÷20 */
+    font-weight: 500;
+    vertical-align: top;
+    text-align: left;
+    font-size: 0.75rem;    /* 15rem ÷20 */
+}
+
+.form-table td.input {
+    padding: 0.75rem 1rem; /* 15rem ÷20 / 20rem ÷20 */
+    vertical-align: top;
+}
+
+.required {
+    color: #007bff;
+    margin-left: 0.1rem;   /* 2rem ÷20 */
+}
+
+.form-input {
+    padding: 0.4rem 0.6rem;      /* 8rem ÷20 / 12rem ÷20 */
+    border: 0.05rem solid #ddd;  /* 1rem ÷20 */
+    border-radius: 0.15rem;      /* 3rem ÷20 */
+    font-size: 0.65rem;          /* 13rem ÷20 */
+    font-family: inherit;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+.form-input.small {
+    width: 10rem;         /* 200rem ÷20 */
+}
+
+.form-input.medium {
+    width: 15rem;         /* 300rem ÷20 */
+}
+
+.form-input.large {
+    width: 20rem;         /* 400rem ÷20 */
+}
+
+.helper-text {
+    color: #666;
+    margin-left: 0.5rem;  /* 10rem ÷20 */
+    font-size: 0.6rem;    /* 12rem ÷20 */
+}
+
+.error-message {
+    color: #dc3545;
+    font-size: 0.6rem;    /* 12rem ÷20 */
+    margin-top: 0.25rem;  /* 5rem ÷20 */
+    display: block;
+}
+
+.success-message {
+    color: #28a745;
+    font-size: 0.6rem;    /* 12rem ÷20 */
+    margin-top: 0.25rem;  /* 5rem ÷20 */
+    display: block;
+}
+
+.message {
+    font-size: 0.6rem;    /* 12rem ÷20 */
+    margin-top: 0.25rem;  /* 5rem ÷20 */
+    display: none;
+}
+
+.btn-postcode,
+.btn {
+    padding: 0.4rem 0.75rem;      /* 8rem ÷20 / 15rem ÷20 */
+    border: 0.05rem solid #ddd;   /* 1rem ÷20 */
+    background-color: #f8f9fa;
+    color: #333;
+    cursor: pointer;
+    border-radius: 0.15rem;       /* 3rem ÷20 */
+    font-size: 0.65rem;           /* 13rem ÷20 */
+}
+
+.btn-postcode:hover,
+.btn:hover {
+    background-color: #e9ecef;
+}
+
+.btn:disabled {
+    background-color: #6c757d;
+    color: #fff;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* 주소 관련 스타일 */
+.address-section {
+    margin-bottom: 0.5rem;    /* 10rem ÷20 */
+}
+
+.address-row {
+    margin-bottom: 0.8rem;    /* 16rem ÷20 */
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;              /* 6rem ÷20 */
+}
+
+.address-row:last-child {
+    margin-bottom: 0;
+}
+
+.address-row label {
+    width: 5rem;              /* 100rem ÷20 */
+    font-size: 0.65rem;       /* 13rem ÷20 */
+    color: #666;
+    margin-right: 0.5rem;     /* 10rem ÷20 */
+    flex-shrink: 0;
+}
+
+.address-row input[type="text"] {
+    padding: 0.4rem 0.6rem;    /* 8rem ÷20 /12rem ÷20 */
+    border: 0.05rem solid #ddd;/* 1rem ÷20 */
+    border-radius: 0.15rem;    /* 3rem ÷20 */
+    font-size: 0.65rem;        /* 13rem ÷20 */
+    flex: 1;
+    max-width: 15rem;          /* 300rem ÷20 */
+}
+
+.address-row button {
+    padding: 0.4rem 0.75rem;   /* 8rem ÷20 /15rem ÷20 */
+    border: 0.05rem solid #ddd;/* 1rem ÷20 */
+    background-color: #f8f9fa;
+    color: #333;
+    cursor: pointer;
+    border-radius: 0.15rem;    /* 3rem ÷20 */
+    font-size: 0.65rem;        /* 13rem ÷20 */
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.address-row button:hover {
+    background-color: #e9ecef;
+}
+
+.phone-group {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;              /* 8rem ÷20 */
+}
+
+.phone-select {
+    width: 4rem;              /* 80rem ÷20 */
+    padding: 0.4rem;          /* 8rem ÷20 */
+    border: 0.05rem solid #ddd;/* 1rem ÷20 */
+    border-radius: 0.15rem;    /* 3rem ÷20 */
+    font-size: 0.65rem;       /* 13rem ÷20 */
+}
+
+.phone-input {
+    width: 4rem;              /* 80rem ÷20 */
+}
+
+.gender-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;                /* 20rem ÷20 */
+}
+
+.gender-group label {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;             /* 5rem ÷20 */
+    font-size: 0.65rem;       /* 13rem ÷20 */
+    cursor: pointer;
+}
+
+.birth-group {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;             /* 5rem ÷20 */
+}
+
+.birth-select {
+    padding: 0.4rem;          /* 8rem ÷20 */
+    border: 0.05rem solid #ddd;/* 1rem ÷20 */
+    border-radius: 0.15rem;    /* 3rem ÷20 */
+    font-size: 0.65rem;       /* 13rem ÷20 */
+}
+
+.birth-year {
+    width: 4rem;              /* 80rem ÷20 */
+}
+
+.birth-month,
+.birth-day {
+    width: 3rem;              /* 60rem ÷20 */
+}
+
+.submit-section {
+    text-align: center;
+    margin-top: 2rem;         /* 40rem ÷20 */
+    padding-top: 1.5rem;      /* 30rem ÷20 */
+    display: flex;
+    justify-content: center;
+    gap: 1rem;                /* 20rem ÷20 */
+}
+
+.submit-btn,
+.cancel-btn {
+    padding: 0.6rem 2rem;     /* 12rem ÷20 /40rem ÷20 */
+    font-size: 0.7rem;        /* 14rem ÷20 */
+    font-weight: bold;
+    border: none;
+    border-radius: 0.2rem;    /* 4rem ÷20 */
+    cursor: pointer;
+}
+
+.submit-btn {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.submit-btn:hover:not(:disabled) {
+    background-color: #0056b3;
+}
+
+.submit-btn:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+}
+
+.cancel-btn {
+    background-color: #6c757d;
+    color: #fff;
+}
+
+.cancel-btn:hover {
+    background-color: #5a6268;
+}
+
+/* 반응형 */
+@media (max-width: 38.4rem) { /* 768rem ÷20 */
+    .container {
+        padding: 0.5rem;       /* 10rem ÷20 */
+    }
+
+    .form-table td.label {
+        width: 6rem;           /* 120rem ÷20 */
+        padding: 0.6rem;       /* 12rem ÷20 */
+    }
+
+    .form-input.large,
+    .form-input.medium {
+        width: 100%;
+        max-width: 12.5rem;    /* 250rem ÷20 */
+    }
+
+    .submit-section {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .submit-btn,
+    .cancel-btn {
+        width: 10rem;          /* 200rem ÷20 */
+    }
+}

@@ -1,0 +1,52 @@
+<!-- header.html -->
+<header class="main-header" th:fragment="navbar">
+    <div class="top-bar">
+        <div class="logo">
+            <img src="/resources/images/common/logo.png" alt="GOPEOPLE 로고" />
+<!--            <span class="brand-name">GOPEOPLE</span>-->
+        </div>
+
+        <div class="search-box">
+            <input type="text" placeholder="검색어를 입력하세요" />
+            <button class="search-btn"><i class="bi bi-search"></i></button>
+        </div>
+
+        <div class="icon-group">
+            <a href="/order/cart"><i class="bi bi-cart-fill"></i></a>
+            <a href="#"><i class="bi bi-person-circle"></i></a>
+        </div>
+    </div>
+
+    <nav class="category-nav">
+        <ul class="main-menu">
+            <li th:each="menu : ${categoryMenuList}">
+                <a th:href="${menu.categoryLink}" th:text="${menu.categoryName}"></a>
+            </li>
+        </ul>
+
+        <ul class="sub-menu">
+            <li th:if="${session.loginId == null}">
+                <a th:href="@{/signup/signup}">회원가입</a>
+            </li>
+            <li th:if="${session.loginId == null}">
+                <a th:href="@{/login}">로그인</a>
+            </li>
+            <!-- 로그인 상태일 때 -->
+            <li th:if="${session.loginId != null}">
+                <a th:href="@{/logout}">로그아웃</a>
+            </li>
+            <li th:if="${session.loginId != null}">
+                <a th:href="@{/order-history}">주문조회</a>
+            </li>
+            <li th:if="${session.loginId != null}">
+                <a th:href="@{/mypage/page/mypage}">마이페이지</a>
+            </li>
+            <li>
+                <a th:href="@{/notice}">공지사항</a>
+            </li>
+            <li>
+                <a th:href="@{/inquiry}">QNA</a>
+            </li>
+        </ul>
+    </nav>
+</header>

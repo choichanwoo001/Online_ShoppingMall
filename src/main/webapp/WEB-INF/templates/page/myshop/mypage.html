@@ -1,0 +1,171 @@
+<div th:fragment="content">
+    <h1 class="category_tit">마이페이지</h1>
+    <div class="mypage-container">
+
+        <div class="mypage-content-wrapper">
+            <aside class="mypage-sidebar">
+                <nav>
+                    <ul>
+                        <li><a href="#" class="active">주문 조회</a></li>
+                        <li><a href="#">적립금</a></li>
+                        <li><a href="/mypage/page/coupon">쿠폰</a></li>
+                        <li><a href="/wishlist/wishlist">관심상품</a></li>
+                        <li><a href="#">나의 게시글</a></li>
+                        <li><a href="/user/user-edit">회원정보 수정</a></li>
+                        <li><a href="/logout">로그아웃</a></li>
+                    </ul>
+                </nav>
+            </aside>
+
+            <div class="mypage-main-content">
+                <section class="welcome-section">
+                    <p class="welcome-message">
+                        안녕하세요. <span class="highlight">도도님</span>!
+                        <br> 고객님의 회원등급은 <span class="highlight">프렌드프렌드</span> 입니다.
+                        <br> 0원 이상 구매 시 1%를 추가 적립받으실 수 있습니다.
+                    </p>
+                    <div class="summary-cards">
+                        <div class="summary-card">
+                            <span class="card-value">0원</span>
+                            <span class="card-label">적립금</span>
+                        </div>
+                        <div class="summary-card">
+                            <span class="card-value">1개</span>
+                            <span class="card-label">쿠폰</span>
+                        </div>
+                        <div class="summary-card">
+                            <span class="card-value">0회</span>
+                            <span class="card-label">총 주문</span>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="order-status-section">
+                    <h2 class="section-title">나의 주문처리 현황 <span class="recent-text">(최근 3개월)</span></h2>
+                    <div class="status-indicators">
+                        <div class="status-item">
+                            <span class="status-count">0</span>
+                            <span class="status-label">입금전</span>
+                        </div>
+                        <span class="status-arrow">›</span>
+                        <div class="status-item">
+                            <span class="status-count">0</span>
+                            <span class="status-label">배송준비중</span>
+                        </div>
+                        <span class="status-arrow">›</span>
+                        <div class="status-item">
+                            <span class="status-count">0</span>
+                            <span class="status-label">배송중</span>
+                        </div>
+                        <span class="status-arrow">›</span>
+                        <div class="status-item">
+                            <span class="status-count">0</span>
+                            <span class="status-label">배송완료</span>
+                        </div>
+                        <div class="status-summary">
+                            <div class="summary-detail">
+                                <span class="summary-detail-label">취소</span>
+                                <span class="summary-detail-value">0</span>
+                            </div>
+                            <div class="summary-detail">
+                                <span class="summary-detail-label">교환</span>
+                                <span class="summary-detail-value">0</span>
+                            </div>
+                            <div class="summary-detail">
+                                <span class="summary-detail-label">반품</span>
+                                <span class="summary-detail-value">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="recent-orders-section">
+                    <h2 class="section-title">최근 주문내역</h2>
+                    <p class="empty-message">주문 내역이 없습니다.</p>
+                </section>
+
+                <div class="product-sections-wrapper">
+                    <section class="wishlist-section">
+                        <h2 class="section-title">관심상품</h2>
+                        <p class="empty-message">관심상품 내역이 없습니다.</p>
+                    </section>
+
+                    <section class="recent-products-section">
+                        <h2 class="section-title">최근 본 상품</h2>
+                        <div class="product-list">
+                            <div class="product-item">
+                                <img src="https://via.placeholder.com/80x100" alt="상품 이미지" class="product-image">
+                                <div class="product-info">
+                                    <p class="product-name">A. 프린 박스티에 원피스</p>
+                                    <p class="product-price">
+                                        <span class="original-price">65,000원</span>
+                                        <span class="discounted-price">45,500원</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="product-item">
+                                <img src="https://via.placeholder.com/80x100" alt="상품 이미지" class="product-image">
+                                <div class="product-info">
+                                    <p class="product-name">A. villa 새틴 나시 원피스</p>
+                                    <p class="product-price">
+                                        <span class="original-price">65,000원</span>
+                                        <span class="discounted-price">45,500원</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="product-item">
+                                <img src="https://via.placeholder.com/80x100" alt="상품 이미지" class="product-image">
+                                <div class="product-info">
+                                    <p class="product-name">A. 세트 카라 포켓 맨투맨</p>
+                                    <p class="product-price">
+                                        <span class="original-price">29,000원</span>
+                                        <span class="discounted-price">18,900원</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <section class="my-posts-section">
+                    <h2 class="section-title">나의 게시글</h2>
+                    <p class="empty-message">게시물이 없습니다.</p>
+                </section>
+
+                <section class="myshopping-menu-section">
+                    <h2 class="section-title">마이쇼핑 메뉴</h2>
+                    <div class="menu-grid">
+                        <div class="menu-item">
+                            <strong class="menu-item-title">회원정보</strong>
+                            <p class="menu-item-desc">회원정보를 관리하실 수 있습니다.</p>
+                        </div>
+                        <div class="menu-item">
+                            <strong class="menu-item-title">주문내역</strong>
+                            <p class="menu-item-desc">주문내역을 확인하실 수 있습니다.</p>
+                        </div>
+                        <div class="menu-item">
+                            <strong class="menu-item-title">적립금</strong>
+                            <p class="menu-item-desc">상품 구매 시 사용가능합니다.</p>
+                        </div>
+                        <div class="menu-item">
+                            <strong class="menu-item-title">예치금</strong>
+                            <p class="menu-item-desc">상품 구매 시 사용가능합니다.</p>
+                        </div>
+                        <div class="menu-item">
+                            <strong class="menu-item-title">쿠폰</strong>
+                            <p class="menu-item-desc">보유하고 계신 쿠폰내역을 볼 수 있습니다.</p>
+                        </div>
+                        <div class="menu-item">
+                            <strong class="menu-item-title">배송 주소록 관리</strong>
+                            <p class="menu-item-desc">배송지를 등록하고 관리하실 수 있습니다.</p>
+                        </div>
+                        <div class="menu-item">
+                            <strong class="menu-item-title">게시물 관리</strong>
+                            <p class="menu-item-desc">작성하신 게시물을 관리하실 수 있습니다.</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>

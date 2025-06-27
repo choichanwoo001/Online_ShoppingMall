@@ -1,0 +1,45 @@
+<div th:fragment="content">
+    <div class="container">
+        <!-- 사이드바 -->
+        <aside class="sidebar">
+            <h2>마이페이지</h2>
+            <ul class="sidebar-menu">
+                <li><a href="#" onclick="navigateTo('points')">적립금</a></li>
+                <li><a href="/mypage/page/coupon" onclick="navigateTo('coupons')">쿠폰</a></li>
+            </ul>
+            <div class="sidebar-divider"></div>
+            <ul class="sidebar-menu">
+                <li><a href="/wishlist/wishlist" class="active" onclick="navigateTo('wishlist')">관심상품</a></li>
+                <li><a href="#" onclick="navigateTo('my-items')">나의 게시글</a></li>
+            </ul>
+            <div class="sidebar-divider"></div>
+            <ul class="sidebar-menu">
+                <li><a href="/user/user-edit" onclick="navigateTo('member-info')">회원 정보 수정</a></li>
+                <li><a href="/logout" onclick="navigateTo('logout')">로그아웃</a></li>
+            </ul>
+        </aside>
+
+        <!-- 메인 컨텐츠 -->
+        <div class="main-content">
+            <header class="page-header">
+                <h1 class="page-title">나의 관심상품</h1>
+                <span class="item-count" id="itemCount">총 0개</span>
+            </header>
+
+            <section class="product-list" id="productList">
+                <!-- 상품 리스트가 동적으로 여기에 추가됩니다 -->
+            </section>
+
+            <div class="bottom-actions">
+                <button class="btn-selected-delete" onclick="deleteSelected()">선택삭제</button>
+            </div>
+
+            <nav class="pagination" id="pagination">
+                <!-- 페이지네이션이 동적으로 여기에 추가됩니다 -->
+            </nav>
+        </div>
+    </div>
+
+    <link rel="stylesheet" th:href="@{/resources/css/wishlist.css}" />
+    <script th:src="@{/resources/js/wishlist.js}"></script>
+</div>

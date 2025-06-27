@@ -1,0 +1,227 @@
+<!--<div th:fragment="content">-->
+<!--    <script src="/resources/js/productDetail.js"></script>-->
+
+<!--    &lt;!&ndash; 상품 기본 정보 &ndash;&gt;-->
+<!--    <section id="product-basic-info" class="page-wrapper product-basic-info">-->
+<!--        <div class="spacer"></div>-->
+
+<!--        &lt;!&ndash; 이미지 영역 &ndash;&gt;-->
+<!--        <div class="product-info-container">-->
+<!--            <div class="main-image">-->
+<!--                <img th:src="${product.thumbnail}" alt="상품 이미지" class="main-product-image" />-->
+<!--            </div>-->
+<!--            <div class="thumbnails">-->
+<!--                <img th:each="img : ${product.images}" th:src="${img}" alt="썸네일" class="product-thumbnail" />-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; 상품 정보 &ndash;&gt;-->
+<!--        <div class="product-details">-->
+<!--            <form id="cart-form" action="/cart/add" method="post">-->
+<!--                <input type="hidden" name="title" th:value="${product.title}" />-->
+
+<!--                <h1 th:text="${product.title}" class="product-title">상품명</h1>-->
+
+<!--                <div class="description">-->
+<!--                    <div class="summary"><h3>SUMMARY</h3><div th:text="${product.summary}">설명</div></div>-->
+<!--                    <div class="model"><h3>MODEL</h3><div th:text="${product.model}">모델</div></div>-->
+<!--                    <div class="size-info"><h3>SIZE</h3><div th:text="${product.size}">사이즈</div></div>-->
+<!--                </div>-->
+
+<!--                &lt;!&ndash; 가격 &ndash;&gt;-->
+<!--                <div class="price" id="unit-price" th:attr="data-price=${product.productVariant.price}" th:text="${#numbers.formatInteger(product.productVariant.price, 0, 'COMMA')} + '원'">가격</div>-->
+
+<!--                &lt;!&ndash; 기타 정보 &ndash;&gt;-->
+<!--                <div class="save-point">SAVE POINT: <span th:text="${product.savePoint}"></span>원 (1%)</div>-->
+<!--                <div class="product-code">CODE: <span th:text="${product.code}"></span></div>-->
+<!--                <div class="product-comment">COMMENT: <span th:text="${product.comment}"></span></div>-->
+
+<!--                &lt;!&ndash; 옵션 &ndash;&gt;-->
+<!--                <div class="options">-->
+<!--                    <label>색상</label>-->
+<!--                    <select name="color">-->
+<!--                        <option th:each="color : ${product.colors}" th:value="${color.colorId}" th:text="${color.name}"></option>-->
+<!--                    </select>-->
+<!--                </div>-->
+<!--                <div class="options">-->
+<!--                    <label>사이즈</label>-->
+<!--                    <select name="size">-->
+<!--                        <option th:each="size : ${product.sizes}" th:value="${size.sizeId}" th:text="${size.name}"></option>-->
+<!--                    </select>-->
+<!--                </div>-->
+
+<!--                &lt;!&ndash; 수량 & 총 금액 &ndash;&gt;-->
+<!--                <div class="quantity-section">-->
+<!--                    <label for="quantity">수량: </label>-->
+<!--                    <input type="number" id="quantity" name="quantity" min="1" value="1" class="quantity-input" />-->
+<!--                </div>-->
+<!--                <div class="total-amount">총 상품금액(수량): <span id="total-amount">0원</span> (<span id="quantity-display">1</span>개)</div>-->
+
+<!--                &lt;!&ndash; 버튼 &ndash;&gt;-->
+<!--                <div class="button-group">-->
+<!--                    <button type="submit" class="cart-button">🛒 장바구니</button>-->
+<!--                    <button type="button" class="wishlist-button">❤️</button>-->
+<!--                    <button type="button" class="buy-button">🛍 구매하기</button>-->
+<!--                </div>-->
+<!--            </form>-->
+<!--        </div>-->
+
+<!--        <div class="spacer"></div>-->
+<!--    </section>-->
+
+<!--    &lt;!&ndash; 상세 이미지 &ndash;&gt;-->
+<!--    <section id="product-detail-info" class="product-detail-info">-->
+<!--        <div class="detail-container">-->
+<!--            <h2>상품 상세 정보</h2>-->
+<!--            <div th:text="${product.detailDescription}" class="detail-description"></div>-->
+<!--            <div>-->
+<!--                <img th:each="img : ${product.detailImages}" th:src="@{${img}}" alt="상세 이미지" class="detail-image" />-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </section>-->
+
+<!--    &lt;!&ndash; 리뷰 &ndash;&gt;-->
+<!--    <section id="product-review" class="product-review">-->
+<!--        <div class="review-container">-->
+<!--            <h2>리뷰</h2>-->
+
+<!--            <div th:each="review : ${product.reviews}" class="review-item">-->
+<!--                <strong th:text="${review.username}">사용자</strong>-->
+<!--                <span th:text="${review.createdDate}" class="review-date">날짜</span>-->
+
+<!--                &lt;!&ndash; 별점 &ndash;&gt;-->
+<!--                <div class="rating">-->
+<!--                    <span th:each="i : ${#numbers.sequence(1, 5)}" th:classappend="${i <= review.rating} ? 'filled-star' : 'empty-star'">★</span>-->
+<!--                </div>-->
+
+<!--                &lt;!&ndash; 내용 &ndash;&gt;-->
+<!--                <p th:text="${review.content}" class="review-content"></p>-->
+
+<!--                &lt;!&ndash; 이미지 &ndash;&gt;-->
+<!--                <div class="review-images">-->
+<!--                    <img th:each="img : ${review.images}" th:src="@{${img}}" alt="리뷰 이미지" class="review-image" />-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </section>-->
+<!--</div>-->
+
+<div th:fragment="content">
+    <script src="/resources/js/productDetail.js"></script>
+
+    <!-- 상품 기본 정보 -->
+    <section id="product-basic-info" class="page-wrapper product-basic-info">
+        <div class="spacer"></div>
+
+        <!-- 이미지 영역 -->
+        <div class="product-info-container">
+            <div class="main-image">
+                <img th:src="${product.thumbnail}" alt="상품 이미지" class="main-product-image" />
+            </div>
+            <div class="thumbnails">
+                <img th:each="img : ${product.images}" th:src="${img}" alt="썸네일" class="product-thumbnail" />
+            </div>
+        </div>
+
+        <!-- 상품 정보 -->
+        <div class="product-details">
+            <form id="cart-form" action="/cart/add" method="post">
+                <input type="hidden" name="title" th:value="${product.title}" />
+
+                <h1 th:text="${product.title}" class="product-title">상품명</h1>
+
+                <div class="description">
+                    <div class="summary"><h3>SUMMARY</h3><div th:text="${product.summary}">설명</div></div>
+                    <div class="model"><h3>MODEL</h3><div th:text="${product.model}">모델</div></div>
+                    <div class="size-info"><h3>SIZE</h3><div th:text="${product.size}">사이즈</div></div>
+                </div>
+
+                <!-- 가격 -->
+                <div class="price" id="unit-price" th:attr="data-price=${product.productVariant.price}" th:text="${#numbers.formatInteger(product.productVariant.price, 0, 'COMMA')} + '원'">가격</div>
+
+                <!-- 기타 정보 -->
+                <div class="save-point">SAVE POINT: <span th:text="${product.savePoint}"></span>원 (1%)</div>
+                <div class="product-code">CODE: <span th:text="${product.code}"></span></div>
+                <div class="product-comment">COMMENT: <span th:text="${product.comment}"></span></div>
+
+                <!-- 옵션 선택 -->
+                <div class="options">
+                    <label>색상</label>
+                    <select name="color" id="color-select">
+                        <option th:each="color : ${product.colors}" th:value="${color.colorId}" th:text="${color.name}"></option>
+                    </select>
+                </div>
+                <div class="options">
+                    <label>사이즈</label>
+                    <select name="size" id="size-select">
+                        <option th:each="size : ${product.sizes}" th:value="${size.sizeId}" th:text="${size.name}"></option>
+                    </select>
+                </div>
+
+                <!-- 수량 -->
+                <div class="quantity-section">
+                    <label for="quantity">수량: </label>
+                    <input type="number" id="quantity" name="quantity" min="1" value="1" class="quantity-input" />
+                </div>
+
+                <!-- 옵션 추가 버튼 -->
+                <div class="add-option-section">
+                    <button type="button" id="add-option">옵션 추가</button>
+                </div>
+
+                <!-- 옵션 리스트 -->
+                <ul id="option-list" class="option-list">
+                    <!-- JS로 동적 생성 -->
+                </ul>
+
+                <!-- 총 상품금액 -->
+                <div class="total-amount">총 상품금액(수량): <span id="total-amount">0원</span> (<span id="quantity-display">1</span>개)</div>
+
+                <!-- 버튼 -->
+                <div class="button-group">
+                    <button type="submit" class="cart-button">🛒 장바구니</button>
+                    <button type="button" class="wishlist-button">❤️</button>
+                    <button type="button" class="buy-button">🛍 구매하기</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="spacer"></div>
+    </section>
+
+    <!-- 상세 이미지 -->
+    <section id="product-detail-info" class="product-detail-info">
+        <div class="detail-container">
+            <h2>상품 상세 정보</h2>
+            <div th:text="${product.detailDescription}" class="detail-description"></div>
+            <div>
+                <img th:each="img : ${product.detailImages}" th:src="@{${img}}" alt="상세 이미지" class="detail-image" />
+            </div>
+        </div>
+    </section>
+
+    <!-- 리뷰 -->
+    <section id="product-review" class="product-review">
+        <div class="review-container">
+            <h2>리뷰</h2>
+
+            <div th:each="review : ${product.reviews}" class="review-item">
+                <strong th:text="${review.username}">사용자</strong>
+                <span th:text="${review.createdDate}" class="review-date">날짜</span>
+
+                <!-- 별점 -->
+                <div class="rating">
+                    <span th:each="i : ${#numbers.sequence(1, 5)}" th:classappend="${i <= review.rating} ? 'filled-star' : 'empty-star'">★</span>
+                </div>
+
+                <!-- 내용 -->
+                <p th:text="${review.content}" class="review-content"></p>
+
+                <!-- 이미지 -->
+                <div class="review-images">
+                    <img th:each="img : ${review.images}" th:src="@{${img}}" alt="리뷰 이미지" class="review-image" />
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

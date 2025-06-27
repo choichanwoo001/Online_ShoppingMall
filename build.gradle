@@ -15,17 +15,89 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    all {
+        // logback 제거 (log4j2로 대체)
+        exclude group: 'ch.qos.logback', module: 'logback-classic'
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
 dependencies {
     // Spring Web MVC (Jakarta EE 대응 버전)
-    implementation 'org.springframework:spring-webmvc:6.1.6'
+    implementation 'org.springframework:spring-webmvc:6.1.14'
 
-    // Thymeleaf Spring6 + Jakarta 대응
+    implementation 'org.springframework:spring-context:6.2.7'
+    implementation 'org.springframework:spring-jdbc:6.1.6'
+    implementation 'org.springframework:spring-tx:6.1.6'
+
+    // AOP
+    implementation 'org.springframework:spring-aop:6.1.6'
+    implementation 'org.springframework:spring-aspects:6.1.6'
+    implementation 'org.aspectj:aspectjweaver:1.9.22'
+
+    // Thymeleaf (Spring 6 대응)
     implementation 'org.thymeleaf:thymeleaf:3.1.2.RELEASE'
     implementation 'org.thymeleaf:thymeleaf-spring6:3.1.2.RELEASE'
 
     // Jakarta Servlet API
-    providedCompile 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+    compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.0'
 
-    // (Optional) Logging
-    implementation 'ch.qos.logback:logback-classic:1.4.14'
+    implementation 'jakarta.annotation:jakarta.annotation-api:2.1.1'
+
+    // Log4j2 core + API
+    implementation 'org.apache.logging.log4j:log4j-slf4j2-impl:2.20.0'
+
+    // Lombok
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+    // Lombok for test
+    testCompileOnly 'org.projectlombok:lombok:1.18.30'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+    // MyBatis core
+    implementation 'org.mybatis:mybatis:3.5.13'
+
+    // MySQL JDBC 드라이버
+    implementation group: 'com.mysql', name: 'mysql-connector-j', version: '9.3.0'
+
+    // MyBatis-Spring 연동 -
+    implementation group: 'org.mybatis', name: 'mybatis-spring', version: '3.0.5'
+
+    // JUnit 5 test
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.3'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.3'
+
+    testImplementation 'org.springframework:spring-test:5.3.27'
+    
+    // thymeleaf
+    implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.1.0'
+
+    // Jackson for JSON
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.15.2'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.15.2'
+
+    // Spring Context Support (JavaMail 지원)
+    implementation 'org.springframework:spring-context-support:6.1.6' // 버전 맞추기
+
+    // JavaMail
+    implementation 'com.sun.mail:jakarta.mail:2.0.1' // jakarta.mail 사용
+
+    // jBCrypt 라이브러리(passwordEncoder)
+    implementation 'org.mindrot:jbcrypt:0.4'
+
+    // localDataTime 변환을 위한 라이브러리
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2'
+
 }
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs += ['-parameters']
+}
+
+    

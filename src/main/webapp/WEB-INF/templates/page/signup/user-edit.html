@@ -1,0 +1,207 @@
+<div th:fragment="content">
+    <div class="container">
+        <h1 class="title">회원 정보 수정</h1>
+
+        <form id="userEditForm">
+            <!-- 기본정보 -->
+            <div class="section-title">
+                기본정보
+                <span class="required-info">* 필수입력사항</span>
+            </div>
+
+            <table class="form-table">
+                <tr>
+                    <td class="label">
+                        아이디 <span class="required">*</span>
+                    </td>
+                    <td class="input">
+                        <input type="text" id="userId" name="userId" class="form-input small" readonly>
+                        <span class="helper-text">(영문+숫자혼용, 4~16자)</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="label">
+                        비밀번호 <span class="required">*</span>
+                    </td>
+                    <td class="input">
+                        <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                class="form-input small"
+                                maxlength="16"
+                                placeholder="새 비밀번호 입력"
+                        >
+                        <span class="helper-text">(영문 대소문자/숫자 4자~16자)</span>
+                        <span id="passwordMessage" class="error-message"></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="label">
+                        비밀번호 확인 <span class="required">*</span>
+                    </td>
+                    <td class="input">
+                        <input
+                                type="password"
+                                id="passwordConfirm"
+                                name="passwordConfirm"
+                                class="form-input small"
+                                maxlength="16"
+                                placeholder="새 비밀번호 확인"
+                        >
+                        <span id="passwordConfirmMessage" class="error-message"></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="label">
+                        이름 <span class="required">*</span>
+                    </td>
+                    <td class="input">
+                        <input
+                                type="text"
+                                id="userName"
+                                name="userName"
+                                class="form-input small"
+                                maxlength="20"
+                        >
+                        <span id="userNameMessage" class="error-message"></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="label">주소</td>
+                    <td class="input">
+                        <div class="address-section">
+                            <div class="address-row">
+                                <label>우편번호</label>
+                                <input type="text" id="postcode" name="postcode" placeholder="우편번호" readonly>
+                                <button type="button" class="btn-postcode" onclick="searchPostcode()">우편번호 검색</button>
+                            </div>
+                            <div class="address-row">
+                                <label>주소</label>
+                                <input type="text" id="address" name="address" placeholder="주소" readonly>
+                            </div>
+                            <div class="address-row">
+                                <label>상세 주소</label>
+                                <input
+                                        type="text"
+                                        id="detailAddress"
+                                        name="detailAddress"
+                                        placeholder="나머지 주소(선택 입력 가능)"
+                                >
+                            </div>
+                            <!-- ERD에 맞춘 숨김 필드들 -->
+                            <input type="hidden" id="roadAddress1" name="roadAddress1">
+                            <input type="hidden" id="roadAddress2" name="roadAddress2">
+                            <input type="hidden" id="jibunAddress" name="jibunAddress">
+                            <input type="hidden" id="englishAddress" name="englishAddress">
+                            <input type="hidden" id="zipCode" name="zipCode">
+                            <input type="hidden" id="addressName" name="addressName">
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="label">휴대전화</td>
+                    <td class="input">
+                        <div class="phone-group">
+                            <select id="mobilePhone1" name="mobilePhone1" class="phone-select">
+                                <option value="">선택</option>
+                                <option value="010">010</option>
+                                <option value="011">011</option>
+                                <option value="016">016</option>
+                                <option value="017">017</option>
+                                <option value="018">018</option>
+                                <option value="019">019</option>
+                            </select>
+                            <span>-</span>
+                            <input
+                                    type="text"
+                                    id="mobilePhone2"
+                                    name="mobilePhone2"
+                                    class="form-input phone-input"
+                                    maxlength="4"
+                            >
+                            <span>-</span>
+                            <input
+                                    type="text"
+                                    id="mobilePhone3"
+                                    name="mobilePhone3"
+                                    class="form-input phone-input"
+                                    maxlength="4"
+                            >
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="label">
+                        이메일 <span class="required">*</span>
+                    </td>
+                    <td class="input">
+                        <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                class="form-input medium"
+                                maxlength="100"
+                        >
+                        <div id="emailMessage" class="message"></div>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- 추가정보 -->
+            <div class="section-title additional-info">
+                추가정보
+            </div>
+
+            <table class="form-table">
+                <tr>
+                    <td class="label">성별</td>
+                    <td class="input">
+                        <div class="gender-group">
+                            <label>
+                                <input type="radio" name="gender" value="M">
+                                남자
+                            </label>
+                            <label>
+                                <input type="radio" name="gender" value="F">
+                                여자
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="label">생년월일</td>
+                    <td class="input">
+                        <div class="birth-group">
+                            <select id="birthYear" name="birthYear" class="birth-select birth-year">
+                                <option value="">년</option>
+                            </select>
+                            <select id="birthMonth" name="birthMonth" class="birth-select birth-month">
+                                <option value="">월</option>
+                            </select>
+                            <select id="birthDay" name="birthDay" class="birth-select birth-day">
+                                <option value="">일</option>
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+            <div class="submit-section">
+                <button type="button" id="cancelBtn" class="cancel-btn">취소</button>
+                <button type="submit" id="submitBtn" class="submit-btn">회원정보수정</button>
+            </div>
+        </form>
+    </div>
+
+    <link rel="stylesheet" th:href="@{/resources/css/user-edit.css}" />
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script th:src="@{/resources/js/user-edit.js}"></script>
+</div>

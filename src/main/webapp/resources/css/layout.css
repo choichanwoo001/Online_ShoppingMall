@@ -1,0 +1,254 @@
+* {
+	margin:0;
+	padding:0;
+	box-sizing:border-box;
+}
+.flex_wrapper,.d-flex {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: justify;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+}
+.align-center {
+	align-items:center;
+}
+
+.wrap_1280 {
+	max-width:1280px;
+	width:100%;
+	margin:0 auto;
+}
+.wrap_1024 {
+	max-width:1024px;
+	width:100%;
+	margin:0 auto;
+}
+
+.mb_10 { margin-bottom:0.5rem;}
+.mb_15 { margin-bottom:0.75rem;}
+.mb_20 { margin-bottom:1rem;}
+.mb_30 { margin-bottom:1.5rem;}
+.mb_40 { margin-bottom:2rem;}
+.mb_45 { margin-bottom:2.25rem;}
+.mb_50 { margin-bottom:2.5rem;}
+.mb_55 { margin-bottom:2.75rem;}
+.mb_60 { margin-bottom:3rem;}
+.mb_70 { margin-bottom:3.5rem;}
+.mb_80 { margin-bottom:4rem;}
+.mb_85 { margin-bottom:4.25rem;}
+.mb_120 { margin-bottom:6rem;}
+
+
+
+/* ---------------아래 커스텀 추가 상단 변경 x-------------------- */
+/* --------- header ------------ */
+.main-header {
+	border-bottom: 0.05rem solid #eee;
+	.top-bar {
+		display: flex;
+		display:-webkit-flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 1.2rem 2rem;
+	}
+
+	.logo {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
+	.logo img {
+		height: 2.5rem;
+	}
+
+	.brand-name {
+		font-size: 0.9rem;
+		font-weight: 700;
+		color: #000;
+	}
+
+	.search-box {
+		display: flex;
+		align-items: center;
+		border: 0.05rem solid #ddd;
+		border-radius: 1.2rem;
+		padding: 0.3rem 0.6rem;
+		width: 12.5rem;
+	}
+
+	.search-box input {
+		border: none;
+		outline: none;
+		flex: 1;
+	}
+
+	.search-btn {
+		background: none;
+		border: none;
+		font-size: 0.8rem;
+		cursor: pointer;
+	}
+
+	.icon-group a {
+		margin-left: 0.8rem;
+		color:#000;
+		font-weight:bold;
+	}
+
+	.icon-group img {
+		width: 1.2rem;
+		height: 1.2rem;
+	}
+}
+
+.category-nav {
+	display: flex;
+	justify-content: space-between;
+	padding: 0.6rem 2rem;
+	background-color: #fff;
+}
+
+.main-menu, .sub-menu {
+	display: flex;
+	gap: 1rem;
+	list-style: none;
+}
+
+.main-menu li a,
+.sub-menu li a {
+	text-decoration: none;
+	font-size: 0.7rem;
+	font-weight: 500;
+	color: #111;
+}
+
+.main-menu li a:hover,
+.sub-menu li a:hover {
+	color: #007aff;
+}
+
+
+/* 페이지네이션 */
+.pagination ul {
+	display: flex;
+	justify-content: center;
+	gap: 0.4rem;
+	padding: 1.6rem 0;
+	list-style: none;
+	margin-top:2rem;
+}
+
+.pagination li a {
+	padding: 0.4rem 0.6rem;
+	border-radius: 0.2rem;
+	text-decoration: none;
+	font-size: 0.7rem;
+	color: #555;
+}
+
+.pagination li.active a {
+	font-weight: bold;
+	color: #000;
+}
+/* --------- footer ------------ */
+footer {
+	background:#f7f7f7;
+	padding:2rem 0;
+	text-align:center;
+	font-size: 0.7rem;
+	color: #333;
+}
+
+.footer-container {
+	display: flex;
+	justify-content: space-between;
+	align-items: stretch;
+	flex-wrap: wrap;
+	gap: 1.5rem;
+	margin-bottom: 1.5rem;
+	text-align: left;
+}
+
+.footer-column {
+	flex: 1;
+	min-width: 0;
+}
+
+.footer-column h4 {
+	font-size: 0.75rem;
+	font-weight: bold;
+	margin-bottom: 0.75rem;
+	color: #000;
+}
+
+.footer-column p {
+	margin-bottom: 0.4rem;
+	line-height: 1.5;
+	font-size: 0.68rem;
+	color: #444;
+}
+
+.footer-column .footer-small {
+	font-size: 0.6rem;
+	color: #999;
+	margin-top: 0.3rem;
+}
+
+.footer-column img {
+	width: 5rem;
+}
+
+.footer-divider {
+	width: 0.05rem;
+	background-color: #ddd;
+	align-self: stretch;
+}
+
+.footer-nav {
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	gap: 1.2rem;
+	border-top: 0.05rem solid #ccc;
+	padding-top: 1.2rem;
+	margin-top: 1rem;
+}
+
+.footer-nav a {
+	color: #666;
+	text-decoration: none;
+	font-size: 0.65rem;;
+}
+
+.footer-nav a:hover {
+	color: #000;
+}
+
+.footer-column .footer-copyright {
+	margin-top: 1rem;
+	font-size: 0.5rem;
+	color: #5a6268;
+}
+
+.footer-container .text-red {
+	color: red;
+}
+
+.footer-btn {
+	display: inline-block;
+	padding: 0.4rem 0.9rem;
+	background-color: #333;
+	color: #fff;
+	text-decoration: none;
+	border-radius: 0.2rem;
+	font-size: 0.7em;
+	transition: background-color 0.2s ease;
+	margin-top: 0.5rem;
+}
+
+.footer-btn:hover {
+	background-color: #555;
+}

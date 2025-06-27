@@ -1,0 +1,80 @@
+<div th:fragment="content">
+    <!-- 상단 카테고리 제목 -->
+    <h1 class="category_tit"
+        th:text="${pageView != null && pageView.filters != null && pageView.filters['subCategory'] != null
+              ? pageView.filters['subCategory']
+              : (pageView.filters['category'] ?: 'CATEGORY')}">
+        KNIT
+    </h1>
+
+    <!-- 중분류 카테고리 리스트 -->
+    <div class="subCategory">
+        <ul>
+            <li th:each="subCategory : ${subCategoryMenuList}" th:classappend="${subCategory.categoryName == pageView.filters['subCategory']} ? 'active'">
+                <a th:href="${subCategory.link}" th:text="${subCategory.categoryName}"></a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- 정렬 기준 -->
+    <div class="sort-options" th:if="${pageView.baseUrl != null}">
+        <a th:href="@{${pageView.baseUrl}(sortBy='SALE_COUNT', sort='DESC')}"
+           th:classappend="${pageView.sortBy == 'SALE_COUNT' and pageView.sort == 'DESC'} ? ' active'"
+           class="sort-link">판매순</a>
+
+        <a th:href="@{${pageView.baseUrl}(sortBy='CREATED_AT', sort='DESC')}"
+           th:classappend="${pageView.sortBy == 'CREATED_AT' and pageView.sort == 'DESC'} ? ' active'"
+           class="sort-link">최신순</a>
+
+        <a th:href="@{${pageView.baseUrl}(sortBy='NAME', sort='ASC')}"
+           th:classappend="${pageView.sortBy == 'NAME' and pageView.sort == 'ASC'} ? ' active'"
+           class="sort-link">상품명</a>
+
+        <a th:href="@{${pageView.baseUrl}(sortBy='PRICE', sort='ASC')}"
+           th:classappend="${pageView.sortBy == 'PRICE' and pageView.sort == 'ASC'} ? ' active'"
+           class="sort-link">낮은가격</a>
+
+        <a th:href="@{${pageView.baseUrl}(sortBy='PRICE', sort='DESC')}"
+           th:classappend="${pageView.sortBy == 'PRICE' and pageView.sort == 'DESC'} ? ' active'"
+           class="sort-link">높은가격</a>
+    </div>
+
+    <!-- 상품 리스트 -->
+    <div class="product_list_area">
+        <ul class="product_list">
+            <li th:each="product : ${pageView.pageResponseDto.items}">
+                <a th:href="@{'/product/' + ${product.id}}">
+                    <img th:src="${product.thumbnail}" alt="" />
+                    <h5 th:text="${product.title}"></h5>
+                    <p><span th:text="${product.price}">상품 가격</span>원</p>
+                    <p class="p_comment" th:text="${product.comment}">상품 코멘트</p>
+                    <p class="p_review">
+                        REVIEW : <span th:text="${product.reviewCount}">리뷰 개수</span>
+                    </p>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- 페이징 영역 -->
+    <div class="pagination" th:if="${pageView.baseUrl != null and pageView.pageResponseDto.totalPages > 1}">
+        <ul>
+            <li th:if="${pageView.pageResponseDto.hasPrev}">
+                <a th:href="@{${pageView.baseUrl}(page=${pageView.pageResponseDto.page - 1}, sortBy=${pageView.sortBy}, sort=${pageView.sort})}">
+                    « 이전
+                </a>
+            </li>
+
+            <li th:each="i : ${#numbers.sequence(1, pageView.pageResponseDto.totalPages)}"
+                th:classappend="${i == pageView.pageResponseDto.page} ? 'active'">
+                <a th:href="@{${pageView.baseUrl}(page=${i}, sortBy=${pageView.sortBy}, sort=${pageView.sort})}" th:text="${i}">1</a>
+            </li>
+
+            <li th:if="${pageView.pageResponseDto.hasNext}">
+                <a th:href="@{${pageView.baseUrl}(page=${pageView.pageResponseDto.page + 1}, sortBy=${pageView.sortBy}, sort=${pageView.sort})}">
+                    다음 »
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
