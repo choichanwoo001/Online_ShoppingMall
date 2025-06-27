@@ -11,8 +11,14 @@
     <link rel="stylesheet" th:href="@{/resources/css/layout.css}" />
     <link rel="stylesheet" th:href="@{/resources/css/popup.css}" />
 
+    <link rel="stylesheet" th:href="@{/resources/css/order.css}" />
+    <link rel="stylesheet" th:href="@{/resources/css/ordercomplete.css}" />
+
+
     <link rel="stylesheet" th:href="@{/resources/css/swiper.min.css}" />
     <link rel="stylesheet" th:href="@{/resources/css/styles.css}" />
+    <link rel="stylesheet" th:href="@{/resources/css/main.css}" />
+
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <script th:src="@{/resources/js/jquery-3.2.0.min.js}"></script>
@@ -21,7 +27,7 @@
     <script th:src="@{/resources/js/common.js}"></script>
 </head>
 <body>
-<div th:replace="layout/header :: navbar"></div>
+<div th:replace="~{layout/header :: navbar}"></div>
 <main class="contents_area">
     <div class="wrap_1280">
         <div th:replace="~{page/__${contentPath}__ :: content}"></div>
