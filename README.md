@@ -38,6 +38,7 @@
 1. 메뉴 상단 `Run > Edit Configurations...`
 2. `➕` 클릭 → `Tomcat Server > Local` 선택
 3. 이름: `Tomcat Dev`
+4. VM 옵션에 `-Dspring.profiles.active=dev` 추가
 
 #### ▶ Server 탭
 - `HTTP port`: 기본값 8080 (필요 시 변경)
