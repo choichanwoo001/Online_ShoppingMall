@@ -1,7 +1,7 @@
 package com.fast_campus_12.not_found.shop.mapper;
 
-import com.fast_campus_12.not_found.shop.notice.dto.NoticeDto;
-import com.fast_campus_12.not_found.shop.notice.dto.request.NoticePageRequest;
+import com.fast_campus_12.not_found.shop.domain.notice.dto.NoticeDto;
+import com.fast_campus_12.not_found.shop.domain.notice.dto.request.NoticePageRequest;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

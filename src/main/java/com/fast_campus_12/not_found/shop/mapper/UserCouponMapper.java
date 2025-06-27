@@ -1,6 +1,6 @@
 package com.fast_campus_12.not_found.shop.mapper;
 
-import com.fast_campus_12.not_found.shop.dto.coupon.MyPageUserCouponDto;
+import com.fast_campus_12.not_found.shop.domain.cupon.dto.MyPageUserCouponDto;
 import org.apache.ibatis.annotations.*;
 
 import java.time.LocalDateTime;

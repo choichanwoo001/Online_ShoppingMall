@@ -1,6 +1,6 @@
 package com.fast_campus_12.not_found.shop.mapper;
 
-import com.fast_campus_12.not_found.shop.auth.dto.LoginHistory;
+import com.fast_campus_12.not_found.shop.domain.auth.dto.LoginHistory;
 import org.apache.ibatis.annotations.*;
 import java.time.LocalDateTime;
 import java.util.List;

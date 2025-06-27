@@ -1,8 +1,8 @@
 package com.fast_campus_12.not_found.shop.mapper;
 
-import com.fast_campus_12.not_found.shop.product.dto.CartItemViewDto;
-import com.fast_campus_12.not_found.shop.product.model.Cart;
-import com.fast_campus_12.not_found.shop.product.model.CartItem;
+import com.fast_campus_12.not_found.shop.domain.product.dto.CartItemViewDto;
+import com.fast_campus_12.not_found.shop.domain.product.model.Cart;
+import com.fast_campus_12.not_found.shop.domain.product.model.CartItem;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
