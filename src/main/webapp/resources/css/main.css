@@ -2,54 +2,103 @@
 .main-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 24px 16px; /* 좌우 패딩 살짝 줄임 */
+    padding: 24px 16px;
 }
 
-/* 배너 영역 */
+/* 배너 영역 - 화면의 70% 차지하도록 수정 */
 .main-container .banner-section {
-    display: flex;
-    gap: 24px;
-    margin-bottom: 48px;
-    height: 480px; /* 배너 영역 전체 높이 살짝 증가 */
-    flex-wrap: wrap; /* 모바일 대비 줄바꿈 허용 */
+    width: 70%; /* 화면의 70%만 차지 */
+    margin: 0 auto 48px auto; /* 가운데 정렬 */
+    height: 400px; /* 비율에 맞게 높이 조정 (1200:800 = 3:2) */
+    /* flex 관련 속성 제거 - Swiper가 내부에서 처리 */
 }
 
-/* 배너 공통 스타일 */
-.main-container .big-banner,
-.main-container .small-banner {
+/* 큰 배너 스타일 수정 */
+.main-container .big-banner {
+    width: 100%;
+    height: 100%;
     border-radius: 16px;
     overflow: hidden;
     position: relative;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* 큰 배너 flex 비율 확대 + 높이 100% 꽉 채우기 */
-.main-container .big-banner {
-    flex: 2.7 1 0%;
+/* Swiper 컨테이너 크기 명시적 설정 */
+.main-container .big-swiper {
+    width: 100%;
     height: 100%;
-    min-width: 320px; /* 너무 작아지는 것 방지 */
 }
 
-/* 작은 배너 flex 비율 유지 + 높이 100% 꽉 채우기 */
-.main-container .small-banner {
-    flex: 1 1 0%;
-    height: 100%;
-    min-width: 200px;
+/* Swiper wrapper 설정 추가 */
+.main-container .big-swiper .swiper-wrapper {
+    display: flex; /* Swiper가 필요로 하는 flex */
+    align-items: stretch;
 }
 
-/* 배너 이미지 - width, height 모두 100%로 꽉 채우고 object-fit: cover */
-.main-container .big-banner img,
-.main-container .small-banner img {
+/* Swiper 슬라이드 크기 명시적 설정 */
+.main-container .big-swiper .swiper-slide {
+    width: 100% !important; /* 슬라이드가 100% 차지하도록 강제 */
+    flex-shrink: 0; /* 축소 방지 */
+    display: flex; /* 내부 컨텐츠 정렬을 위해 */
+}
+
+/* 배너 링크와 컨테이너 */
+.main-container .banner-link,
+.main-container .banner-container {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* 배너 이미지 - 컨테이너에 맞게 꽉 채우기 */
+.main-container .banner-image {
     width: 100%;
     height: 100%;
     display: block;
-    object-fit: cover;
+    object-fit: cover; /* 비율 유지하면서 컨테이너 채우기 */
+}
+
+/* 배너 없을 때 표시 */
+.main-container .no-banner {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f5f5f5;
+    color: #666;
+}
+
+/* 네비게이션 버튼 스타일 */
+.main-container .swiper-button-next,
+.main-container .swiper-button-prev {
+    color: #fff;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+}
+
+.main-container .swiper-button-next:after,
+.main-container .swiper-button-prev:after {
+    font-size: 18px;
+}
+
+/* 페이지네이션 스타일 */
+.main-container .swiper-pagination-bullet {
+    background: #fff;
+    opacity: 0.7;
+}
+
+.main-container .swiper-pagination-bullet-active {
+    background: #fff;
+    opacity: 1;
 }
 
 /* 상품 리스트 */
 .main-container .product-list {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* 카드 최소 너비 좀 키움 */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 24px;
 }
 

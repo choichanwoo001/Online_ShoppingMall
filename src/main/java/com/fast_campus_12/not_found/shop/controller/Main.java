@@ -15,8 +15,8 @@ public class Main {
     public String orderRenderPage(Model model) {
         model.addAttribute("contentPath", "main");
         List<MainBannerDto> bigBanners = List.of(
-                new MainBannerDto("index3.jpg", "/event/1"), // image: 사진링크 path: href링크
-                new MainBannerDto("index7.jpg", "/event/2"));
+                new MainBannerDto("index.jpg", "/event/1"), // image: 사진링크 path: href링크
+                new MainBannerDto("index3.jpg", "/event/2"));
         model.addAttribute("bigBanners", bigBanners);
         return "layout/base";
 
