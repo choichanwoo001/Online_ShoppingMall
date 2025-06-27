@@ -5,7 +5,7 @@
 
             <div class="login-topbar">
                 <a th:href="@{/#}" class="btn-back">←</a>
-                <a th:href="@{/#}" class="btn-home">⌂</a>
+                <a th:href="@{/}" class="btn-home">⌂</a>
             </div>
 
             <div class="logo-area">
@@ -32,11 +32,11 @@
                 <button type="submit" class="btn-login">기존 회원 로그인</button>
 
                 <div class="login-links">
-                    <span class="find-id"><a th:href="@{/#}">아이디 찾기</a></span>
+                    <span class="find-id"><a th:href="@{/id/findId}">아이디 찾기</a></span>
                     <span class="divider">|</span>
-                    <span class="find-pw"><a th:href="@{/#}">비밀번호 찾기</a></span>
+                    <span class="find-pw"><a th:href="@{/password/findPw}">비밀번호 찾기</a></span>
                     <span class="divider">|</span>
-                    <span class="signup"><a th:href="@{/#}">회원가입</a></span>
+                    <span class="signup"><a th:href="@{/signup/signup}">회원가입</a></span>
                 </div>
             </form>
         </section>

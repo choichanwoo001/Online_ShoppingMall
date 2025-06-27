@@ -28,27 +28,21 @@ public class MyPageController {
                                     Model model,
                                     HttpSession session) {
         // 세션에서 사용자 ID 가져오기
-        Long userId = (Long) session.getAttribute("userId");
+        String loginId = (String) session.getAttribute("loginId");
 //        Long userId = 1L;
-        if (userId == null) {
+        if (loginId == null) {
             // 로그인되지 않은 경우 로그인 페이지로 리다이렉트
             return "redirect:/login";
         }
 
         switch (pageName) {
-//            case "mileage":
-//                MyPageMileageDto mileageData = myPageService.getUserMileageData(userId);
-//                List<MyPageMileageHistoryDto> mileageHistory = myPageService.getMileageHistory(userId);
-//
-//                model.addAttribute("mileageData", mileageData);
-//                model.addAttribute("mileageHistory", mileageHistory);
-//                model.addAttribute("pageTitle", "적립금");
-//                model.addAttribute("pageSubtitle", "적립금 현황을 확인하실 수 있습니다.");
-//                break;
+            case "mypage":
+                model.addAttribute("pageTitle", "마이 페이지");
+                break;
 
             case "coupon":
-                List<MyPageUserCouponDto> userCoupons = myPageService.getUserCoupons(userId);
-                MyPageCouponStatsDto couponStats = myPageService.getCouponStats(userId);
+                List<MyPageUserCouponDto> userCoupons = myPageService.getUserCoupons(loginId);
+                MyPageCouponStatsDto couponStats = myPageService.getCouponStats(loginId);
 
                 model.addAttribute("userCoupons", userCoupons);
                 model.addAttribute("couponStats", couponStats);
@@ -74,16 +68,16 @@ public class MyPageController {
                                                               HttpSession session) {
         try {
             // 세션에서 사용자 ID 가져오기
-            Long userId = (long) session.getAttribute("userId");
+            String loginId = (String) session.getAttribute("loginId");
 //            Long userId = 1L;
-            if (userId == null) {
+            if (loginId == null) {
                 return ResponseEntity.status(401).body(Map.of(
                         "success", false,
                         "message", "로그인이 필요합니다."
                 ));
             }
 
-            MyPageCouponRegisterDto result = myPageService.registerCoupon(userId, request.getCouponCode());
+            MyPageCouponRegisterDto result = myPageService.registerCoupon(loginId, request.getCouponCode());
 
             return ResponseEntity.ok(Map.of(
                     "success", true,

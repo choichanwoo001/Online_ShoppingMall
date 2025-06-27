@@ -11,7 +11,7 @@ body {
 }
 
 .container {
-    max-width: 600rem;      /* 24000rem ÷ 40 */
+    max-width: 60rem;     /* 600rem ÷ 10 */
     margin: 0 auto;
     display: flex;
     min-height: 100vh;
@@ -19,16 +19,16 @@ body {
 
 /* 사이드바 */
 .sidebar {
-    width: 100rem;          /* 4000rem ÷ 40 */
+    width: 10rem;         /* 100rem ÷ 10 */
     background-color: #fff;
-    padding: 15rem 10rem;   /* 600rem ÷ 40 = 15rem, 400rem ÷ 40 = 10rem */
-    border-right: 0.5rem solid #e0e0e0; /* 20rem ÷ 40 */
+    padding: 1.5rem 1rem; /* 15rem ÷ 10, 10rem ÷ 10 */
+    border-right: 0.05rem solid #e0e0e0; /* 0.5rem ÷ 10 */
 }
 
 .sidebar h2 {
-    font-size: 9rem;        /* 360rem ÷ 40 */
+    font-size: 0.9rem;    /* 9rem ÷ 10 */
     font-weight: bold;
-    margin-bottom: 15rem;   /* 600rem ÷ 40 */
+    margin-bottom: 1.5rem;/* 15rem ÷ 10 */
     color: #333;
 }
 
@@ -37,16 +37,16 @@ body {
 }
 
 .sidebar-menu li {
-    margin-bottom: 7.5rem;  /* 300rem ÷ 40 */
+    margin-bottom: 0.75rem; /* 7.5rem ÷ 10 */
 }
 
 .sidebar-menu a {
     display: block;
-    padding: 4rem 0;        /* 160rem ÷ 40 */
+    padding: 0.4rem 0;    /* 4rem ÷ 10 */
     color: #666;
-    font-size: 7rem;        /* 280rem ÷ 40 */
+    font-size: 0.7rem;    /* 7rem ÷ 10 */
     text-decoration: none;
-    border-bottom: 0.5rem solid transparent; /* 20rem ÷ 40 */
+    border-bottom: 0.05rem solid transparent; /* 0.5rem ÷ 10 */
 }
 
 .sidebar-menu a:hover {
@@ -60,15 +60,15 @@ body {
 }
 
 .sidebar-divider {
-    height: 0.5rem;         /* 20rem ÷ 40 */
+    height: 0.05rem;      /* 0.5rem ÷ 10 */
     background-color: #e0e0e0;
-    margin: 10rem 0;        /* 400rem ÷ 40 */
+    margin: 1rem 0;       /* 10rem ÷ 10 */
 }
 
 /* 메인 컨텐츠 */
 .main-content {
     flex: 1;
-    padding: 15rem;         /* 600rem ÷ 40 */
+    padding: 1.5rem;      /* 15rem ÷ 10 */
     background-color: #fff;
 }
 
@@ -76,30 +76,30 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15rem;   /* 600rem ÷ 40 */
+    margin-bottom: 1.5rem;/* 15rem ÷ 10 */
 }
 
 .page-title {
-    font-size: 10rem;       /* 400rem ÷ 40 */
+    font-size: 1rem;      /* 10rem ÷ 10 */
     font-weight: bold;
     color: #333;
 }
 
 .item-count {
-    font-size: 7rem;        /* 280rem ÷ 40 */
+    font-size: 0.7rem;    /* 7rem ÷ 10 */
     color: #666;
 }
 
 /* 상품 리스트 */
 .product-list {
-    margin-bottom: 20rem;   /* 800rem ÷ 40 */
+    margin-bottom: 2rem;  /* 20rem ÷ 10 */
 }
 
 .product-item {
     display: flex;
     align-items: center;
-    padding: 10rem 0;       /* 400rem ÷ 40 */
-    border-bottom: 0.5rem solid #f0f0f0; /* 20rem ÷ 40 */
+    padding: 1rem 0;      /* 10rem ÷ 10 */
+    border-bottom: 0.05rem solid #f0f0f0; /* 0.5rem ÷ 10 */
 }
 
 .product-item:last-child {
@@ -107,20 +107,20 @@ body {
 }
 
 .product-checkbox {
-    margin-right: 7.5rem;   /* 300rem ÷ 40 */
+    margin-right: 0.75rem; /* 7.5rem ÷ 10 */
 }
 
 .product-checkbox input[type="checkbox"] {
-    width: 9rem;            /* 360rem ÷ 40 */
-    height: 9rem;           /* 360rem ÷ 40 */
+    width: 0.9rem;        /* 9rem ÷ 10 */
+    height: 0.9rem;       /* 9rem ÷ 10 */
     cursor: pointer;
 }
 
 .product-image {
-    width: 40rem;           /* 1600rem ÷ 40 */
-    height: 40rem;          /* 1600rem ÷ 40 */
-    margin-right: 10rem;    /* 400rem ÷ 40 */
-    border-radius: 2rem;    /* 80rem ÷ 40 */
+    width: 4rem;          /* 40rem ÷ 10 */
+    height: 4rem;         /* 40rem ÷ 10 */
+    margin-right: 1rem;   /* 10rem ÷ 10 */
+    border-radius: 0.2rem;/* 2rem ÷ 10 */
     overflow: hidden;
 }
 
@@ -135,9 +135,9 @@ body {
 }
 
 .product-name {
-    font-size: 8rem;        /* 320rem ÷ 40 */
+    font-size: 0.8rem;    /* 8rem ÷ 10 */
     color: #333;
-    margin-bottom: 4rem;    /* 160rem ÷ 40 */
+    margin-bottom: 0.4rem;/* 4rem ÷ 10 */
     text-decoration: none;
 }
 
@@ -146,43 +146,43 @@ body {
 }
 
 .product-price {
-    font-size: 8rem;        /* 320rem ÷ 40 */
+    font-size: 0.8rem;    /* 8rem ÷ 10 */
     color: #333;
     font-weight: bold;
-    margin-bottom: 2rem;    /* 80rem ÷ 40 */
+    margin-bottom: 0.2rem;/* 2rem ÷ 10 */
 }
 
 .product-original-price {
-    font-size: 7rem;        /* 280rem ÷ 40 */
+    font-size: 0.7rem;    /* 7rem ÷ 10 */
     color: #999;
     text-decoration: line-through;
 }
 
 .product-option {
-    font-size: 6rem;        /* 240rem ÷ 40 */
+    font-size: 0.6rem;    /* 6rem ÷ 10 */
     color: #666;
-    margin-top: 4rem;       /* 160rem ÷ 40 */
+    margin-top: 0.4rem;   /* 4rem ÷ 10 */
 }
 
 .product-actions {
     display: flex;
-    gap: 5rem;              /* 200rem ÷ 40 */
+    gap: 0.5rem;          /* 5rem ÷ 10 */
 }
 
 .btn {
-    padding: 4rem 8rem;     /* 160rem ÷ 40, 320rem ÷ 40 */
-    border: 0.5rem solid #ddd; /* 20rem ÷ 40 */
+    padding: 0.4rem 0.8rem;/* 4rem ÷ 10, 8rem ÷ 10 */
+    border: 0.05rem solid #ddd; /* 0.5rem ÷ 10 */
     background-color: #fff;
-    font-size: 6rem;        /* 240rem ÷ 40 */
+    font-size: 0.6rem;    /* 6rem ÷ 10 */
     cursor: pointer;
-    border-radius: 1.5rem;  /* 60rem ÷ 40 */
+    border-radius: 0.15rem;/* 1.5rem ÷ 10 */
     color: #333;
     text-decoration: none;
     text-align: center;
 }
 
 .btn:hover {
-    background-color: #f8f9fa;
+    background-color: #f8f8f8;
 }
 
 .btn-primary {
@@ -197,7 +197,7 @@ body {
 
 .btn-delete {
     color: #666;
-    font-size: 6rem;        /* 240rem ÷ 40 */
+    font-size: 0.6rem;    /* 6rem ÷ 10 */
 }
 
 .btn-delete:hover {
@@ -208,17 +208,17 @@ body {
 .bottom-actions {
     display: flex;
     justify-content: center;
-    margin-bottom: 20rem;   /* 800rem ÷ 40 */
+    margin-bottom: 2rem;  /* 20rem ÷ 10 */
 }
 
 .btn-selected-delete {
     background-color: #333;
     color: #fff;
     border: none;
-    padding: 6rem 12rem;    /* 240rem ÷ 40, 480rem ÷ 40 */
-    font-size: 7rem;        /* 280rem ÷ 40 */
+    padding: 0.6rem 1.2rem;/* 6rem ÷ 10, 12rem ÷ 10 */
+    font-size: 0.7rem;    /* 7rem ÷ 10 */
     cursor: pointer;
-    border-radius: 1.5rem;  /* 60rem ÷ 40 */
+    border-radius: 0.15rem;/* 1.5rem ÷ 10 */
 }
 
 .btn-selected-delete:hover {
@@ -230,21 +230,21 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 5rem;              /* 200rem ÷ 40 */
+    gap: 0.5rem;          /* 5rem ÷ 10 */
 }
 
 .pagination button {
-    width: 16rem;           /* 640rem ÷ 40 */
-    height: 16rem;          /* 640rem ÷ 40 */
-    border: 0.5rem solid #ddd; /* 20rem ÷ 40 */
+    width: 1.6rem;        /* 16rem ÷ 10 */
+    height: 1.6rem;       /* 16rem ÷ 10 */
+    border: 0.05rem solid #ddd; /* 0.5rem ÷ 10 */
     background-color: #fff;
     cursor: pointer;
-    font-size: 7rem;        /* 280rem ÷ 40 */
-    border-radius: 1.5rem;  /* 60rem ÷ 40 */
+    font-size: 0.7rem;    /* 7rem ÷ 10 */
+    border-radius: 0.15rem;/* 1.5rem ÷ 10 */
 }
 
 .pagination button:hover {
-    background-color: #f8f9fa;
+    background-color: #f8f8f8;
 }
 
 .pagination button.active {
@@ -261,31 +261,31 @@ body {
 /* 빈 상태 */
 .empty-state {
     text-align: center;
-    padding: 30rem 10rem;   /* 1200rem ÷ 40 = 30rem, 400rem ÷ 40 = 10rem */
+    padding: 3rem 1rem;   /* 30rem ÷ 10, 10rem ÷ 10 */
     color: #666;
 }
 
 .empty-state p {
-    font-size: 8rem;        /* 320rem ÷ 40 */
-    margin-bottom: 10rem;   /* 400rem ÷ 40 */
+    font-size: 0.8rem;    /* 8rem ÷ 10 */
+    margin-bottom: 1rem;  /* 10rem ÷ 10 */
 }
 
 /* 반응형 */
-@media (max-width: 384rem) { /* 15360rem ÷ 40 */
+@media (max-width: 38.4rem) { /* 384rem ÷ 10 */
     .container {
         flex-direction: column;
     }
 
     .sidebar {
         width: 100%;
-        padding: 10rem;         /* 400rem ÷ 40 */
+        padding: 1rem;    /* 10rem ÷ 10 */
     }
 
     .sidebar-menu {
         display: flex;
-        gap: 10rem;             /* 400rem ÷ 40 */
+        gap: 1rem;        /* 10rem ÷ 10 */
         overflow-x: auto;
-        padding-bottom: 5rem;   /* 200rem ÷ 40 */
+        padding-bottom: 0.5rem; /* 5rem ÷ 10 */
     }
 
     .sidebar-menu li {
@@ -294,13 +294,13 @@ body {
     }
 
     .main-content {
-        padding: 10rem;         /* 400rem ÷ 40 */
+        padding: 1rem;    /* 10rem ÷ 10 */
     }
 
     .product-item {
         flex-direction: column;
         align-items: flex-start;
-        gap: 7.5rem;            /* 300rem ÷ 40 */
+        gap: 0.75rem;     /* 7.5rem ÷ 10 */
     }
 
     .product-checkbox {
@@ -310,7 +310,7 @@ body {
 
     .product-image {
         width: 100%;
-        height: 100rem;         /* 4000rem ÷ 40 = 100rem */
+        height: 10rem;   /* 100rem ÷ 10 */
         margin-right: 0;
     }
 

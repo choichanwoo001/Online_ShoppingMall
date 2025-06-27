@@ -4,21 +4,18 @@
         <aside class="sidebar">
             <h2>마이페이지</h2>
             <ul class="sidebar-menu">
-                <li><a href="#" onclick="navigateTo('recent-orders')">주문내역 조회</a></li>
                 <li><a href="#" onclick="navigateTo('points')">적립금</a></li>
-                <li><a href="#" onclick="navigateTo('coupons')">쿠폰</a></li>
-                <li><a href="#" onclick="navigateTo('size-guide')">배송 주소록 관리</a></li>
+                <li><a href="/mypage/page/coupon" onclick="navigateTo('coupons')">쿠폰</a></li>
             </ul>
             <div class="sidebar-divider"></div>
             <ul class="sidebar-menu">
-                <li><a href="#" onclick="navigateTo('viewed-items')">최근 본 상품</a></li>
-                <li><a href="#" class="active" onclick="navigateTo('wishlist')">관심상품</a></li>
+                <li><a href="/wishlist/wishlist" class="active" onclick="navigateTo('wishlist')">관심상품</a></li>
                 <li><a href="#" onclick="navigateTo('my-items')">나의 게시글</a></li>
             </ul>
             <div class="sidebar-divider"></div>
             <ul class="sidebar-menu">
-                <li><a href="#" onclick="navigateTo('member-info')">회원 정보 수정</a></li>
-                <li><a href="#" onclick="navigateTo('logout')">로그아웃</a></li>
+                <li><a href="/user/user-edit" onclick="navigateTo('member-info')">회원 정보 수정</a></li>
+                <li><a href="/logout" onclick="navigateTo('logout')">로그아웃</a></li>
             </ul>
         </aside>
 
