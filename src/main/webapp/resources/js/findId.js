@@ -70,7 +70,7 @@ function verifyCode() {
     verifyBtn.disabled = true;
     verifyBtn.textContent = '확인 중...';
 
-    fetch('/api/find/id/verify', {
+    fetch('/api/find/login-id/verify', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

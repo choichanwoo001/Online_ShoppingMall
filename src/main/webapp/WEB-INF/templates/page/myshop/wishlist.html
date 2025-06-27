@@ -1,45 +1,42 @@
 <div th:fragment="content">
     <div class="container">
         <!-- 사이드바 -->
-        <div class="sidebar">
+        <aside class="sidebar">
             <h2>마이페이지</h2>
             <ul class="sidebar-menu">
-                <li><a href="#" onclick="navigateTo('recent-orders')">주문내역 조회</a></li>
                 <li><a href="#" onclick="navigateTo('points')">적립금</a></li>
-                <li><a href="#" onclick="navigateTo('coupons')">쿠폰</a></li>
-                <li><a href="#" onclick="navigateTo('size-guide')">배송 주소록 관리</a></li>
+                <li><a href="/mypage/page/coupon" onclick="navigateTo('coupons')">쿠폰</a></li>
             </ul>
             <div class="sidebar-divider"></div>
             <ul class="sidebar-menu">
-                <li><a href="#" onclick="navigateTo('viewed-items')">최근 본 상품</a></li>
-                <li><a href="#" class="active" onclick="navigateTo('wishlist')">관심상품</a></li>
+                <li><a href="/wishlist/wishlist" class="active" onclick="navigateTo('wishlist')">관심상품</a></li>
                 <li><a href="#" onclick="navigateTo('my-items')">나의 게시글</a></li>
             </ul>
             <div class="sidebar-divider"></div>
             <ul class="sidebar-menu">
-                <li><a href="#" onclick="navigateTo('member-info')">회원 정보 수정</a></li>
-                <li><a href="#" onclick="navigateTo('logout')">로그아웃</a></li>
+                <li><a href="/user/user-edit" onclick="navigateTo('member-info')">회원 정보 수정</a></li>
+                <li><a href="/logout" onclick="navigateTo('logout')">로그아웃</a></li>
             </ul>
-        </div>
+        </aside>
 
         <!-- 메인 컨텐츠 -->
         <div class="main-content">
-            <div class="page-header">
+            <header class="page-header">
                 <h1 class="page-title">나의 관심상품</h1>
                 <span class="item-count" id="itemCount">총 0개</span>
-            </div>
+            </header>
 
-            <div class="product-list" id="productList">
+            <section class="product-list" id="productList">
                 <!-- 상품 리스트가 동적으로 여기에 추가됩니다 -->
-            </div>
+            </section>
 
             <div class="bottom-actions">
                 <button class="btn-selected-delete" onclick="deleteSelected()">선택삭제</button>
             </div>
 
-            <div class="pagination" id="pagination">
+            <nav class="pagination" id="pagination">
                 <!-- 페이지네이션이 동적으로 여기에 추가됩니다 -->
-            </div>
+            </nav>
         </div>
     </div>
 

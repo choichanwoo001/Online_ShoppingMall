@@ -26,7 +26,7 @@
 
         <ul class="sub-menu">
             <li th:if="${session.loginId == null}">
-                <a th:href="@{/signup}">회원가입</a>
+                <a th:href="@{/signup/signup}">회원가입</a>
             </li>
             <li th:if="${session.loginId == null}">
                 <a th:href="@{/login}">로그인</a>
@@ -39,7 +39,7 @@
                 <a th:href="@{/order-history}">주문조회</a>
             </li>
             <li th:if="${session.loginId != null}">
-                <a th:href="@{/mypage}">마이페이지</a>
+                <a th:href="@{/mypage/page/mypage}">마이페이지</a>
             </li>
             <li><a href="#">COMMUNITY ⌄</a></li>
         </ul>
