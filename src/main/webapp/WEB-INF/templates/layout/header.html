@@ -12,7 +12,7 @@
         </div>
 
         <div class="icon-group">
-            <a href="#"><i class="bi bi-cart-fill"></i></a>
+            <a href="/order/cart"><i class="bi bi-cart-fill"></i></a>
             <a href="#"><i class="bi bi-person-circle"></i></a>
         </div>
     </div>
@@ -41,7 +41,12 @@
             <li th:if="${session.loginId != null}">
                 <a th:href="@{/mypage/page/mypage}">마이페이지</a>
             </li>
-            <li><a href="#">COMMUNITY ⌄</a></li>
+            <li>
+                <a th:href="@{/notice}">공지사항</a>
+            </li>
+            <li>
+                <a th:href="@{/inquiry}">QNA</a>
+            </li>
         </ul>
     </nav>
 </header>
