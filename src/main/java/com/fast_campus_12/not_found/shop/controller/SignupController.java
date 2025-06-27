@@ -1,6 +1,5 @@
 package com.fast_campus_12.not_found.shop.controller;
 
-import com.fast_campus_12.not_found.shop.dao.UserDAO;
 import com.fast_campus_12.not_found.shop.dto.SignupRequest;
 import com.fast_campus_12.not_found.shop.service.UserService;
 import com.fast_campus_12.not_found.shop.service.EmailService;
@@ -21,7 +20,6 @@ import java.util.Map;
 public class SignupController {
     private final UserService userService;
     private final EmailService emailService;
-    private final UserDAO userDAO;
 
     /**
      * 회원가입 페이지 표시
@@ -42,7 +40,7 @@ public class SignupController {
         Map<String, Object> response = new HashMap<>();
 
         try {
-            String userId = request.get("userId");  // 실제로는 LOGIN_ID
+            String userId = request.get("loginId");  // 실제로는 LOGIN_ID
 
             // 입력값 디버깅
             log.debug("=== LOGIN_ID 중복확인 디버깅 시작 ===");

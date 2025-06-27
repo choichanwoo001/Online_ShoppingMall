@@ -11,7 +11,7 @@ body {
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 60rem;     /* 600rem ÷ 10 */
     margin: 0 auto;
     display: flex;
     min-height: 100vh;
@@ -19,16 +19,16 @@ body {
 
 /* 사이드바 */
 .sidebar {
-    width: 200px;
-    background-color: white;
-    padding: 30px 20px;
-    border-right: 1px solid #e0e0e0;
+    width: 10rem;         /* 100rem ÷ 10 */
+    background-color: #fff;
+    padding: 1.5rem 1rem; /* 15rem ÷ 10, 10rem ÷ 10 */
+    border-right: 0.05rem solid #e0e0e0; /* 0.5rem ÷ 10 */
 }
 
 .sidebar h2 {
-    font-size: 18px;
+    font-size: 0.9rem;    /* 9rem ÷ 10 */
     font-weight: bold;
-    margin-bottom: 30px;
+    margin-bottom: 1.5rem;/* 15rem ÷ 10 */
     color: #333;
 }
 
@@ -37,16 +37,16 @@ body {
 }
 
 .sidebar-menu li {
-    margin-bottom: 15px;
+    margin-bottom: 0.75rem; /* 7.5rem ÷ 10 */
 }
 
 .sidebar-menu a {
-    text-decoration: none;
-    color: #666;
-    font-size: 14px;
     display: block;
-    padding: 8px 0;
-    border-bottom: 1px solid transparent;
+    padding: 0.4rem 0;    /* 4rem ÷ 10 */
+    color: #666;
+    font-size: 0.7rem;    /* 7rem ÷ 10 */
+    text-decoration: none;
+    border-bottom: 0.05rem solid transparent; /* 0.5rem ÷ 10 */
 }
 
 .sidebar-menu a:hover {
@@ -56,50 +56,50 @@ body {
 .sidebar-menu a.active {
     color: #333;
     font-weight: bold;
-    border-bottom: 1px solid #333;
+    border-bottom-color: #333;
 }
 
 .sidebar-divider {
-    height: 1px;
+    height: 0.05rem;      /* 0.5rem ÷ 10 */
     background-color: #e0e0e0;
-    margin: 20px 0;
+    margin: 1rem 0;       /* 10rem ÷ 10 */
 }
 
 /* 메인 컨텐츠 */
 .main-content {
     flex: 1;
-    padding: 30px;
-    background-color: white;
+    padding: 1.5rem;      /* 15rem ÷ 10 */
+    background-color: #fff;
 }
 
 .page-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
+    margin-bottom: 1.5rem;/* 15rem ÷ 10 */
 }
 
 .page-title {
-    font-size: 20px;
+    font-size: 1rem;      /* 10rem ÷ 10 */
     font-weight: bold;
     color: #333;
 }
 
 .item-count {
-    font-size: 14px;
+    font-size: 0.7rem;    /* 7rem ÷ 10 */
     color: #666;
 }
 
 /* 상품 리스트 */
 .product-list {
-    margin-bottom: 40px;
+    margin-bottom: 2rem;  /* 20rem ÷ 10 */
 }
 
 .product-item {
     display: flex;
     align-items: center;
-    padding: 20px 0;
-    border-bottom: 1px solid #f0f0f0;
+    padding: 1rem 0;      /* 10rem ÷ 10 */
+    border-bottom: 0.05rem solid #f0f0f0; /* 0.5rem ÷ 10 */
 }
 
 .product-item:last-child {
@@ -107,20 +107,20 @@ body {
 }
 
 .product-checkbox {
-    margin-right: 15px;
+    margin-right: 0.75rem; /* 7.5rem ÷ 10 */
 }
 
 .product-checkbox input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
+    width: 0.9rem;        /* 9rem ÷ 10 */
+    height: 0.9rem;       /* 9rem ÷ 10 */
     cursor: pointer;
 }
 
 .product-image {
-    width: 80px;
-    height: 80px;
-    margin-right: 20px;
-    border-radius: 4px;
+    width: 4rem;          /* 40rem ÷ 10 */
+    height: 4rem;         /* 40rem ÷ 10 */
+    margin-right: 1rem;   /* 10rem ÷ 10 */
+    border-radius: 0.2rem;/* 2rem ÷ 10 */
     overflow: hidden;
 }
 
@@ -135,9 +135,9 @@ body {
 }
 
 .product-name {
-    font-size: 16px;
+    font-size: 0.8rem;    /* 8rem ÷ 10 */
     color: #333;
-    margin-bottom: 8px;
+    margin-bottom: 0.4rem;/* 4rem ÷ 10 */
     text-decoration: none;
 }
 
@@ -146,49 +146,48 @@ body {
 }
 
 .product-price {
-    font-size: 16px;
+    font-size: 0.8rem;    /* 8rem ÷ 10 */
     color: #333;
     font-weight: bold;
-    margin-bottom: 4px;
+    margin-bottom: 0.2rem;/* 2rem ÷ 10 */
 }
 
 .product-original-price {
-    font-size: 14px;
+    font-size: 0.7rem;    /* 7rem ÷ 10 */
     color: #999;
     text-decoration: line-through;
 }
 
 .product-option {
-    font-size: 12px;
+    font-size: 0.6rem;    /* 6rem ÷ 10 */
     color: #666;
-    margin-top: 8px;
+    margin-top: 0.4rem;   /* 4rem ÷ 10 */
 }
 
 .product-actions {
     display: flex;
-    gap: 10px;
+    gap: 0.5rem;          /* 5rem ÷ 10 */
 }
 
 .btn {
-    padding: 8px 16px;
-    border: 1px solid #ddd;
-    background-color: white;
-    font-size: 12px;
+    padding: 0.4rem 0.8rem;/* 4rem ÷ 10, 8rem ÷ 10 */
+    border: 0.05rem solid #ddd; /* 0.5rem ÷ 10 */
+    background-color: #fff;
+    font-size: 0.6rem;    /* 6rem ÷ 10 */
     cursor: pointer;
-    border-radius: 3px;
-    text-decoration: none;
+    border-radius: 0.15rem;/* 1.5rem ÷ 10 */
     color: #333;
-    display: inline-block;
+    text-decoration: none;
     text-align: center;
 }
 
 .btn:hover {
-    background-color: #f8f9fa;
+    background-color: #f8f8f8;
 }
 
 .btn-primary {
     background-color: #333;
-    color: white;
+    color: #fff;
     border-color: #333;
 }
 
@@ -198,7 +197,7 @@ body {
 
 .btn-delete {
     color: #666;
-    font-size: 12px;
+    font-size: 0.6rem;    /* 6rem ÷ 10 */
 }
 
 .btn-delete:hover {
@@ -209,17 +208,17 @@ body {
 .bottom-actions {
     display: flex;
     justify-content: center;
-    margin-bottom: 40px;
+    margin-bottom: 2rem;  /* 20rem ÷ 10 */
 }
 
 .btn-selected-delete {
     background-color: #333;
-    color: white;
+    color: #fff;
     border: none;
-    padding: 12px 24px;
-    font-size: 14px;
+    padding: 0.6rem 1.2rem;/* 6rem ÷ 10, 12rem ÷ 10 */
+    font-size: 0.7rem;    /* 7rem ÷ 10 */
     cursor: pointer;
-    border-radius: 3px;
+    border-radius: 0.15rem;/* 1.5rem ÷ 10 */
 }
 
 .btn-selected-delete:hover {
@@ -231,26 +230,26 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
+    gap: 0.5rem;          /* 5rem ÷ 10 */
 }
 
 .pagination button {
-    width: 32px;
-    height: 32px;
-    border: 1px solid #ddd;
-    background-color: white;
+    width: 1.6rem;        /* 16rem ÷ 10 */
+    height: 1.6rem;       /* 16rem ÷ 10 */
+    border: 0.05rem solid #ddd; /* 0.5rem ÷ 10 */
+    background-color: #fff;
     cursor: pointer;
-    font-size: 14px;
-    border-radius: 3px;
+    font-size: 0.7rem;    /* 7rem ÷ 10 */
+    border-radius: 0.15rem;/* 1.5rem ÷ 10 */
 }
 
 .pagination button:hover {
-    background-color: #f8f9fa;
+    background-color: #f8f8f8;
 }
 
 .pagination button.active {
     background-color: #333;
-    color: white;
+    color: #fff;
     border-color: #333;
 }
 
@@ -262,31 +261,31 @@ body {
 /* 빈 상태 */
 .empty-state {
     text-align: center;
-    padding: 60px 20px;
+    padding: 3rem 1rem;   /* 30rem ÷ 10, 10rem ÷ 10 */
     color: #666;
 }
 
 .empty-state p {
-    font-size: 16px;
-    margin-bottom: 20px;
+    font-size: 0.8rem;    /* 8rem ÷ 10 */
+    margin-bottom: 1rem;  /* 10rem ÷ 10 */
 }
 
 /* 반응형 */
-@media (max-width: 768px) {
+@media (max-width: 38.4rem) { /* 384rem ÷ 10 */
     .container {
         flex-direction: column;
     }
 
     .sidebar {
         width: 100%;
-        padding: 20px;
+        padding: 1rem;    /* 10rem ÷ 10 */
     }
 
     .sidebar-menu {
         display: flex;
-        gap: 20px;
+        gap: 1rem;        /* 10rem ÷ 10 */
         overflow-x: auto;
-        padding-bottom: 10px;
+        padding-bottom: 0.5rem; /* 5rem ÷ 10 */
     }
 
     .sidebar-menu li {
@@ -295,13 +294,13 @@ body {
     }
 
     .main-content {
-        padding: 20px;
+        padding: 1rem;    /* 10rem ÷ 10 */
     }
 
     .product-item {
         flex-direction: column;
         align-items: flex-start;
-        gap: 15px;
+        gap: 0.75rem;     /* 7.5rem ÷ 10 */
     }
 
     .product-checkbox {
@@ -311,7 +310,7 @@ body {
 
     .product-image {
         width: 100%;
-        height: 200px;
+        height: 10rem;   /* 100rem ÷ 10 */
         margin-right: 0;
     }
 

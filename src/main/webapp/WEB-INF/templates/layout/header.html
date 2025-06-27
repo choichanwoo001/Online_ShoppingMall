@@ -12,7 +12,7 @@
         </div>
 
         <div class="icon-group">
-            <a href="#"><i class="bi bi-cart-fill"></i></a>
+            <a href="/order/cart"><i class="bi bi-cart-fill"></i></a>
             <a href="#"><i class="bi bi-person-circle"></i></a>
         </div>
     </div>
@@ -25,11 +25,28 @@
         </ul>
 
         <ul class="sub-menu">
-            <li><a href="signup/">회원가입</a></li>
-            <li><a href="/login">로그인</a></li>
-            <li><a href="#">주문조회</a></li>
-            <li><a href="#">마이페이지</a></li>
-            <li><a href="#">COMMUNITY ⌄</a></li>
+            <li th:if="${session.loginId == null}">
+                <a th:href="@{/signup/signup}">회원가입</a>
+            </li>
+            <li th:if="${session.loginId == null}">
+                <a th:href="@{/login}">로그인</a>
+            </li>
+            <!-- 로그인 상태일 때 -->
+            <li th:if="${session.loginId != null}">
+                <a th:href="@{/logout}">로그아웃</a>
+            </li>
+            <li th:if="${session.loginId != null}">
+                <a th:href="@{/order-history}">주문조회</a>
+            </li>
+            <li th:if="${session.loginId != null}">
+                <a th:href="@{/mypage/page/mypage}">마이페이지</a>
+            </li>
+            <li>
+                <a th:href="@{/notice}">공지사항</a>
+            </li>
+            <li>
+                <a th:href="@{/inquiry}">QNA</a>
+            </li>
         </ul>
     </nav>
 </header>

@@ -1,0 +1,335 @@
+/* 주문 폼 전용 CSS - 다른 파일에 영향 없음 */
+.order-form-container {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f8f9fa;
+}
+
+.order-form-container .category_tit {
+    color: #333;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 10px;
+    margin-bottom: 30px;
+}
+
+.order-form-container section {
+    background: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.order-form-container .form-group {
+    margin-bottom: 20px;
+}
+
+.order-form-container label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.order-form-container input[type="text"],
+.order-form-container input[type="number"],
+.order-form-container input[type="email"],
+.order-form-container select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.order-form-container .inline-group {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.order-form-container .inline-group input,
+.order-form-container .inline-group select {
+    flex: 1;
+}
+
+.order-form-container .address-search {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.order-form-container .address-search input {
+    flex: 1;
+}
+
+.order-form-container .search-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.order-form-container .search-btn:hover {
+    background: #0056b3;
+}
+
+.order-form-container .payment-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.order-form-container .payment-options label {
+    display: flex;
+    align-items: center;
+    font-weight: normal;
+    margin-bottom: 0;
+}
+
+.order-form-container .payment-options input[type="radio"] {
+    margin-right: 5px;
+}
+
+/* 주문 상품 섹션 스타일링 */
+.order-form-container .order-item {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.order-form-container .order-item h3 {
+    margin: 0 0 15px 0;
+    color: #333;
+}
+
+.order-form-container .item-header {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 15px;
+    padding: 12px 0;
+    border-bottom: 2px solid #007bff;
+    font-weight: bold;
+    color: #007bff;
+}
+
+.order-form-container .item-header span:nth-child(2){
+    text-align: right;
+}
+
+.order-form-container .item-header span:nth-child(3){
+    text-align: right;
+}
+
+.order-form-container .item-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 15px;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.order-form-container .item-row:last-child {
+    border-bottom: none;
+}
+
+.order-form-container .item-name {
+    font-weight: 500;
+    color: #333;
+}
+
+.order-form-container .item-quantity {
+    text-align: center;
+    color: #666;
+}
+
+.order-form-container .item-quantity:nth-child(2){
+    text-align: right;
+}
+
+.order-form-container .item-price {
+    text-align: right;
+    font-weight: bold;
+    color: #007bff;
+}
+
+/* 쿠폰 섹션 스타일링 */
+.order-form-container .coupon-box {
+    background: #f0f8ff;
+    padding: 15px;
+    border-radius: 4px;
+    border: 1px solid #007bff;
+    margin-bottom: 20px;
+}
+
+.order-form-container .coupon-select {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.order-form-container .coupon-select select {
+    flex: 1;
+}
+
+.order-form-container .coupon-select button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.order-form-container .coupon-select button:hover {
+    background: #0056b3;
+}
+
+.order-form-container .coupon-info {
+    margin: 10px 0 0 0;
+    color: #007bff;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* 적립금 섹션 스타일링 */
+.order-form-container .mileage-box {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 4px;
+    border: 1px solid #28a745;
+}
+
+.order-form-container .mileage-use {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.order-form-container .mileage-use input {
+    width: 150px;
+}
+
+.order-form-container .mileage-use button {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.order-form-container .mileage-use button:hover {
+    background: #218838;
+}
+
+.order-form-container .mileage-info {
+    margin: 10px 0 0 0;
+    color: #28a745;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.order-form-container .price-summary {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 4px;
+    margin: 20px 0;
+    border: 1px solid #ddd;
+}
+
+.order-form-container .price-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.order-form-container .price-row.total {
+    font-weight: bold;
+    font-size: 18px;
+    color: #007bff;
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+    margin-top: 10px;
+}
+
+.order-form-container .submit-order {
+    width: 100%;
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 15px;
+    font-size: 18px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.order-form-container .submit-order:hover {
+    background: #0056b3;
+}
+
+.order-form-container .error {
+    border-color: #dc3545 !important;
+    background-color: #fff5f5;
+}
+
+.order-form-container .error-message {
+    color: #dc3545;
+    font-size: 12px;
+    margin-top: 5px;
+    display: none;
+}
+
+.order-form-container .success-message {
+    color: #28a745;
+    font-size: 12px;
+    margin-top: 5px;
+    display: none;
+}
+
+.order-form-container .alert {
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    display: none;
+}
+
+.order-form-container .alert-danger {
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+}
+
+.order-form-container .alert-success {
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    color: #155724;
+}
+
+.order-form-container .terms-agree {
+    margin-bottom: 20px;
+}
+
+.order-form-container .terms-agree label {
+    font-weight: normal;
+    display: flex;
+    align-items: center;
+}
+
+.order-form-container .terms-agree input[type="checkbox"] {
+    margin-right: 8px;
+    width: auto;
+}
+
+.order-form-container .submit-box {
+    text-align: center;
+}

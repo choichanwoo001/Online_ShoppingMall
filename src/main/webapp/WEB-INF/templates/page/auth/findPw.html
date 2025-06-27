@@ -21,7 +21,6 @@
       </div>
     </form>
 
-    <!-- 인증번호 입력 섹션 -->
     <div id="verificationSection" class="verification-section">
       <div class="form-group">
         <label for="verificationCode" class="form-label">인증번호</label>
@@ -37,11 +36,11 @@
       </div>
     </div>
 
-    <!-- 결과 표시 섹션 -->
     <div id="resultSection" class="result-section">
       <div class="result-info">
         <p>임시 비밀번호가 발급되었습니다.</p>
         <div class="result-message" id="resultMessage">
+<!--          임시 비밀번호: <strong><span id="resultTempPassword"></span></strong><br>-->
           임시 비밀번호가 등록된 이메일로 발송되었습니다.<br>
           로그인 후 반드시 비밀번호를 변경해주세요.
         </div>
@@ -50,18 +49,15 @@
           <h4>⚠️ 보안 안내</h4>
           <ul>
             <li>임시 비밀번호는 24시간 후 만료됩니다.</li>
-            <li>로그인 후 즉시 새로운 비밀번호로 변경해주세요.</li>
             <li>임시 비밀번호는 타인에게 노출되지 않도록 주의하세요.</li>
           </ul>
         </div>
 
-        <div style="margin-top: 20px;">
-          <button type="button" onclick="location.href='/login'" class="btn-primary"
-                  style="width: auto; padding: 10px 30px; margin-right: 10px;">
+        <div class="result-buttons">
+          <button type="button" onclick="location.href='/login'" class="btn-primary btn-login">
             로그인
           </button>
-          <button type="button" onclick="location.href='/find/id'" class="btn-primary"
-                  style="width: auto; padding: 10px 30px; background-color: #6c757d;">
+          <button type="button" onclick="location.href='/id/findId'" class="btn-primary btn-find-id">
             아이디 찾기
           </button>
         </div>
