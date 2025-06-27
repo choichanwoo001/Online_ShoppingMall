@@ -3,6 +3,13 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 24px 16px;
+    margin-bottom: 48px; /* 푸터와의 간격을 위한 하단 마진 추가 */
+}
+
+/* 푸터 상단 여백 추가 */
+footer {
+    margin-top: 48px;
+    padding-top: 24px;
 }
 
 /* 배너 영역 - 화면의 70% 차지하도록 수정 */
