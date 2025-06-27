@@ -8,16 +8,17 @@ html {
 	font-size:20px;
 }
 .contents_area {
-	border:3px dashed darkblue;
+	/*border:3px dashed darkblue;*/
 	padding:2rem 0;
 }
 
 .category_tit {
 	text-align:center;
 	font-size:1.3rem;
+	text-transform: uppercase;
 }
 .subCategory {
-	margin:1rem 0 3rem;
+	margin:2rem 0;
 }
 .subCategory ul{
 	display:flex;
@@ -29,6 +30,10 @@ html {
 	padding:0 1rem;
 	font-size:0.7rem;
 	line-height:1;
+	margin-bottom:2rem;
+}
+.subCategory ul li.active {
+	font-weight:bold;
 }
 .subCategory ul li:last-child {
 	border-right:none;
@@ -36,25 +41,86 @@ html {
 
 
 /* ------- product_list ----------*/
+.product_list_area {
+	padding: 0 0.8rem;
+	background-color: #fff;
+}
 .product_list {
-	display:flex;
+	display: flex;
 	display:-webkit-flex;
-	justify-content: space-between;
-	gap:1.5rem 0;
 	flex-wrap:wrap;
+	gap: 1.5rem;
 }
 .product_list li {
+	border: 0.05rem solid #eee;
+	border-radius: 0.4rem;
+	background: white;
+	transition: all 0.2s ease;
+	overflow: hidden;
 	width:calc((100% - 3rem) / 3);
-	border:1px solid black;
 }
-.product_list li img {
-	max-width: 100%;
+
+.product_list li:hover {
+	box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.06);
+	transform: translateY(-0.1rem);
 }
-.product_list li p {
-	font-size:0.8rem;
+/* 이미지 */
+.product_list img {
+	width: 100%;
+	height: 12rem;
+	object-fit: cover;
+	display: block;
 }
-.product_list li p.p_review {
-	font-size:0.7rem;
+
+/* 상품명 */
+.product_list h5 {
+	font-size: 0.85rem;
+	margin: 0.6rem 0.8rem 0.2rem;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+/* 가격 */
+.product_list p {
+	margin: 0.2rem 0.8rem;
+	font-size: 0.75rem;
+	color: #444;
+	line-height: 1.4;
+}
+
+/* 리뷰 */
+.product_list .p_review {
+	font-size: 0.6rem;
+	color: #838383;
+	margin: 0.2rem 0.8rem 1rem;
+}
+.p_review span {
+	color: #333;
+}
+
+/* 정렬 옵션 */
+.sort-options {
+	display: flex;
+	justify-content: flex-end;
+	gap: 1.2rem;
+	margin: 1rem 1rem 1.5rem;
+	font-size: 0.7rem;
+	font-weight: 400;
+	color: #555;
+}
+
+.sort-link {
+	color: #555;
+	text-decoration: none;
+	position: relative;
+	padding-bottom: 0.1rem;
+}
+
+.sort-link.active {
+	font-weight: bold;
+	color: #000;
+	border-bottom: 0.05rem solid #000;
 }
 
 /* ------- product ----------*/
@@ -145,12 +211,15 @@ html {
 	display: flex;
 	gap: 0.375rem;
 	margin-top: 1rem;
+
+	.cart-button,
+	.buy-button {
+		flex: 1;
+		padding:0.5rem 0;
+		font-size:0.85rem;
+	}
 }
 
-.cart-button,
-.buy-button {
-	flex: 1;
-}
 
 .wishlist-button {
 	width: 1.5rem;
