@@ -8,13 +8,10 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 public class OrderUserDetailServiceDto {
-   private String userId;
+   private String loginID;
    private String emailId;
    private String emailDomain;
    private String midPhoneNum;
    private String lastPhoneNum;
    private String name;
-
-   public OrderUserDetailServiceDto() {
-   }
 }

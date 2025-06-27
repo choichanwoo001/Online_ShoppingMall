@@ -4,8 +4,6 @@ import com.fast_campus_12.not_found.shop.mapper.OrderMapper;
 import com.fast_campus_12.not_found.shop.order.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.fast_campus_12.not_found.shop.entity.Order;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -16,13 +14,13 @@ import java.util.Random;
 public class OrderService {
     private final OrderMapper orderMapper;
 
-    public OrderUserDetailServiceDto UserDetailSplit(String userId){
+    public OrderUserDetailServiceDto UserDetailSplit(String loginID){
 
-        UserDetailDto userDetail = orderMapper.finUserDetailByUserId(userId);
+        UserDetailDto userDetail = orderMapper.finUserDetailByUserId(loginID);
 
         // 유저 null검사
         if (userDetail == null) {
-            throw new IllegalArgumentException("해당 유저의 정보가 존재하지 않습니다: " + userId);
+            throw new IllegalArgumentException("해당 유저의 정보가 존재하지 않습니다: " + loginID);
         }
 
         // 이메일 분리
@@ -40,30 +38,30 @@ public class OrderService {
                 .emailDomain(emailDomain)
                 .midPhoneNum(midPhoneNum)
                 .lastPhoneNum(lastPhoneNum)
-                .userId(userId)
+                .loginID(loginID)
                 .name(userDetail.getName())
                 .build();
     }
 
 
     // 유저 상세 주소 조회
-    public UserAddressDto getUserAddress(String userId) {
-        return orderMapper.findUserAddressByUserId(userId);
+    public UserAddressDto getUserAddress(String loginID) {
+        return orderMapper.findUserAddressByUserId(loginID);
     }
 
     // 유저 주문 상품 조회 장바구니 기준
-    public List<ProductOrderInfoDto> getOrdersInfo(String userId) {
-        return orderMapper.findCartItemsForOrderByUserId(userId);
+    public List<ProductOrderInfoDto> getOrdersInfo(String loginID) {
+        return orderMapper.findCartItemsForOrderByUserId(loginID);
     }
 
     // 유저 쿠폰 조회
-    public List<CouponDto> getOrdersCouponInfo(String userId) {
-        return orderMapper.findUserCouponsByUserId(userId);
+    public List<CouponDto> getOrdersCouponInfo(String loginID) {
+        return orderMapper.findUserCouponsByUserId(loginID);
     }
 
-    // 유저 마일리지 조회
-    public MileageDto getAvailableMileage(String userId) {
-        return orderMapper.findAvailableMileageByUserId(userId);
+    // 유저 마일리지 조회 우선 하드로
+    public int getAvailableMileage() {
+        return 6000;
     }
 
     //  배송비는 우선 하드코딩으로

@@ -9,7 +9,7 @@ import lombok.*;
 @Builder
 @ToString
 public class UserAddressDto {
-    private String loginId;             // 로그인ID(PK)
+    private String userId;             // 로그인ID(PK)
     private String roadAddress1;        // 도로명주소1
     private String roadAddress2;        // 도로명주소2
     private String jibunAddress;        // 지번주소

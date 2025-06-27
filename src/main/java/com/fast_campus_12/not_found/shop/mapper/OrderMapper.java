@@ -9,86 +9,81 @@ import java.util.List;
 public interface OrderMapper {
 
     @Select("""
-    SELECT
-      user_id AS userId,
-      email,
-      name,
-      phone_number AS phoneNumber,
-      birth_date AS birthDate,
-      gender,
-      job_code AS jobCode
-    FROM USER_DETAIL 
-    WHERE user_id = #{userId}
+  SELECT
+      ud.USER_ID as userId,
+      ud.EMAIL as email,
+      ud.NAME as name,
+      ud.PHONE_NUMBER as phoneNumber,
+      ud.BIRTH_DATE as birthDate,
+      ud.GENDER as gender,
+      ud.JOB_CODE as jobCode
+  FROM USERS u
+  JOIN USER_DETAIL ud ON u.USER_ID = ud.USER_ID
+  WHERE u.LOGIN_ID = #{loginId}
 """)
-    UserDetailDto finUserDetailByUserId(String userId); // 유저 상세정보 조회
+    UserDetailDto finUserDetailByUserId(String loginID); // 유저 상세정보 조회
 
     @Select("""
     SELECT
-        user_id AS loginId,
-        road_address_1 AS roadAddress1,
-        road_address_2 AS roadAddress2,
-        jibun_address AS jibunAddress,
-        detail_address AS detailAddress,
-        english_address AS englishAddress,
-        zip_code AS zipCode,
-        address_name AS addressName
-    FROM default_user_address
-    WHERE user_id = #{loginId}
+        da.USER_ID AS userId,
+        da.ROAD_ADDRESS_1 AS roadAddress1,
+        da.ROAD_ADDRESS_2 AS roadAddress2,
+        da.JIBUN_ADDRESS AS jibunAddress,
+        da.DETAIL_ADDRESS AS detailAddress,
+        da.ENGLISH_ADDRESS AS englishAddress,
+        da.ZIP_CODE AS zipCode,
+        da.ADDRESS_NAME AS addressName
+    FROM USERS u
+    JOIN DEFAULT_USER_ADDRESS da ON u.USER_ID = da.USER_ID
+    WHERE u.LOGIN_ID = #{loginId}
 """)
-    UserAddressDto findUserAddressByUserId(String userId); // 유저 상세주소 조회
+    UserAddressDto findUserAddressByUserId(String loginID); // 유저 상세주소 조회
 
     @Select("""
         SELECT
             p.PRODUCT_TITLE AS productName,
             ci.QUANTITY AS quantity,
             (ci.QUANTITY * p.PRODUCT_PRICE) AS Price
-        FROM
-            CART_ITEM ci
-        JOIN
-            CART c ON ci.CART_ID = c.CART_ID
-        JOIN
-            PRODUCT p ON ci.PRODUCT_ID = p.PRODUCT_ID
-        WHERE
-            c.USER_ID = #{userId} -- 매개변수 userId를 SQL에 바인딩
+        FROM USERS u
+        JOIN CART c ON u.USER_ID = c.USER_ID
+        JOIN CART_ITEM ci ON c.CART_ID = ci.CART_ID
+        JOIN PRODUCT p ON ci.PRODUCT_ID = p.PRODUCT_ID
+        WHERE u.LOGIN_ID = #{loginId} -- 매개변수 userId를 SQL에 바인딩
     """)
-    List<ProductOrderInfoDto> findCartItemsForOrderByUserId(String userId); // 장바구니에서 주문상품 조회
+    List<ProductOrderInfoDto> findCartItemsForOrderByUserId(String loginID); // 장바구니에서 주문상품 조회
+
+    @Select("""
+       SELECT
+           c.COUPON_ID AS couponId,
+           c.COUPON_NAME AS couponName,
+           c.COUPON_TYPE AS couponType,
+           c.DISCOUNT_VALUE AS discountValue,
+           c.MIN_ORDER_AMOUNT AS minOrderAmount,
+           c.MAX_DISCOUNT_AMOUNT AS maxDiscountAmount,
+           c.AVAILABLE_PERIOD AS availablePeriod,
+           c.TOTAL_CNT AS totalCnt,
+           c.DUPLICATE_USE AS duplicateUse,
+           c.COUPON_STATUS AS couponStatus,
+           c.DESCRIPTION AS description,
+           c.START_DATE AS startDate,
+           c.END_DATE AS endDate,
+           c.CREATED_AT AS createdAt,
+           c.CREATED_BY AS createdBy
+       FROM USERS u
+       JOIN USER_COUPON uc ON u.USER_ID = uc.USER_ID
+       JOIN COUPON c ON uc.COUPON_ID = c.COUPON_ID
+       WHERE u.LOGIN_ID = #{loginId}
+   """)
+    List<CouponDto> findUserCouponsByUserId(String loginID); // user_id로 보유 쿠폰 조회
 
     @Select("""
         SELECT
-            c.COUPON_ID AS couponId,
-            c.COUPON_NAME AS couponName,
-            c.COUPON_TYPE AS couponType,
-            c.DISCOUNT_VALUE AS discountValue,
-            c.MIN_ORDER_AMOUNT AS minOrderAmount,
-            c.MAX_DISCOUNT_AMOUNT AS maxDiscountAmount,
-            c.AVAILABLE_PERIOD AS availablePeriod,
-            c.TOTAL_CNT AS totalCnt,
-            c.DUPLICATE_USE AS duplicateUse,
-            c.COUPON_STATUS AS couponStatus,
-            c.DESCRIPTION AS description,
-            c.START_DATE AS startDate,
-            c.END_DATE AS endDate,
-            c.CREATED_AT AS createdAt,
-            c.CREATED_BY AS createdBy
-        FROM
-            USER_COUPON uc
-        JOIN
-            COUPON c ON uc.COUPON_ID = c.COUPON_ID
-        WHERE
-            uc.USER_ID = #{userId}
-    """)
-    List<CouponDto> findUserCouponsByUserId(String userId); // user_id로 보유 쿠폰 조회
-
-    @Select("""
-        SELECT
-            m.USER_ID AS userId,
             (m.TOTAL_EARNED - m.TOTAL_USED) AS availableMileage
-        FROM
-            MILEAGE m
-        WHERE
-            m.USER_ID = #{userId}
+        FROM USERS u
+        JOIN MILEAGE m ON u.USER_ID = m.USER_ID
+        WHERE u.LOGIN_ID = #{loginId}
     """)
-    MileageDto findAvailableMileageByUserId( String userId); // user_id로 마일리지 조회
+    MileageDto findAvailableMileageByUserId( String loginID); // user_id로 마일리지 조회
 }
 
 

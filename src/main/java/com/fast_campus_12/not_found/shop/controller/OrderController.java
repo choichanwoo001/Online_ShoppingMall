@@ -4,6 +4,7 @@ package com.fast_campus_12.not_found.shop.controller;
 import com.fast_campus_12.not_found.shop.entity.Order;
 import com.fast_campus_12.not_found.shop.order.dto.*;
 import com.fast_campus_12.not_found.shop.service.OrderService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -20,11 +21,13 @@ public class OrderController {
 
 
     @GetMapping("/order/{pageName}")
-    public String orderRenderPage(@PathVariable("pageName") String pageName, HttpSession session, Model model) {
+    public String orderRenderPage(@PathVariable("pageName") String pageName,
+                                  HttpServletRequest request,
+                                  Model model) {
         model.addAttribute("contentPath", "order/" + pageName);
 
-        session.setAttribute("userId", "3");
-        String sessionId = (String) session.getAttribute("userId");
+        HttpSession session = request.getSession();
+        String sessionId = (String) session.getAttribute("loginID");
 
 //        if (sessionId != null) {
 //            model.addAttribute("error", "로그인이 필요합니다.");
@@ -39,7 +42,7 @@ public class OrderController {
         // 유저 쿠폰 조회
         List<CouponDto> couponDto = orderService.getOrdersCouponInfo(sessionId);
         // 유저 마일리지 조회
-        MileageDto mileageDto = orderService.getAvailableMileage(sessionId);
+        int mileageDto = orderService.getAvailableMileage();
 
 
 
@@ -48,7 +51,7 @@ public class OrderController {
         model.addAttribute("address", userAddressDto);
         model.addAttribute("orderItems", productOrderInfoDto);
         model.addAttribute("couponList", couponDto);
-        model.addAttribute("availableMileage", mileageDto.getAvailableMileage());
+        model.addAttribute("availableMileage", mileageDto);
         model.addAttribute("shippingFee", orderService.shippingFee());
 
         return "layout/base";

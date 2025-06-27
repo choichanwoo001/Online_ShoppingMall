@@ -13,6 +13,5 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MileageDto {
-    private Long userId;          // 사용자의 ID
     private BigDecimal availableMileage; // 사용 가능한 마일리지 금액
 }
