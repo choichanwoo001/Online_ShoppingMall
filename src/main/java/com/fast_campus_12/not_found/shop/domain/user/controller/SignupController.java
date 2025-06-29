@@ -40,7 +40,7 @@ public class SignupController {
         Map<String, Object> response = new HashMap<>();
 
         try {
-            String userId = request.get("loginId");  // 실제로는 LOGIN_ID
+            String userId = request.get("userId");  // 실제로는 LOGIN_ID
 
             // 입력값 디버깅
             log.debug("=== LOGIN_ID 중복확인 디버깅 시작 ===");
