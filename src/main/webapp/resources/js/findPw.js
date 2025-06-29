@@ -80,14 +80,10 @@ function verifyCode() {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // ① 서버가 내려준 임시 비밀번호 읽어오기
-                const tempPw = data.data.tempPassword;
-
-                // ② resultSection 안의 resultMessage 요소에 임시 비밀번호 표시
+                // resultSection 안의 resultMessage 요소에 임시 비밀번호 표시
                 const resultMessageEl = document.getElementById('resultMessage');
                 resultMessageEl.innerHTML = `
                 <p>임시 비밀번호가 발급되었습니다.</p>
-                <p><strong>${tempPw}</strong></p>
                 <p>이메일로도 전송되었으니 확인해 주세요.</p>
             `;
 

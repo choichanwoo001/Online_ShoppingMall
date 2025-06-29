@@ -4,47 +4,48 @@ const passwordInput = document.getElementById('password');
 const passwordConfirmInput = document.getElementById('passwordConfirm');
 const userNameInput = document.getElementById('userName');
 const emailInput = document.getElementById('email');
+const postcodeInput = document.getElementById('postcode');
+const addressInput = document.getElementById('address');
+const detailAddressInput = document.getElementById('detailAddress');
 const submitBtn = document.getElementById('submitBtn');
 const cancelBtn = document.getElementById('cancelBtn');
 
 // 정규식 패턴
-const PASSWORD_PATTERN = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=\[{\]};:'",<.>/?\\|`~])[A-Za-z\d!@#$%^&*()_\-+=\[{\]};:'",<.>/?\\|`~]{8,16}$/;
-const USER_NAME_PATTERN = /^[가-힣a-zA-Z]{2,20}$/;
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PASSWORD_PATTERN   = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_\-+\=\[\]{};':",<.>\/?\\|`~]).{8,16}$/;
+const USER_NAME_PATTERN  = /^[가-힣a-zA-Z]{2,20}$/;
+const EMAIL_PATTERN      = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // 페이지 로드 시 초기화
 document.addEventListener('DOMContentLoaded', function() {
+    // 1) 기존 초기화
     initializePage();
     setupEventListeners();
     generateBirthOptions();
+
+    // 2) 실시간 유효성 검사 추가
+    [
+        passwordInput, passwordConfirmInput,
+        userNameInput, emailInput,
+        postcodeInput, addressInput
+    ].forEach(el => {
+        if (!el) return;
+        el.addEventListener('input',  () => validateField(el));
+        el.addEventListener('blur',   () => validateField(el));
+    });
+
+    // 3) 휴대폰 숫자만 입력
+    setupPhoneNumberValidation();
 });
 
-// 페이지 초기화
-function initializePage() {
-    // 현재 사용자 정보 로드
-    loadCurrentUserInfo();
-}
-
 // 현재 사용자 정보 로드
-function loadCurrentUserInfo() {
-    fetch('/api/user/current', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-        .then(response => response.json())
+function initializePage() {
+    fetch('/api/user/current', { method: 'GET', headers: {'Content-Type':'application/json'} })
+        .then(r => r.json())
         .then(data => {
-            if (data.success) {
-                populateForm(data.user);
-            } else {
-                alert('사용자 정보를 불러올 수 없습니다.');
-            }
+            if (data.success) populateForm(data.user);
+            else alert('사용자 정보를 불러올 수 없습니다.');
         })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('사용자 정보 로딩 중 오류가 발생했습니다.');
-        });
+        .catch(() => alert('사용자 정보 로딩 중 오류가 발생했습니다.'));
 }
 
 // 폼에 데이터 채우기
@@ -55,283 +56,259 @@ function populateForm(user) {
 
     // 주소 정보
     if (user.address) {
-        document.getElementById('postcode').value = user.postcode || '';
-        document.getElementById('address').value = user.address || '';
-        document.getElementById('detailAddress').value = user.detailAddress || '';
-
-        // 숨김 필드들
+        postcodeInput.value      = user.postcode || '';
+        addressInput.value       = user.address || '';
+        detailAddressInput.value = user.detailAddress || '';
         document.getElementById('roadAddress1').value = user.roadAddress1 || '';
         document.getElementById('roadAddress2').value = user.roadAddress2 || '';
-        document.getElementById('jibunAddress').value = user.jibunAddress || '';
+        document.getElementById('jibunAddress').value  = user.jibunAddress || '';
         document.getElementById('englishAddress').value = user.englishAddress || '';
-        document.getElementById('zipCode').value = user.zipCode || '';
-        document.getElementById('addressName').value = user.addressName || '';
+        document.getElementById('zipCode').value       = user.zipCode || '';
+        document.getElementById('addressName').value   = user.addressName || '';
     }
 
+    // 휴대폰
     if (user.mobilePhone) {
-        const mobilePhoneParts = user.mobilePhone.split('-');
-        if (mobilePhoneParts.length === 3) {
-            document.getElementById('mobilePhone1').value = mobilePhoneParts[0];
-            document.getElementById('mobilePhone2').value = mobilePhoneParts[1];
-            document.getElementById('mobilePhone3').value = mobilePhoneParts[2];
+        const parts = user.mobilePhone.split('-');
+        if (parts.length === 3) {
+            document.getElementById('mobilePhone1').value = parts[0];
+            document.getElementById('mobilePhone2').value = parts[1];
+            document.getElementById('mobilePhone3').value = parts[2];
         }
     }
 
     // 성별
     if (user.gender) {
-        const genderRadio = document.querySelector(`input[name="gender"][value="${user.gender}"]`);
-        if (genderRadio) {
-            genderRadio.checked = true;
-        }
+        const r = document.querySelector(`input[name="gender"][value="${user.gender}"]`);
+        if (r) r.checked = true;
     }
 
     // 생년월일
     if (user.birthDate) {
-        const birthDate = new Date(user.birthDate);
-        document.getElementById('birthYear').value = birthDate.getFullYear();
-        document.getElementById('birthMonth').value = birthDate.getMonth() + 1;
-        document.getElementById('birthDay').value = birthDate.getDate();
+        const d = new Date(user.birthDate);
+        document.getElementById('birthYear').value  = d.getFullYear();
+        document.getElementById('birthMonth').value = d.getMonth() + 1;
+        document.getElementById('birthDay').value   = d.getDate();
     }
 }
 
-// 이벤트 리스너 설정
+// 이벤트 리스너 설정 (기존)
 function setupEventListeners() {
-    // 비밀번호 검증
     passwordInput.addEventListener('blur', validatePassword);
     passwordConfirmInput.addEventListener('blur', validatePasswordConfirm);
-
-    // 이름 검증
     userNameInput.addEventListener('blur', validateUserName);
-
-    // 이메일 검증
     emailInput.addEventListener('blur', validateEmail);
-
-    // 폼 제출
     userEditForm.addEventListener('submit', handleFormSubmit);
-
-    // 취소 버튼
     cancelBtn.addEventListener('click', handleCancel);
-
-    // 전화번호 숫자만 입력
-    setupPhoneNumberValidation();
 }
 
-// 전화번호 숫자만 입력 설정
+// 휴대폰 숫자만 입력 설정 (기존)
 function setupPhoneNumberValidation() {
-    const phoneInputs = document.querySelectorAll('.phone-input');
-    phoneInputs.forEach(input => {
-        input.addEventListener('input', function(e) {
+    document.querySelectorAll('.phone-input').forEach(input => {
+        input.addEventListener('input', function() {
             this.value = this.value.replace(/[^0-9]/g, '');
         });
     });
 }
 
-// 비밀번호 검증
+// 비밀번호 검증 (기존)
 function validatePassword() {
-    const password = passwordInput.value;
-    const messageElement = document.getElementById('passwordMessage');
-
-    if (password === '') {
-        // 비밀번호가 비어있으면 현재 비밀번호 유지
-        messageElement.textContent = '';
-        passwordInput.classList.remove('error', 'success');
+    const pwd = passwordInput.value;
+    const msgEl = document.getElementById('passwordMessage');
+    if (pwd === '') {
+        msgEl.textContent = '';
+        passwordInput.classList.remove('error','success');
         return true;
     }
-
-    if (!PASSWORD_PATTERN.test(password)) {
-        messageElement.textContent = '영문 대소문자/숫자 조합 4~16자로 입력해주세요.';
+    if (!PASSWORD_PATTERN.test(pwd)) {
+        msgEl.textContent = '영문 대소문자/숫자/특수문자 조합 8~16자로 입력해주세요.';
         passwordInput.classList.add('error');
         passwordInput.classList.remove('success');
         return false;
     }
-
-    messageElement.textContent = '';
+    msgEl.textContent = '';
     passwordInput.classList.remove('error');
     passwordInput.classList.add('success');
     return true;
 }
 
-// 비밀번호 확인 검증
+// 비밀번호 확인 검증 (기존)
 function validatePasswordConfirm() {
-    const password = passwordInput.value;
-    const passwordConfirm = passwordConfirmInput.value;
-    const messageElement = document.getElementById('passwordConfirmMessage');
-
-    if (password === '' && passwordConfirm === '') {
-        messageElement.textContent = '';
-        passwordConfirmInput.classList.remove('error', 'success');
+    const pwd = passwordInput.value;
+    const cpw = passwordConfirmInput.value;
+    const msgEl = document.getElementById('passwordConfirmMessage');
+    if (pwd === '' && cpw === '') {
+        msgEl.textContent = '';
+        passwordConfirmInput.classList.remove('error','success');
         return true;
     }
-
-    if (password !== passwordConfirm) {
-        messageElement.textContent = '비밀번호가 일치하지 않습니다.';
+    if (pwd !== cpw) {
+        msgEl.textContent = '비밀번호가 일치하지 않습니다.';
         passwordConfirmInput.classList.add('error');
         passwordConfirmInput.classList.remove('success');
         return false;
     }
-
-    messageElement.textContent = '';
+    msgEl.textContent = '';
     passwordConfirmInput.classList.remove('error');
     passwordConfirmInput.classList.add('success');
     return true;
 }
 
-// 이름 검증
+// 이름 검증 (기존)
 function validateUserName() {
-    const userName = userNameInput.value.trim();
-    const messageElement = document.getElementById('userNameMessage');
-
-    if (userName === '') {
-        messageElement.textContent = '이름을 입력해주세요.';
+    const name = userNameInput.value.trim();
+    const msgEl = document.getElementById('userNameMessage');
+    if (name === '') {
+        msgEl.textContent = '이름을 입력해주세요.';
         userNameInput.classList.add('error');
         userNameInput.classList.remove('success');
         return false;
     }
-
-    if (!USER_NAME_PATTERN.test(userName)) {
-        messageElement.textContent = '한글 또는 영문 2~20자로 입력해주세요.';
+    if (!USER_NAME_PATTERN.test(name)) {
+        msgEl.textContent = '한글 또는 영문 2~20자로 입력해주세요.';
         userNameInput.classList.add('error');
         userNameInput.classList.remove('success');
         return false;
     }
-
-    messageElement.textContent = '';
+    msgEl.textContent = '';
     userNameInput.classList.remove('error');
     userNameInput.classList.add('success');
     return true;
 }
 
-// 이메일 검증
+// 이메일 검증 (기존)
 function validateEmail() {
-    const email = emailInput.value.trim();
-    const messageElement = document.getElementById('emailMessage');
-
-    if (email === '') {
-        messageElement.textContent = '이메일을 입력해주세요.';
+    const em = emailInput.value.trim();
+    const msgEl = document.getElementById('emailMessage');
+    if (em === '') {
+        msgEl.textContent = '이메일을 입력해주세요.';
         emailInput.classList.add('error');
         emailInput.classList.remove('success');
         return false;
     }
-
-    if (!EMAIL_PATTERN.test(email)) {
-        messageElement.textContent = '올바른 이메일 형식이 아닙니다.';
+    if (!EMAIL_PATTERN.test(em)) {
+        msgEl.textContent = '올바른 이메일 형식이 아닙니다.';
         emailInput.classList.add('error');
         emailInput.classList.remove('success');
         return false;
     }
-
-    messageElement.textContent = '';
+    msgEl.textContent = '';
     emailInput.classList.remove('error');
     emailInput.classList.add('success');
     return true;
 }
 
-// 생년월일 옵션 생성
+// 실시간 필드 유효성 검사 함수 (추가된 부분)
+function validateField(el) {
+    const id  = el.id;
+    const val = el.value.trim();
+    let ok = true, msg = '';
+    switch (id) {
+        case 'password':
+            if (val && !PASSWORD_PATTERN.test(val)) {
+                ok = false; msg = '영문·숫자·특수문자 포함 8~16자';
+            }
+            break;
+        case 'passwordConfirm':
+            if (val && val !== passwordInput.value.trim()) {
+                ok = false; msg = '비밀번호가 일치하지 않습니다.';
+            }
+            break;
+        case 'userName':
+            if (val && !USER_NAME_PATTERN.test(val)) {
+                ok = false; msg = '한글 또는 영문 2~20자';
+            }
+            break;
+        case 'email':
+            if (val && !EMAIL_PATTERN.test(val)) {
+                ok = false; msg = '올바른 이메일 형식이 아닙니다.';
+            }
+            break;
+        case 'postcode':
+        case 'address':
+            if (!val) {
+                ok = false; msg = '필수 입력값입니다.';
+            }
+            break;
+        default:
+            return true;
+    }
+    const msgEl = document.getElementById(id + 'Message');
+    if (ok) {
+        el.classList.remove('error'); el.classList.add('success');
+        if (msgEl) msgEl.textContent = '', msgEl.style.display = 'none';
+    } else {
+        el.classList.remove('success'); el.classList.add('error');
+        if (msgEl) msgEl.textContent = msg, msgEl.style.display = 'block';
+    }
+    return ok;
+}
+
+// 생년월일 옵션 생성 (기존)
 function generateBirthOptions() {
     const currentYear = new Date().getFullYear();
-    const yearSelect = document.getElementById('birthYear');
+    const yearSelect  = document.getElementById('birthYear');
     const monthSelect = document.getElementById('birthMonth');
-    const daySelect = document.getElementById('birthDay');
-
-    // 년도 옵션 (1950년부터 현재까지)
-    for (let year = currentYear; year >= 1950; year--) {
-        const option = document.createElement('option');
-        option.value = year;
-        option.textContent = year;
-        yearSelect.appendChild(option);
+    const daySelect   = document.getElementById('birthDay');
+    for (let y = currentYear; y >= 1950; y--) {
+        const o = document.createElement('option');
+        o.value = y; o.textContent = y;
+        yearSelect.appendChild(o);
     }
-
-    // 월 옵션
-    for (let month = 1; month <= 12; month++) {
-        const option = document.createElement('option');
-        option.value = month;
-        option.textContent = month.toString().padStart(2, '0');
-        monthSelect.appendChild(option);
+    for (let m = 1; m <= 12; m++) {
+        const o = document.createElement('option');
+        o.value = m; o.textContent = String(m).padStart(2,'0');
+        monthSelect.appendChild(o);
     }
-
-    // 일 옵션
-    for (let day = 1; day <= 31; day++) {
-        const option = document.createElement('option');
-        option.value = day;
-        option.textContent = day.toString().padStart(2, '0');
-        daySelect.appendChild(option);
+    for (let d = 1; d <= 31; d++) {
+        const o = document.createElement('option');
+        o.value = d; o.textContent = String(d).padStart(2,'0');
+        daySelect.appendChild(o);
     }
 }
 
-// 우편번호 검색 (기존 signup.js와 동일)
+// 우편번호 검색 (기존)
 function searchPostcode() {
     new daum.Postcode({
         oncomplete: function(data) {
-            console.log('주소 검색 결과:', data);
-
-            // 화면 표시용 필드
-            document.getElementById('postcode').value = data.zonecode;
+            postcodeInput.value        = data.zonecode;
             document.getElementById('zipCode').value = parseInt(data.zonecode);
             document.getElementById('roadAddress1').value = data.roadAddress;
-            document.getElementById('jibunAddress').value = data.jibunAddress;
-
+            document.getElementById('jibunAddress').value   = data.jibunAddress;
             if (data.roadAddressEnglish) {
                 document.getElementById('englishAddress').value = data.roadAddressEnglish;
             }
-
-            let displayAddr = '';
+            let displayAddr = data.userSelectedType === 'R' ? data.roadAddress : data.jibunAddress;
             let extraAddr = '';
-
             if (data.userSelectedType === 'R') {
-                displayAddr = data.roadAddress;
-            } else {
-                displayAddr = data.jibunAddress;
-            }
-
-            if(data.userSelectedType === 'R'){
-                if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
-                    extraAddr += data.bname;
+                if (data.bname && /[동|로|가]$/.test(data.bname)) extraAddr += data.bname;
+                if (data.buildingName && data.apartment === 'Y') {
+                    extraAddr += extraAddr ? ', ' + data.buildingName : data.buildingName;
                 }
-                if(data.buildingName !== '' && data.apartment === 'Y'){
-                    extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
-                }
-                if(extraAddr !== ''){
-                    extraAddr = ' (' + extraAddr + ')';
-                }
+                if (extraAddr) extraAddr = ' (' + extraAddr + ')';
                 displayAddr += extraAddr;
                 document.getElementById('roadAddress2').value = extraAddr;
             }
-
             document.getElementById('address').value = displayAddr;
-
-            let addressName = '';
-            if (data.sido && data.sigungu) {
-                addressName = data.sido + ' ' + data.sigungu;
-                document.getElementById('addressName').value = addressName;
-            }
-
-            document.getElementById('detailAddress').focus();
+            let addressName = data.sido && data.sigungu ? data.sido + ' ' + data.sigungu : '';
+            document.getElementById('addressName').value = addressName;
+            detailAddressInput.focus();
         },
-        width: '100%',
-        height: '100%',
-        maxSuggestItems: 5
+        width: '100%', height: '100%', maxSuggestItems: 5
     }).open();
 }
 
-// 폼 제출 처리
+// 폼 제출 처리 (기존)
 function handleFormSubmit(e) {
     e.preventDefault();
-
-    // 유효성 검사
-    const isValidPassword = validatePassword();
-    const isValidPasswordConfirm = validatePasswordConfirm();
-    const isValidUserName = validateUserName();
-    const isValidEmail = validateEmail();
-
-    if (!isValidUserName || !isValidEmail || !isValidPassword || !isValidPasswordConfirm) {
+    if (!validatePassword() ||
+        !validatePasswordConfirm() ||
+        !validateUserName() ||
+        !validateEmail()) {
         alert('입력된 정보를 다시 확인해주세요.');
         return;
     }
-
-    // 폼 데이터 수집
     const formData = collectFormData();
-
-    // 서버로 전송
     submitUserUpdate(formData);
 }
 
