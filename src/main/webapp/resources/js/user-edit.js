@@ -371,7 +371,7 @@ function submitUserUpdate(formData) {
             if (data.success) {
                 alert('회원정보가 성공적으로 수정되었습니다.');
                 // 마이페이지로 이동 또는 새로고침
-                window.location.href = '/mypage';
+                window.location.href = '/mypage/page/mypage';
             } else {
                 alert(data.message || '회원정보 수정에 실패했습니다.');
             }
@@ -389,6 +389,6 @@ function submitUserUpdate(formData) {
 // 취소 버튼 처리
 function handleCancel() {
     if (confirm('수정을 취소하시겠습니까? 변경된 내용은 저장되지 않습니다.')) {
-        window.location.href = '/mypage';
+        window.location.href = '/mypage/page/mypage';
     }
 }
