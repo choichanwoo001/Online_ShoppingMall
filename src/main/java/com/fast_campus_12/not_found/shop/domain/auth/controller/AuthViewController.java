@@ -47,7 +47,7 @@ public class AuthViewController {
             session.getAttribute("loginId");
             session.setAttribute("loginId", user.getId());
             authService.uploadLoginHistory(id);
-            return "redirect:/home";
+            return "redirect:/";
         } else {
             // 로그인 실패: DB에 저장된 failCount 조회 후 모델에 전달
             Auth failedUser = authService.findById(id);
