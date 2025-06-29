@@ -1,10 +1,8 @@
 package com.fast_campus_12.not_found.shop.mapper;
 
-import com.fast_campus_12.not_found.shop.product.dto.FlatSubCategoryDto;
-import com.fast_campus_12.not_found.shop.product.dto.SubCategoryDto;
-import com.fast_campus_12.not_found.shop.product.model.Lv1Category;
-import com.fast_campus_12.not_found.shop.product.model.Lv2Category;
-import com.fast_campus_12.not_found.shop.product.model.Lv3Category;
+import com.fast_campus_12.not_found.shop.domain.product.dto.FlatSubCategoryDto;
+import com.fast_campus_12.not_found.shop.domain.product.model.Lv1Category;
+import com.fast_campus_12.not_found.shop.domain.product.model.Lv2Category;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;

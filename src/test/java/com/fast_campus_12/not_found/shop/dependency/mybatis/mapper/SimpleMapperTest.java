@@ -1,6 +1,6 @@
 package com.fast_campus_12.not_found.shop.dependency.mybatis.mapper;
 
-import com.fast_campus_12.not_found.shop.config.MyBatisConfig;
+import com.fast_campus_12.not_found.shop.global.config.MyBatisConfig;
 import org.junit.jupiter.api.Test;
 
 import org.junit.jupiter.api.extension.ExtendWith;

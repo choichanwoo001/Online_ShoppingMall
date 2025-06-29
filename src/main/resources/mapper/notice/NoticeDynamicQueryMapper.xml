@@ -6,7 +6,7 @@
 <mapper namespace="com.fast_campus_12.not_found.shop.mapper.NoticeQueryMapper">
 
     <!-- ResultMap -->
-    <resultMap id="NoticeDto" type="com.fast_campus_12.not_found.shop.notice.dto.NoticeDto">
+    <resultMap id="NoticeDto" type="com.fast_campus_12.not_found.shop.domain.notice.dto.NoticeDto">
         <result property="id" column="NOTICE_ID"/>
         <result property="title" column="TITLE"/>
         <result property="content" column="CONTENT"/>

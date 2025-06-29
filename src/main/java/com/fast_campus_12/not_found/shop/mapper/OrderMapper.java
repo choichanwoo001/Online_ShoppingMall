@@ -1,6 +1,6 @@
 package com.fast_campus_12.not_found.shop.mapper;
 
-import com.fast_campus_12.not_found.shop.order.dto.*;
+import com.fast_campus_12.not_found.shop.domain.order.dto.*;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -83,7 +83,7 @@ public interface OrderMapper {
         JOIN MILEAGE m ON u.USER_ID = m.USER_ID
         WHERE u.LOGIN_ID = #{loginId}
     """)
-    MileageDto findAvailableMileageByUserId( String loginID); // user_id로 마일리지 조회
+    MileageDto findAvailableMileageByUserId(String loginID); // user_id로 마일리지 조회
 }
 
 

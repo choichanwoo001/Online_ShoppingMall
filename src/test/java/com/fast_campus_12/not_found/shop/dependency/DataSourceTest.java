@@ -1,6 +1,6 @@
 package com.fast_campus_12.not_found.shop.dependency;
 
-import com.fast_campus_12.not_found.shop.config.DataSourceConfig;
+import com.fast_campus_12.not_found.shop.global.config.DataSourceConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 

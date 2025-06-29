@@ -6,7 +6,7 @@
 <mapper namespace="com.fast_campus_12.not_found.shop.mapper.InquiryQueryMapper">
 
     <!-- InquiryAnswerDto resultMap -->
-    <resultMap id="InquiryAnswerDto" type="com.fast_campus_12.not_found.shop.inquiry.dto.InquiryAnswerDto">
+    <resultMap id="InquiryAnswerDto" type="com.fast_campus_12.not_found.shop.domain.inquiry.dto.InquiryAnswerDto">
         <result property="inquiryAnswerId" column="INQUIRY_ANSWER_ID"/>
         <result property="inquiryId" column="ANSWER_INQUIRY_ID"/>
         <result property="adminId" column="ADMIN_ID"/>
@@ -16,7 +16,7 @@
     </resultMap>
 
     <!-- InquiryDto resultMap (with nested answer) -->
-    <resultMap id="InquiryDto" type="com.fast_campus_12.not_found.shop.inquiry.dto.InquiryDto">
+    <resultMap id="InquiryDto" type="com.fast_campus_12.not_found.shop.domain.inquiry.dto.InquiryDto">
         <result property="id" column="INQUIRY_ID"/>
         <result property="userId" column="USER_ID"/>
         <result property="writer" column="WRITER"/>
