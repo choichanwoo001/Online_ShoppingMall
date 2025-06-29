@@ -2,7 +2,6 @@ package com.fast_campus_12.not_found.shop.domain.product.service;
 
 import com.fast_campus_12.not_found.shop.domain.product.dto.*;
 import com.fast_campus_12.not_found.shop.mapper.ProductDynamicQueryMapper;
-import com.fast_campus_12.not_found.shop.product.dto.*;
 import com.fast_campus_12.not_found.shop.domain.product.model.Product;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
